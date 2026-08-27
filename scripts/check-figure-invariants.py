@@ -16,6 +16,10 @@ PREFACE_FIGURES = (
     ROOT / "figures" / "preface-01-equation-and-finite-machine.tex",
     ROOT / "figures" / "preface-02-down-and-up-map.tex",
 )
+CH02_FIGURES = (
+    ROOT / "figures" / "ch02-01-one-function-two-decompositions.tex",
+    ROOT / "figures" / "ch02-02-same-output-different-cost.tex",
+)
 
 EXPECTED = {
     "ripple-pg": 8,
@@ -67,10 +71,28 @@ if not font_match:
 if float(font_match.group(1)) < 6.5:
     fail("diagram minimum font size is below 6.5pt")
 
-for figure_path in (FIGURE, *PREFACE_FIGURES):
+for figure_path in (FIGURE, *PREFACE_FIGURES, *CH02_FIGURES):
     source = figure_path.read_text(encoding="utf-8")
     if "\\resizebox" in source or "\\scalebox" in source:
         fail(f"{figure_path.name}: global scaling would shrink 6.5pt labels")
+
+chapter02 = (ROOT / "chapters" / "chapter02.tex").read_text(encoding="utf-8")
+if r"\keyterm{OR}" in chapter02:
+    fail("chapter 2 promotes OR beyond the five-term chapter brief")
+
+for required in (
+    "0,1,1,0",
+    "방법 A는 NAND 6개·가장 긴 경로 4층",
+    "방법 B는 NAND 4개·가장 긴 경로 3층",
+    "팬아웃",
+    "NOR도 혼자서 같은 역할",
+):
+    if required not in chapter02:
+        fail(f"chapter 2 is missing a fixed logic or boundary statement: {required}")
+
+ch02_figure_1 = CH02_FIGURES[0].read_text(encoding="utf-8")
+if "2층 없음" not in ch02_figure_1:
+    fail("chapter 2 figure 1 no longer marks the N-to-T layer bypass")
 
 prologue = (ROOT / "chapters" / "prologue.tex").read_text(encoding="utf-8")
 for forbidden in ("행×열", "내적", "\\sum", "타일 계산"):

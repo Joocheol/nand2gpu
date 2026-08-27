@@ -1,0 +1,44 @@
+\begin{bookfigure}{일상 규칙의 모든 경우를 적으면 진리표가 된다}{fig:ch01-rule-to-truth-table}
+\begin{tikzpicture}[diagram]
+  \path[use as bounding box] (0,0) rectangle (13.0,7.75);
+
+  \draw[diagram panel,fill=black!7] (0.05,0.42) rectangle (4.18,7.62);
+  \node[diagram panel title] at (0.30,7.27) {단순화한 규칙};
+  \node[diagram note,anchor=west] at (0.35,6.55) {안전 덮개가 닫혀 있고};
+  \node[diagram note,anchor=west] at (0.35,6.02) {시작 단추가 눌렸을 때만};
+  \node[diagram note,anchor=west] at (0.35,5.49) {모터 작동을 허가한다.};
+
+  \node[concept box,minimum width=31mm,minimum height=16mm] at (2.12,3.82)
+    {둘 다 1일 때만\\\(Y=1\)};
+  \node[diagram note,anchor=west,text=black!68] at (0.35,2.65) {\(A\) = 안전 덮개};
+  \node[diagram note,anchor=west,text=black!68] at (0.35,2.13) {\(B\) = 시작 단추};
+  \node[diagram note,anchor=west,text=black!68] at (0.35,1.61) {\(Y\) = 모터 허가};
+  \node[diagram note,align=center,text=black!62] at (2.12,0.86)
+    {실제 안전회로가 아닌\\교육용 모형};
+
+  \draw[concept arrow] (4.35,4.05) -- (5.02,4.05);
+
+  \draw[diagram panel] (5.20,0.42) rectangle (12.95,7.62);
+  \node[diagram panel title] at (5.47,7.27) {질문 순서대로 네 경우를 채운다};
+
+  \node[concept box,minimum width=14mm,minimum height=8mm] at (6.32,5.98) {\(A\)};
+  \node[concept box,minimum width=14mm,minimum height=8mm] at (8.18,5.98) {\(B\)};
+  \node[concept emphasis,minimum width=29mm,minimum height=8mm] at (10.92,5.98) {\(Y=A\ \mathrm{AND}\ B\)};
+
+  \foreach \y/\a/\b/\out/\num in {
+    5.04/0/0/0/1,
+    4.18/0/1/0/2,
+    3.32/1/0/0/3,
+    2.46/1/1/1/4
+  }{
+    \node[diagram note,anchor=east,text=black!58] at (5.72,\y) {\num};
+    \node[gate,minimum width=14mm] at (6.32,\y) {\a};
+    \node[gate,minimum width=14mm] at (8.18,\y) {\b};
+    \node[path gate,minimum width=29mm] at (10.92,\y) {\out};
+  }
+
+  \node[concept emphasis,minimum width=64mm,minimum height=14mm] at (9.08,1.15)
+    {입력 2개 \(\longrightarrow 2^2=4\)행\\
+     네 행을 모두 적으면 입력 조합을 빠뜨리지 않는다};
+\end{tikzpicture}
+\end{bookfigure}

@@ -1,0 +1,74 @@
+\begin{bookfigure}{하나의 XOR 진리표에서 두 NAND 분해가 갈라진다}{fig:ch02-one-function-two-decompositions}
+\begin{tikzpicture}[diagram]
+  \path[use as bounding box] (0,0) rectangle (13.0,8.15);
+
+  \draw[diagram panel,fill=black!5] (5.18,1.02) rectangle (7.82,7.95);
+  \node[diagram panel title,anchor=north] at (6.50,7.63) {보존할 XOR 명세};
+  \node[concept box,minimum width=7mm] at (5.72,6.65) {$A$};
+  \node[concept box,minimum width=7mm] at (6.50,6.65) {$B$};
+  \node[concept emphasis,minimum width=7mm] at (7.28,6.65) {$Y$};
+  \foreach \y/\a/\b/\out in {
+    5.89/0/0/0,
+    5.20/0/1/1,
+    4.51/1/0/1,
+    3.82/1/1/0
+  }{
+    \node[gate,minimum width=7mm] at (5.72,\y) {\a};
+    \node[gate,minimum width=7mm] at (6.50,\y) {\b};
+    \node[path gate,minimum width=7mm] at (7.28,\y) {\out};
+  }
+  \node[diagram note,align=center] at (6.50,2.76) {같은 마지막 열\\$0,1,1,0$};
+  \node[diagram note,align=center,text=black!62] at (6.50,1.55) {무엇을\\해야 하는가};
+
+  \draw[concept dashed arrow] (5.00,4.52) -- (4.52,4.52);
+  \draw[concept dashed arrow] (8.00,4.52) -- (8.48,4.52);
+
+  \draw[diagram panel] (0.05,1.02) rectangle (4.34,7.95);
+  \node[diagram panel title,anchor=north] at (2.20,7.63) {방법 A · 문장을 따라간다};
+  \node[diagram note,text=black!62] at (0.69,6.82) {1층};
+  \node[diagram note,text=black!62] at (1.69,6.82) {2층};
+  \node[diagram note,text=black!62] at (2.69,6.82) {3층};
+  \node[diagram note,text=black!62] at (3.69,6.82) {4층};
+  \foreach \x in {1.19,2.19,3.19}{\draw[black!18,dashed] (\x,2.00)--(\x,6.45);}
+
+  \node[gate,minimum width=9mm] (na) at (0.69,5.80) {$N_A$};
+  \node[gate,minimum width=9mm] (nb) at (0.69,4.64) {$N_B$};
+  \node[gate,minimum width=9mm] (n)  at (0.69,3.48) {$N$};
+  \node[path gate,minimum width=9mm] (o) at (1.69,5.22) {$O$};
+  \node[path gate,minimum width=9mm] (t) at (2.69,4.64) {$T$};
+  \node[path gate,minimum width=9mm] (ya) at (3.69,4.64) {$Y$};
+  \draw[path wire] (na.east) -- (o.north west);
+  \draw[path wire] (nb.east) -- (o.south west);
+  \draw[path wire] (o.east) -- (t.north west);
+  \draw[path wire] (n.east) --
+    node[pos=0.48,below=0.8mm,fill=white,inner sep=0.5pt,
+      font=\DiagramBodyFont,text=black!62] {2층 없음}
+    (t.south west);
+  \draw[path wire] (t.east) -- (ya.west);
+  \node[diagram note,align=center] at (2.20,2.56) {$N_A,N_B,N\rightarrow O\rightarrow T\rightarrow Y$};
+  \node[concept emphasis,minimum width=31mm,minimum height=8mm] at (2.20,1.62) {NAND 6개 · 4층};
+
+  \draw[diagram panel] (8.66,1.02) rectangle (12.95,7.95);
+  \node[diagram panel title,anchor=north] at (10.80,7.63) {방법 B · 중간값을 다시 쓴다};
+  \node[diagram note,text=black!62] at (9.55,6.82) {1층};
+  \node[diagram note,text=black!62] at (10.80,6.82) {2층};
+  \node[diagram note,text=black!62] at (12.05,6.82) {3층};
+  \draw[black!18,dashed] (10.18,2.00)--(10.18,6.45);
+  \draw[black!18,dashed] (11.43,2.00)--(11.43,6.45);
+
+  \node[gate,minimum width=11mm] (n1) at (9.55,4.64) {$N_1$};
+  \node[path gate,minimum width=11mm] (n2) at (10.80,5.28) {$N_2$};
+  \node[path gate,minimum width=11mm] (n3) at (10.80,4.00) {$N_3$};
+  \node[path gate,minimum width=11mm] (yb) at (12.05,4.64) {$Y$};
+  \draw[path wire] (n1.east) -- (n2.west);
+  \draw[path wire] (n1.east) -- (n3.west);
+  \draw[path wire] (n2.east) -- (yb.north west);
+  \draw[path wire] (n3.east) -- (yb.south west);
+  \node[diagram note,align=center] at (10.80,2.56) {$N_1\rightarrow N_2,N_3\rightarrow Y$};
+  \node[concept emphasis,minimum width=31mm,minimum height=8mm] at (10.80,1.62) {NAND 4개 · 3층};
+
+  \draw[gate group] (0.10,0.18) rectangle (12.92,0.78);
+  \node[diagram footer] at (6.50,0.48)
+    {같은 출력은 보존하고, 중간값과 연결 방법은 바꿀 수 있다};
+\end{tikzpicture}
+\end{bookfigure}

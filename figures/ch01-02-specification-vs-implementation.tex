@@ -1,0 +1,56 @@
+\begin{bookfigure}{진리표는 명세이고, 게이트 연결은 구현이다}{fig:ch01-specification-vs-implementation}
+\begin{tikzpicture}[diagram]
+  \path[use as bounding box] (0,0) rectangle (13.0,7.85);
+
+  \draw[diagram panel] (0.05,0.75) rectangle (4.10,7.70);
+  \node[diagram panel title] at (0.30,7.34) {명세 · 무엇을 해야 하는가};
+
+  \node[concept box,minimum width=10mm] at (0.92,6.35) {\(A\)};
+  \node[concept box,minimum width=10mm] at (2.05,6.35) {\(B\)};
+  \node[concept emphasis,minimum width=10mm] at (3.20,6.35) {\(Y\)};
+  \foreach \y/\a/\b/\out in {
+    5.43/0/0/0,
+    4.57/0/1/0,
+    3.71/1/0/0,
+    2.85/1/1/1
+  }{
+    \node[gate,minimum width=10mm] at (0.92,\y) {\a};
+    \node[gate,minimum width=10mm] at (2.05,\y) {\b};
+    \node[path gate,minimum width=10mm] at (3.20,\y) {\out};
+  }
+  \node[diagram note,align=center] at (2.05,1.77) {AND의 네 입력·출력 관계};
+  \node[diagram note,align=center,text=black!62] at (2.05,1.20) {지켜야 할 마지막 열};
+
+  \draw[concept dashed arrow] (4.27,4.42) -- (5.10,4.42);
+  \node[diagram note,align=center] at (4.68,3.77) {같은\\마지막 열};
+
+  \draw[diagram panel] (5.28,0.75) rectangle (12.95,7.70);
+  \node[diagram panel title] at (5.55,7.34) {구현 · 어떻게 만들 것인가};
+
+  \node[diagram note,anchor=east] (ain) at (5.96,5.54) {\(A\)};
+  \node[diagram note,anchor=east] (bin) at (5.96,3.54) {\(B\)};
+  \node[path gate,minimum width=22mm,minimum height=14mm] (nand1) at (7.45,4.54)
+    {NAND 1\\\(N=\operatorname{NAND}(A,B)\)};
+  \node[path gate,minimum width=23mm,minimum height=14mm] (nand2) at (10.65,4.54)
+    {NAND 2\\\(\operatorname{NOT}(N)\)};
+  \node[diagram note,anchor=west] (yout) at (12.43,4.54) {\(Y\)};
+
+  \draw[path wire] (ain.east) -| (nand1.north west);
+  \draw[path wire] (bin.east) -| (nand1.south west);
+  \coordinate (branch) at (8.98,4.54);
+  \draw[path wire] (nand1.east) -- node[above,font=\DiagramBodyFont] {\(N\)} (branch);
+  \fill (branch) circle (1.15pt);
+  \draw[path wire] (branch) |- ($(nand2.west)+(0,0.25)$);
+  \draw[path wire] (branch) |- ($(nand2.west)+(0,-0.25)$);
+  \draw[path wire] (nand2.east) -- (yout.west);
+
+  \node[concept emphasis,minimum width=56mm,minimum height=10mm] at (9.15,2.03)
+    {NAND 2개 · 가장 긴 경로 2층};
+  \node[diagram note,align=center,text=black!65] at (9.15,1.22)
+    {한 종류의 게이트로 AND의 마지막 열을 되찾는다};
+
+  \draw[gate group] (0.10,0.12) rectangle (12.92,0.60);
+  \node[diagram footer] at (6.50,0.36)
+    {접어 둔 층: 전압 · 트랜지스터 · 공정};
+\end{tikzpicture}
+\end{bookfigure}
