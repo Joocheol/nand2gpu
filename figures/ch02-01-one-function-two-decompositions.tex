@@ -31,20 +31,20 @@
   \node[diagram note,text=black!62] at (3.69,6.82) {4층};
   \foreach \x in {1.19,2.19,3.19}{\draw[black!18,dashed] (\x,2.00)--(\x,6.45);}
 
-  \node[gate,minimum width=9mm] (na) at (0.69,5.80) {$N_A$};
-  \node[gate,minimum width=9mm] (nb) at (0.69,4.64) {$N_B$};
-  \node[gate,minimum width=9mm] (n)  at (0.69,3.48) {$N$};
-  \node[path gate,minimum width=9mm] (o) at (1.69,5.22) {$O$};
-  \node[path gate,minimum width=9mm] (t) at (2.69,4.64) {$T$};
-  \node[path gate,minimum width=9mm] (ya) at (3.69,4.64) {$Y$};
-  \draw[path wire] (na.east) -- (o.north west);
-  \draw[path wire] (nb.east) -- (o.south west);
-  \draw[path wire] (o.east) -- (t.north west);
-  \draw[path wire] (n.east) --
+  \node[gate,minimum width=8mm] (na) at (0.69,5.80) {$N_A$};
+  \node[gate,minimum width=8mm] (nb) at (0.69,4.64) {$N_B$};
+  \node[gate,minimum width=8mm] (n)  at (0.69,3.48) {$N$};
+  \node[path gate,minimum width=8mm] (o) at (1.69,5.22) {$O$};
+  \node[path gate,minimum width=8mm] (t) at (2.69,4.64) {$T$};
+  \node[path gate,minimum width=8mm] (ya) at (3.69,4.64) {$Y$};
+  \draw[path wire,shorten <=0.3mm,shorten >=0.8mm] (na.east) -- (o.north west);
+  \draw[path wire,shorten <=0.3mm,shorten >=0.8mm] (nb.east) -- (o.south west);
+  \draw[path wire,shorten <=0.3mm,shorten >=0.8mm] (o.east) -- (t.north west);
+  \draw[path wire,shorten <=0.3mm,shorten >=0.8mm] (n.east) --
     node[pos=0.48,below=0.8mm,fill=white,inner sep=0.5pt,
       font=\DiagramBodyFont,text=black!62] {2층 없음}
     (t.south west);
-  \draw[path wire] (t.east) -- (ya.west);
+  \draw[path wire,shorten <=0.3mm,shorten >=0.8mm] (t.east) -- (ya.west);
   \node[diagram note,align=center] at (2.20,2.56) {$N_A,N_B,N\rightarrow O\rightarrow T\rightarrow Y$};
   \node[concept emphasis,minimum width=31mm,minimum height=8mm] at (2.20,1.62) {NAND 6개 · 4층};
 
@@ -56,14 +56,14 @@
   \draw[black!18,dashed] (10.18,2.00)--(10.18,6.45);
   \draw[black!18,dashed] (11.43,2.00)--(11.43,6.45);
 
-  \node[gate,minimum width=11mm] (n1) at (9.55,4.64) {$N_1$};
-  \node[path gate,minimum width=11mm] (n2) at (10.80,5.28) {$N_2$};
-  \node[path gate,minimum width=11mm] (n3) at (10.80,4.00) {$N_3$};
-  \node[path gate,minimum width=11mm] (yb) at (12.05,4.64) {$Y$};
-  \draw[path wire] (n1.east) -- (n2.west);
-  \draw[path wire] (n1.east) -- (n3.west);
-  \draw[path wire] (n2.east) -- (yb.north west);
-  \draw[path wire] (n3.east) -- (yb.south west);
+  \node[gate,minimum width=10mm] (n1) at (9.55,4.64) {$N_1$};
+  \node[path gate,minimum width=10mm] (n2) at (10.80,5.28) {$N_2$};
+  \node[path gate,minimum width=10mm] (n3) at (10.80,4.00) {$N_3$};
+  \node[path gate,minimum width=10mm] (yb) at (12.05,4.64) {$Y$};
+  \draw[path wire,shorten <=0.3mm,shorten >=0.8mm] (n1.east) -- (n2.west);
+  \draw[path wire,shorten <=0.3mm,shorten >=0.8mm] (n1.east) -- (n3.west);
+  \draw[path wire,shorten <=0.3mm,shorten >=0.8mm] (n2.east) -- (yb.north west);
+  \draw[path wire,shorten <=0.3mm,shorten >=0.8mm] (n3.east) -- (yb.south west);
   \node[diagram note,align=center] at (10.80,2.56) {$N_1\rightarrow N_2,N_3\rightarrow Y$};
   \node[concept emphasis,minimum width=31mm,minimum height=8mm] at (10.80,1.62) {NAND 4개 · 3층};
 

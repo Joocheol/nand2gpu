@@ -19,7 +19,6 @@ PREFACE_FIGURES = (
 )
 CH02_FIGURES = (
     ROOT / "figures" / "ch02-01-one-function-two-decompositions.tex",
-    ROOT / "figures" / "ch02-02-same-output-different-cost.tex",
 )
 CH03_FIGURES = (
     ROOT / "figures" / "ch03-01-two-faces-of-bits.tex",

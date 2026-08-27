@@ -21,7 +21,6 @@ on:
       - figures/ch01-01-rule-to-truth-table.tex
       - figures/ch01-02-specification-vs-implementation.tex
       - figures/ch02-01-one-function-two-decompositions.tex
-      - figures/ch02-02-same-output-different-cost.tex
       - figures/ch03-01-two-faces-of-bits.tex
       - figures/ch03-02-four-bit-addition.tex
       - figures/ch04-01-carry-through-four-bits.tex
@@ -117,7 +116,7 @@ jobs:
 
           pdf_pages="$(pdfinfo .ai-review-input/main.pdf | awk '/^Pages:/ { print $2 }')"
           rendered_pages="$(wc -l < .ai-review-input/page-index.txt | tr -d ' ')"
-          test "$pdf_pages" -eq 41
+          test "$pdf_pages" -eq 40
           test "$rendered_pages" -eq "$pdf_pages"
           printf 'pdf_pages=%s\nrendered_pages=%s\n' \
             "$pdf_pages" "$rendered_pages" \
@@ -142,7 +141,7 @@ jobs:
               for line in Path('.ai-review-input/page-index.txt').read_text().splitlines()
               if line
           ]
-          assert len(pages) == 41
+          assert len(pages) == 40
           for page in pages:
               image = Image.open(page).convert('L')
               nonwhite = sum(pixel < 245 for pixel in image.getdata())
