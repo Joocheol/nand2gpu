@@ -44,7 +44,11 @@ jobs:
         run: |
           set -o pipefail
           apt-get update
-          apt-get install --no-install-recommends -y curl innoextract unzip
+          apt-get install --no-install-recommends -y \
+            curl \
+            msitools \
+            p7zip-full \
+            unzip
           archive="$(mktemp)"
           extract_dir="$(mktemp -d)"
           curl --fail --location --retry 3 \
@@ -53,11 +57,13 @@ jobs:
           unzip -q "$archive" -d "$extract_dir"
           installer="$(find "$extract_dir" -type f -iname '*.exe' -print -quit)"
           test -n "$installer"
-          innoextract --extract \
-            --output-dir "$extract_dir/installer" \
-            "$installer"
+          7z x -y -o"$extract_dir/installer" "$installer" >/dev/null
+          msi="$(find "$extract_dir/installer" -type f -iname '*.msi' -print -quit)"
+          test -n "$msi"
+          mkdir -p "$extract_dir/msi"
+          msiextract -C "$extract_dir/msi" "$msi"
           mkdir -p fonts
-          find "$extract_dir/installer" -type f -iname '*.otf' -exec cp '{}' fonts/ \;
+          find "$extract_dir/msi" -type f -iname '*.otf' -exec cp '{}' fonts/ \;
           sha256sum --check <<'SHA256'
           e7b2e5ab08d0d39b5a09417a1970fd8e0d7fd5464821339accd40aa61583b4dd  fonts/KoPubWorld Batang_Pro Bold.otf
           895fdc6de0ff0fe24b1a63ae16601c174c810b24daa23ade78115b7e134c4c0a  fonts/KoPubWorld Batang_Pro Light.otf
