@@ -1,4 +1,4 @@
-name: Claude chapter 1 independent review
+name: Claude chapter 2 independent review
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ defaults:
     shell: bash
 
 concurrency:
-  group: claude-chapter-1-independent-review
+  group: claude-chapter-2-independent-review
   cancel-in-progress: false
 
 jobs:
@@ -30,10 +30,10 @@ jobs:
           set -o pipefail
           mkdir -p .ai-review-input
           base64 --decode \
-            .github/review-snapshots/chapter01-draft-main.pdf.b64 \
+            .github/review-snapshots/chapter02-draft-main.pdf.b64 \
             > .ai-review-input/main.pdf
           echo \
-            "5a474a79853d9d892f37ab32f980c9d16fd057bfc0eed7ef838d64e732f6fcd2  .ai-review-input/main.pdf" \
+            "a6d1fb7b55a97a1ca95d68c17bb11ee9565c44303910ba1597f99032fd167df8  .ai-review-input/main.pdf" \
             | sha256sum --check
 
       - name: Render every review page
@@ -55,7 +55,7 @@ jobs:
 
           pdf_pages="$(pdfinfo .ai-review-input/main.pdf | awk '/^Pages:/ { print $2 }')"
           rendered_pages="$(wc -l < .ai-review-input/page-index.txt | tr -d ' ')"
-          test "$pdf_pages" -eq 17
+          test "$pdf_pages" -eq 23
           test "$rendered_pages" -eq "$pdf_pages"
           printf 'pdf_pages=%s\nrendered_pages=%s\n' \
             "$pdf_pages" "$rendered_pages" \
@@ -64,7 +64,7 @@ jobs:
           pdftotext -enc UTF-8 -layout \
             .ai-review-input/main.pdf \
             .ai-review-input/main.txt
-          grep -Fq "가능한 경우를 모두 적으면 함수가 된다" \
+          grep -Fq "같은 함수를 여러 식으로 분해할 수 있다" \
             .ai-review-input/main.txt
           grep -Fq "이번 장의 선택과 비용" \
             .ai-review-input/main.txt
@@ -78,7 +78,7 @@ jobs:
               for line in Path('.ai-review-input/page-index.txt').read_text().splitlines()
               if line
           ]
-          assert len(pages) == 17
+          assert len(pages) == 23
           for page in pages:
               image = Image.open(page).convert('L')
               nonwhite = sum(pixel < 245 for pixel in image.getdata())
@@ -89,7 +89,7 @@ jobs:
       - name: Upload bounded review evidence
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: claude-chapter-1-review-input
+          name: claude-chapter-2-review-input
           path: .ai-review-input/
           if-no-files-found: error
           include-hidden-files: true
@@ -110,10 +110,10 @@ jobs:
       - name: Download rendered review evidence
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
-          name: claude-chapter-1-review-input
+          name: claude-chapter-2-review-input
           path: .ai-review-input
 
-      - name: Review chapter 1 with Claude
+      - name: Review chapter 2 with Claude
         id: claude
         uses: anthropics/claude-code-action@c038e4dcdedfbbca18dfb17df35a17e40ded4ddc # v1
         with:
@@ -133,8 +133,9 @@ jobs:
 
             Read editorial/review-checklist.md,
             planning/preface-part1-detailed-briefs.md, chapters/prologue.tex,
-            chapters/chapter01.tex, figures/ch01-01-rule-to-truth-table.tex,
-            figures/ch01-02-specification-vs-implementation.tex, main.tex,
+            chapters/chapter01.tex, chapters/chapter02.tex,
+            figures/ch02-01-one-function-two-decompositions.tex,
+            figures/ch02-02-same-output-different-cost.tex, main.tex,
             references.bib, and research/source-register.md.
 
             Read .ai-review-input/page-count.txt and
@@ -145,31 +146,33 @@ jobs:
             complete coverage.
 
             Independently verify the chapter's logic and arithmetic:
-            - the four input combinations and AND outputs;
-            - 2^n rows, including the 10- and 20-input examples;
-            - the distinction between a truth-table specification and a gate
-              implementation;
-            - NAND(A,B) followed by NAND(N,N), all intermediate values, two
-              NAND gates, and longest NAND path of two layers;
-            - the limited claim that one-bit 0/1 AND matches multiplication;
-            - the boundary between this educational circuit and real machine
-              safety circuits, transistor implementations, chip area, delay,
-              and power.
+            - XOR's four input combinations and target output 0,1,1,0;
+            - method A's six NAND gates, all intermediate values, and longest
+              NAND path of four layers;
+            - method B's four NAND gates, all intermediate values, and longest
+              NAND path of three layers;
+            - the functional equivalence of both decompositions;
+            - the claims that NAND is universal and that NOR can independently
+              play the same universal-gate role;
+            - the boundary between gate-count/depth teaching models and real
+              chip concerns such as fan-out, wire delay, load, process, power,
+              and use of a dedicated XOR cell;
+            - the Nand2Tetris citation's unknown-year notation, with no
+              invented publication year.
 
             Assess whether the prose works for a general reader with no
-            programming or digital-logic background; introduces truth table,
-            specification, AND, NAND, and NOT at first use; provides every
-            intermediate value; preserves the book's distinction between
-            computational requirements and machine resources; avoids
-            premature multi-bit multiplication or matrix mathematics; and
-            leads naturally to chapter 2.
+            programming or digital-logic background; introduces XOR,
+            equivalent decomposition, circuit depth, and fan-out clearly;
+            provides every intermediate value; preserves the distinction
+            between functional requirements and implementation resources; and
+            leads naturally to the next chapter.
 
-            Check both figures for correct logic, readable black-and-white B5
-            layout, minimum text size, clipping, overlaps, line routing,
-            arrowheads, and meaningful visual hierarchy. In Figure 1 confirm
-            that the four rows and 2^2 statement are unambiguous. In Figure 2
-            confirm that N visibly fans out to both inputs of NAND 2 and cannot
-            be mistaken for two different signals. Check the final
+            Check both chapter 2 figures for correct logic, readable
+            black-and-white B5 layout, minimum text size, clipping, overlaps,
+            line routing, arrowheads, and meaningful visual hierarchy. In
+            Figure 2.1 confirm that both circuits visibly implement the same
+            XOR output. In Figure 2.2 confirm that the gate-count and longest
+            path labels are unambiguous and match the circuits. Check the final
             "이번 장의 선택과 비용" table for completeness and unit discipline.
 
             Write the review in Korean. Do not invent findings when the current
@@ -195,7 +198,7 @@ jobs:
           test -n "$CLAUDE_REVIEW"
           printf '%s\n' "$CLAUDE_REVIEW" > claude-review.json
           {
-            echo '## Claude chapter 1 independent review'
+            echo '## Claude chapter 2 independent review'
             echo '~~~json'
             cat claude-review.json
             echo '~~~'
@@ -204,7 +207,7 @@ jobs:
       - name: Upload Claude review result
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: claude-chapter-1-review-result
+          name: claude-chapter-2-review-result
           path: claude-review.json
           if-no-files-found: error
           retention-days: 7

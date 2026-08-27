@@ -1,0 +1,29 @@
+\begin{bookfigure}{같은 출력과 달라진 비용을 따로 센다}{fig:ch02-same-output-different-cost}
+\begin{tikzpicture}[diagram]
+  \path[use as bounding box] (0,0) rectangle (13.0,5.80);
+
+  \node[concept box,minimum width=31mm,minimum height=10mm] at (1.82,5.15) {구현};
+  \node[concept box,minimum width=38mm,minimum height=10mm] at (5.40,5.15) {보존한 XOR 출력};
+  \node[concept box,minimum width=25mm,minimum height=10mm] at (8.77,5.15) {NAND 수};
+  \node[concept box,minimum width=28mm,minimum height=10mm] at (11.52,5.15) {가장 긴 경로};
+
+  \draw[diagram panel,fill=black!4] (0.05,3.05) rectangle (12.95,4.55);
+  \node[diagram panel title,anchor=west] at (0.40,3.80) {방법 A};
+  \node[diagram note,align=center] at (5.40,3.80) {$0,1,1,0$};
+  \foreach \x in {8.12,8.38,8.64,8.90,9.16,9.42}{\node[gate,minimum width=4.3mm,minimum height=5mm] at (\x,3.80) {};}
+  \node[diagram note,anchor=west] at (9.65,3.80) {6개};
+  \foreach \x in {10.30,10.82,11.34,11.86}{\node[path gate,minimum width=5.6mm,minimum height=5mm] at (\x,3.80) {};}
+  \node[diagram note,anchor=east] at (12.75,3.80) {4층};
+
+  \draw[diagram panel] (0.05,1.32) rectangle (12.95,2.82);
+  \node[diagram panel title,anchor=west] at (0.40,2.07) {방법 B};
+  \node[diagram note,align=center] at (5.40,2.07) {$0,1,1,0$};
+  \foreach \x in {8.38,8.72,9.06,9.40}{\node[gate,minimum width=5.6mm,minimum height=5mm] at (\x,2.07) {};}
+  \node[diagram note,anchor=west] at (9.70,2.07) {4개};
+  \foreach \x in {10.58,11.24,11.90}{\node[path gate,minimum width=7.0mm,minimum height=5mm] at (\x,2.07) {};}
+  \node[diagram note,anchor=east] at (12.75,2.07) {3층};
+
+  \node[concept emphasis,minimum width=101mm,minimum height=9mm] at (6.50,0.66)
+    {교육 모형의 결론: 방법 B는 NAND 2개가 적고 가장 긴 경로가 1층 짧다};
+\end{tikzpicture}
+\end{bookfigure}
