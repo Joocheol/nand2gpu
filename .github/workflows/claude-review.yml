@@ -1,4 +1,4 @@
-name: Claude chapter 3 independent review
+name: Claude chapter 4 independent review
 
 on:
   workflow_dispatch:
@@ -11,12 +11,13 @@ on:
       - synchronize
     paths:
       - .github/workflows/claude-review.yml
-      - chapters/prologue.tex
-      - chapters/chapter03.tex
-      - figures/ch03-01-two-faces-of-bits.tex
-      - figures/ch03-02-four-bit-addition.tex
+      - chapters/chapter04.tex
+      - figures/ch04-01-carry-through-four-bits.tex
+      - figures/ch04-02-chain-vs-expanded.tex
       - main.tex
       - references.bib
+      - scripts/check-figure-invariants.py
+      - tests/ch04-02-standalone.tex
 
 permissions: {}
 
@@ -25,7 +26,7 @@ defaults:
     shell: bash
 
 concurrency:
-  group: claude-chapter-3-independent-review
+  group: claude-chapter-4-independent-review
   cancel-in-progress: false
 
 jobs:
@@ -80,10 +81,10 @@ jobs:
           bash scripts/build.sh
           bash scripts/build-figure-test.sh
           test -s main.pdf
-          test -s .build/ch03-figures-standalone.pdf
+          test -s .build/ch04-02-standalone.pdf
           mkdir -p .ai-review-input
           cp main.pdf .ai-review-input/main.pdf
-          file .ai-review-input/main.pdf .build/ch03-figures-standalone.pdf
+          file .ai-review-input/main.pdf .build/ch04-02-standalone.pdf
 
       - name: Render every review page
         run: |
@@ -104,7 +105,7 @@ jobs:
 
           pdf_pages="$(pdfinfo .ai-review-input/main.pdf | awk '/^Pages:/ { print $2 }')"
           rendered_pages="$(wc -l < .ai-review-input/page-index.txt | tr -d ' ')"
-          test "$pdf_pages" -eq 32
+          test "$pdf_pages" -eq 41
           test "$rendered_pages" -eq "$pdf_pages"
           printf 'pdf_pages=%s\nrendered_pages=%s\n' \
             "$pdf_pages" "$rendered_pages" \
@@ -113,9 +114,9 @@ jobs:
           pdftotext -enc UTF-8 -layout \
             .ai-review-input/main.pdf \
             .ai-review-input/main.txt
-          grep -Fq "0과 1을 자릿값으로 읽으면 수가 된다" \
+          grep -Fq "같은 덧셈도 기다리는 순서가 다르다" \
             .ai-review-input/main.txt
-          grep -Fq "carry-out과 signed overflow는 다르다" \
+          grep -Fq "1111" \
             .ai-review-input/main.txt
           grep -Fq "이번 장의 선택과 비용" \
             .ai-review-input/main.txt
@@ -129,7 +130,7 @@ jobs:
               for line in Path('.ai-review-input/page-index.txt').read_text().splitlines()
               if line
           ]
-          assert len(pages) == 32
+          assert len(pages) == 41
           for page in pages:
               image = Image.open(page).convert('L')
               nonwhite = sum(pixel < 245 for pixel in image.getdata())
@@ -140,7 +141,7 @@ jobs:
       - name: Upload bounded review evidence
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: claude-chapter-3-review-input
+          name: claude-chapter-4-review-input
           path: .ai-review-input/
           if-no-files-found: error
           include-hidden-files: true
@@ -161,10 +162,10 @@ jobs:
       - name: Download rendered review evidence
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
-          name: claude-chapter-3-review-input
+          name: claude-chapter-4-review-input
           path: .ai-review-input
 
-      - name: Review chapter 3 with Claude
+      - name: Review chapter 4 with Claude
         id: claude
         uses: anthropics/claude-code-action@c038e4dcdedfbbca18dfb17df35a17e40ded4ddc # v1
         with:
@@ -183,11 +184,10 @@ jobs:
             or comment.
 
             Read editorial/review-checklist.md,
-            planning/preface-part1-detailed-briefs.md, chapters/prologue.tex,
-            chapters/chapter01.tex, chapters/chapter02.tex,
-            chapters/chapter03.tex,
-            figures/ch03-01-two-faces-of-bits.tex,
-            figures/ch03-02-four-bit-addition.tex, main.tex,
+            planning/preface-part1-detailed-briefs.md,
+            chapters/chapter03.tex, chapters/chapter04.tex,
+            figures/ch04-01-carry-through-four-bits.tex,
+            figures/ch04-02-chain-vs-expanded.tex, main.tex,
             references.bib, and research/source-register.md.
 
             Read .ai-review-input/page-count.txt and
@@ -198,40 +198,40 @@ jobs:
             complete coverage.
 
             Independently verify the chapter's logic and arithmetic:
-            - 0101_2 = 0*8 + 1*4 + 0*2 + 1*1 = 5;
-            - four-bit unsigned range 0 through 15 and four-bit two's-complement
-              range -8 through 7;
-            - all four half-adder rows and all eight full-adder rows;
-            - each carry and sum in 0101_2 + 0011_2 = 1000_2;
-            - two's-complement negation 0011 -> 1100 -> 1101, the interpretation
-              1101_2 = -3, and 0101 + 1101 = 1 0010;
-            - why the extra carry is discarded only under the stated fixed
-              four-bit arithmetic convention;
-            - carry-out 0 with signed overflow for 0101+0011, versus carry-out 1
-              without signed overflow for 0101+1101;
-            - the distinction among a bit string, its signed or unsigned
-              interpretation, and the circuit-produced result;
-            - MIT 6.004's dated citation and Nand2Tetris Project 2's unknown-year
-              notation, without inventing a publication year.
+            - every p_i, g_i, c_i, and S_i value in
+              1111_2 + 0001_2 = 1 0000_2;
+            - p_i=A_i XOR B_i, g_i=A_i AND B_i, and
+              c_(i+1)=g_i OR (p_i AND c_i);
+            - the fully expanded c_4 expression, including all five terms;
+            - ripple c_4 cost: eight p/g gates plus eight carry gates = 16,
+              and depth 1 + four two-gate carry stages = 9;
+            - expanded-lookahead c_4 cost: eight p/g gates, ten AND gates,
+              and four OR gates = 22, with term depths 1,2,3,3,4,
+              accumulation depths 3,4,5, and final c_4 depth 6;
+            - all four carries expanded independently without sharing use
+              38 gates, while 22 gates describes only the c_4 circuit;
+            - both 16-versus-22 comparisons exclude sum-output hardware;
+            - carry-out is not presented as a general signed-overflow signal;
+            - a gate path inside one adder is kept distinct from chapter 8's
+              work and span across many operations.
 
             Assess whether the prose works for a general reader with no
-            programming or digital-logic background; introduces bit, place
-            value, half adder, full adder, and two's complement clearly without
-            overcrowding the main line; provides every intermediate value;
-            keeps signed overflow in a bounded supplemental box; preserves the
-            distinction between representable range and physical resources;
-            and leads naturally to chapter 4's carry-path question.
+            programming or digital-logic background; introduces generate,
+            propagate, unit gate delay, ripple carry, and carry lookahead
+            clearly without overcrowding the main line; provides every
+            intermediate value; states the educational model's limits; and
+            leads naturally from addition to multiplication.
 
-            Check both chapter 3 figures for correct arithmetic, readable
+            Check both chapter 4 figures for correct arithmetic, readable
             black-and-white B5 layout, minimum text size, clipping, overlaps,
             line routing, arrowheads, and meaningful visual hierarchy. In
-            Figure 3.1 confirm that 1000 is visibly separated from its unsigned
-            8 and two's-complement -8 interpretations. In Figure 3.2 confirm
-            that four full-adder boxes, the right-to-left carry direction, all
-            c1 through c4 values, and S3S2S1S0=1000 are unambiguous. Confirm
-            that the figure does not prematurely assign timing or path depth.
-            Check the final "이번 장의 선택과 비용" table for completeness and
-            unit discipline.
+            Figure 4.1 confirm four bit boxes, right-to-left c_0 through c_4
+            value flow, 1111_2+0001_2=1 0000_2, and the separation between the
+            example's value flow and structural worst-case depth. In Figure 4.2
+            confirm marker counts of ripple p/g 8 and carry 8, expanded p/g 8,
+            AND 10, OR 4; the labels 16 gates/9 layers and 22 gates/6 layers;
+            and unambiguous signal routing. Check the final "이번 장의 선택과
+            비용" table for completeness and unit discipline.
 
             Write the review in Korean. Do not invent findings when the current
             result is sound. Consolidate duplicate symptoms under one root
@@ -256,7 +256,7 @@ jobs:
           test -n "$CLAUDE_REVIEW"
           printf '%s\n' "$CLAUDE_REVIEW" > claude-review.json
           {
-            echo '## Claude chapter 3 independent review'
+            echo '## Claude chapter 4 independent review'
             echo '~~~json'
             cat claude-review.json
             echo '~~~'
@@ -265,7 +265,7 @@ jobs:
       - name: Upload Claude review result
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: claude-chapter-3-review-result
+          name: claude-chapter-4-review-result
           path: claude-review.json
           if-no-files-found: error
           retention-days: 7

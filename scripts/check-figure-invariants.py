@@ -25,6 +25,10 @@ CH03_FIGURES = (
     ROOT / "figures" / "ch03-01-two-faces-of-bits.tex",
     ROOT / "figures" / "ch03-02-four-bit-addition.tex",
 )
+CH04_FIGURES = (
+    ROOT / "figures" / "ch04-01-carry-through-four-bits.tex",
+    ROOT / "figures" / "ch04-02-chain-vs-expanded.tex",
+)
 
 EXPECTED = {
     "ripple-pg": 8,
@@ -77,7 +81,7 @@ if not font_match:
 if float(font_match.group(1)) < 6.5:
     fail("diagram minimum font size is below 6.5pt")
 
-for figure_path in (FIGURE, *PREFACE_FIGURES, *CH02_FIGURES, *CH03_FIGURES):
+for figure_path in (*PREFACE_FIGURES, *CH02_FIGURES, *CH03_FIGURES, *CH04_FIGURES):
     source = figure_path.read_text(encoding="utf-8")
     if "\\resizebox" in source or "\\scalebox" in source:
         fail(f"{figure_path.name}: global scaling would shrink 6.5pt labels")
@@ -144,6 +148,37 @@ for required in (r"c_1=1", r"c_2=1", r"c_3=1", r"c_4=0"):
         fail(f"chapter 3 figure 2 is missing a carry value: {required}")
 if "기다림과 내부 경로는 4장에서" not in ch03_figure_2:
     fail("chapter 3 figure 2 no longer postpones path timing to chapter 4")
+
+chapter04 = (ROOT / "chapters" / "chapter04.tex").read_text(encoding="utf-8")
+for required in (
+    r"1111_2+0001_2=1\,0000_2",
+    r"c_{i+1}=g_i\mathbin{\lor}(p_i\mathbin{\land}c_i)",
+    "16\\text{게이트}",
+    "22\\text{게이트}",
+    "9\\text{층}",
+    "6층",
+    "38\\text{게이트}",
+    "한 번의 덧셈 안에서 신호가 지나가는 게이트 경로",
+    "carry-out을 일반적인 부호 있는 넘침 신호라고",
+):
+    if required not in chapter04:
+        fail(f"chapter 4 is missing a fixed arithmetic or boundary statement: {required}")
+
+if 0b1111 + 0b0001 != 0b10000:
+    fail("chapter 4 unsigned addition fixture is wrong")
+if 2 * 4 + 1 != 9 or 8 + 10 + 4 != 22:
+    fail("chapter 4 c4 gate-count or depth fixture is wrong")
+if 8 + (1 + 3 + 6 + 10) + (1 + 2 + 3 + 4) != 38:
+    fail("chapter 4 all-carry no-sharing gate-count fixture is wrong")
+
+ch04_figure_1 = CH04_FIGURES[0].read_text(encoding="utf-8")
+if ch04_figure_1.count("% adder:carry-example") != 4:
+    fail("chapter 4 figure 1 must contain four carry-example boxes")
+for required in (r"c_0=0", r"c_1=1", r"c_2=1", r"c_3=1", r"c_4=1"):
+    if required not in ch04_figure_1:
+        fail(f"chapter 4 figure 1 is missing a carry value: {required}")
+if "가장 긴 구조적 9층 경로는 그림 4.2에서" not in ch04_figure_1:
+    fail("chapter 4 figure 1 no longer separates value flow from structural depth")
 
 prologue = (ROOT / "chapters" / "prologue.tex").read_text(encoding="utf-8")
 for forbidden in ("행×열", "내적", "\\sum", "타일 계산"):

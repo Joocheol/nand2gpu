@@ -1,0 +1,41 @@
+\begin{bookfigure}{올림 하나가 네 자리 안을 지나간다}{fig:ch04-carry-through-four-bits}
+\begin{tikzpicture}[diagram]
+  \path[use as bounding box] (0,0) rectangle (13.0,6.25);
+
+  \node[diagram note,anchor=west,text=black!62] at (0.20,5.88)
+    {높은 자리};
+  \node[diagram note,anchor=east,text=black!62] at (12.80,5.88)
+    {낮은 자리};
+  \node[diagram note,anchor=center] at (6.50,5.88)
+    {한 덧셈기 내부의 값 전달};
+
+  % adder:carry-example
+  \node[concept box,minimum width=26mm,minimum height=27mm] (fa3) at (1.70,3.95)
+    {\textbf{자리 3}\\[0.8mm]\(A_3=1,\ B_3=0\)\\\(p_3=1,\ g_3=0\)\\[0.8mm]\(S_3=0\)};
+  % adder:carry-example
+  \node[concept box,minimum width=26mm,minimum height=27mm] (fa2) at (4.90,3.95)
+    {\textbf{자리 2}\\[0.8mm]\(A_2=1,\ B_2=0\)\\\(p_2=1,\ g_2=0\)\\[0.8mm]\(S_2=0\)};
+  % adder:carry-example
+  \node[concept box,minimum width=26mm,minimum height=27mm] (fa1) at (8.10,3.95)
+    {\textbf{자리 1}\\[0.8mm]\(A_1=1,\ B_1=0\)\\\(p_1=1,\ g_1=0\)\\[0.8mm]\(S_1=0\)};
+  % adder:carry-example
+  \node[concept emphasis,minimum width=26mm,minimum height=27mm] (fa0) at (11.30,3.95)
+    {\textbf{자리 0}\\[0.8mm]\(A_0=1,\ B_0=1\)\\\(p_0=0,\ g_0=1\)\\[0.8mm]\(S_0=0\)};
+
+  \draw[path wire] ([yshift=4mm]fa0.west)
+    -- node[above,diagram note] {\(c_1=1\)} ([yshift=4mm]fa1.east);
+  \draw[path wire] ([yshift=4mm]fa1.west)
+    -- node[above,diagram note] {\(c_2=1\)} ([yshift=4mm]fa2.east);
+  \draw[path wire] ([yshift=4mm]fa2.west)
+    -- node[above,diagram note] {\(c_3=1\)} ([yshift=4mm]fa3.east);
+  \draw[path wire] ([yshift=4mm]fa3.west)
+    -- ++(-0.62,0) node[above,diagram note] {\(c_4=1\)};
+  \draw[path wire] ([xshift=5.5mm,yshift=4mm]fa0.east)
+    -- node[above,diagram note] {\(c_0=0\)} ([yshift=4mm]fa0.east);
+
+  \node[concept emphasis,minimum width=94mm,minimum height=11mm] at (6.50,1.63)
+    {\(1111_2+0001_2=1\,0000_2\) \quad \(g_0\)가 만들고 \(p_1,p_2,p_3\)가 전달한다};
+  \node[diagram note,align=center,text=black!62] at (6.50,0.62)
+    {이 입력은 값의 이동을 보여 준다 · 가장 긴 구조적 9층 경로는 그림 4.2에서 따로 센다};
+\end{tikzpicture}
+\end{bookfigure}
