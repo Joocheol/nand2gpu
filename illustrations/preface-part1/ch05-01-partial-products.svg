@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#222"/></marker><style>.title{font:700 34px sans-serif;fill:#111}.sub{font:500 19px sans-serif;fill:#444}.label{font:700 21px sans-serif;fill:#111}.body{font:500 17px sans-serif;fill:#222}.small{font:500 14px sans-serif;fill:#555}.mono{font-family:monospace;font-size:24px;font-weight:600;fill:#111}.box{fill:#fff;stroke:#222;stroke-width:2}.shade{fill:#e7e7e7;stroke:#222;stroke-width:2}.mapwire{stroke:#555;stroke-width:1.5;fill:none}</style></defs>
+  <rect width="1400" height="900" fill="#fff"/>
+  <text x="70" y="72" class="title">16개의 한 비트 곱이 네 부분곱 행이 된다</text>
+  <text x="70" y="106" class="sub">5장 도해 1 · 1011₂ × 1101₂ = 10001111₂ = 143</text>
+  <rect x="70" y="155" width="600" height="610" rx="22" class="box"/>
+  <text x="105" y="202" class="label">4 × 4 교차점 · AND 16개</text>
+  <text x="420" y="235" text-anchor="middle" class="small">피승수 1011₂ · 높은 자리 b₃ → 낮은 자리 b₀</text>
+  <g class="body" text-anchor="middle"><text x="270" y="275">1</text><text x="370" y="275">0</text><text x="470" y="275">1</text><text x="570" y="275">1</text></g>
+  <text x="155" y="305" text-anchor="middle" class="small">승수 1101₂</text>
+  <g class="body" text-anchor="middle"><text x="155" y="355">b₀=1</text><text x="155" y="455">b₁=0</text><text x="155" y="555">b₂=1</text><text x="155" y="655">b₃=1</text></g>
+  <text x="155" y="700" text-anchor="middle" class="small">낮은 자리 → 높은 자리</text>
+  <g text-anchor="middle" class="small">
+    <rect x="220" y="310" width="100" height="70" rx="12" class="shade"/><text x="270" y="351">1×1</text><rect x="320" y="310" width="100" height="70" rx="12" class="shade"/><text x="370" y="351">0×1</text><rect x="420" y="310" width="100" height="70" rx="12" class="shade"/><text x="470" y="351">1×1</text><rect x="520" y="310" width="100" height="70" rx="12" class="shade"/><text x="570" y="351">1×1</text>
+    <rect x="220" y="410" width="100" height="70" rx="12" class="box"/><text x="270" y="451">1×0</text><rect x="320" y="410" width="100" height="70" rx="12" class="box"/><text x="370" y="451">0×0</text><rect x="420" y="410" width="100" height="70" rx="12" class="box"/><text x="470" y="451">1×0</text><rect x="520" y="410" width="100" height="70" rx="12" class="box"/><text x="570" y="451">1×0</text>
+    <rect x="220" y="510" width="100" height="70" rx="12" class="shade"/><text x="270" y="551">1×1</text><rect x="320" y="510" width="100" height="70" rx="12" class="shade"/><text x="370" y="551">0×1</text><rect x="420" y="510" width="100" height="70" rx="12" class="shade"/><text x="470" y="551">1×1</text><rect x="520" y="510" width="100" height="70" rx="12" class="shade"/><text x="570" y="551">1×1</text>
+    <rect x="220" y="610" width="100" height="70" rx="12" class="shade"/><text x="270" y="651">1×1</text><rect x="320" y="610" width="100" height="70" rx="12" class="shade"/><text x="370" y="651">0×1</text><rect x="420" y="610" width="100" height="70" rx="12" class="shade"/><text x="470" y="651">1×1</text><rect x="520" y="610" width="100" height="70" rx="12" class="shade"/><text x="570" y="651">1×1</text>
+  </g>
+  <g class="mapwire"><path d="M620 345 C690 345 720 320 785 320" marker-end="url(#arrow)"/><path d="M620 445 C690 445 720 405 785 405" marker-end="url(#arrow)"/><path d="M620 545 C690 545 720 490 785 490" marker-end="url(#arrow)"/><path d="M620 645 C690 645 720 575 785 575" marker-end="url(#arrow)"/></g>
+  <rect x="770" y="155" width="560" height="610" rx="22" class="box"/>
+  <text x="805" y="202" class="label">격자 행 → 자리 이동한 부분곱</text>
+  <g class="small"><text x="805" y="320">행 0 · b₀=1</text><text x="805" y="405">행 1 · b₁=0 → 영 행</text><text x="805" y="490">행 2 · b₂=1</text><text x="805" y="575">행 3 · b₃=1</text></g>
+  <g class="mono" text-anchor="end"><text x="1130" y="320">00001011</text><text x="1130" y="405">00000000</text><text x="1130" y="490">00101100</text><text x="1130" y="575">01011000</text></g>
+  <g class="body" text-anchor="end"><text x="1250" y="320">11</text><text x="1250" y="405">0</text><text x="1250" y="490">44</text><text x="1250" y="575">88</text></g>
+  <text x="900" y="575" class="mono">+</text>
+  <line x1="895" y1="610" x2="1260" y2="610" stroke="#222" stroke-width="3"/>
+  <text x="805" y="655" class="body">합</text><text x="1130" y="655" text-anchor="end" class="mono">10001111</text><text x="1140" y="655" class="body">₂</text><text x="1250" y="655" text-anchor="end" class="body">143</text>
+  <text x="1050" y="690" text-anchor="middle" class="body">11 + 0 + 44 + 88 = 143</text>
+  <rect x="815" y="700" width="470" height="42" rx="10" class="shade"/>
+  <text x="1050" y="728" text-anchor="middle" class="small">부분곱 16개 · 행 4개 · 행 덧셈 3번 · 출력 최대 8비트</text>
+  <rect x="70" y="805" width="1260" height="55" rx="12" class="box"/>
+  <text x="700" y="839" text-anchor="middle" class="small">다른 선택: 부분곱 행을 두 쌍씩 동시에 합치면 덧셈 3번은 같고 의존 단계는 3에서 2로 줄어든다.</text>
+  <g fill="#555"><polygon points="785,320 775,315 775,325"/><polygon points="785,405 775,400 775,410"/><polygon points="785,490 775,485 775,495"/><polygon points="785,575 775,570 775,580"/></g>
+</svg>

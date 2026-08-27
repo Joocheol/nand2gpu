@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#222"/></marker>
+    <style>
+      .title{font:700 34px sans-serif;fill:#111}.sub{font:500 19px sans-serif;fill:#444}.label{font:700 22px sans-serif;fill:#111}.body{font:500 18px sans-serif;fill:#222}.small{font:500 15px sans-serif;fill:#444}.equation{font-family:serif;font-size:64px;font-weight:700;fill:#111}.box{fill:#fff;stroke:#222;stroke-width:2}.shade{fill:#ececec;stroke:#222;stroke-width:2}.dash{fill:#fff;stroke:#666;stroke-width:2;stroke-dasharray:10 8}.line{stroke:#222;stroke-width:3;fill:none}
+    </style>
+  </defs>
+  <rect width="1400" height="900" fill="#fff"/>
+  <text x="70" y="72" class="title">한 줄의 수학식은 기계의 배치를 정하지 않는다</text>
+  <text x="70" y="106" class="sub">서장 도해 1 · 수학적 명세와 유한한 기계의 분리</text>
+
+  <rect x="70" y="165" width="410" height="560" rx="24" class="box"/>
+  <text x="105" y="215" class="label">수학이 정한 것</text>
+  <text x="275" y="390" text-anchor="middle" class="equation">C = A × B</text>
+  <text x="275" y="442" text-anchor="middle" class="body">A와 B를 정해진 규칙으로 결합해</text>
+  <text x="275" y="472" text-anchor="middle" class="body">C라는 결과를 만든다</text>
+  <rect x="118" y="550" width="314" height="92" rx="14" class="shade"/>
+  <text x="275" y="585" text-anchor="middle" class="body">원하는 결과의 규칙</text>
+  <text x="275" y="616" text-anchor="middle" class="small">연산 배치·통로·저장 위치는 미정</text>
+
+  <path d="M505 440 C570 390, 585 360, 650 340" class="line" marker-end="url(#arrow)"/>
+  <path d="M505 450 C585 470, 590 530, 650 550" class="line" marker-end="url(#arrow)"/>
+  <text x="574" y="430" text-anchor="middle" class="small">한 가지로</text>
+  <text x="574" y="452" text-anchor="middle" class="small">결정되지 않음</text>
+  <text x="590" y="320" text-anchor="middle" class="small">가능한 계획 A</text>
+  <text x="590" y="590" text-anchor="middle" class="small">가능한 계획 B</text>
+
+  <rect x="650" y="145" width="680" height="630" rx="24" class="dash"/>
+  <text x="685" y="195" class="label">기계에서 선택해야 할 것</text>
+
+  <rect x="700" y="245" width="170" height="105" rx="16" class="shade"/>
+  <text x="785" y="286" text-anchor="middle" class="body">연산기</text>
+  <text x="785" y="318" text-anchor="middle" class="small">동시에 몇 개?</text>
+  <rect x="930" y="245" width="310" height="105" rx="16" class="box"/>
+  <text x="1085" y="286" text-anchor="middle" class="body">통로</text>
+  <line x1="980" y1="318" x2="1190" y2="318" stroke="#222" stroke-width="8"/>
+  <line x1="980" y1="331" x2="1190" y2="331" stroke="#888" stroke-width="2" stroke-dasharray="7 6"/>
+
+  <rect x="700" y="430" width="245" height="150" rx="16" class="box"/>
+  <text x="822" y="470" text-anchor="middle" class="body">가까운 저장공간</text>
+  <rect x="742" y="500" width="46" height="44" class="shade"/><rect x="798" y="500" width="46" height="44" class="shade"/><rect x="854" y="500" width="46" height="44" class="shade"/>
+  <rect x="1005" y="430" width="235" height="150" rx="16" class="box"/>
+  <text x="1122" y="470" text-anchor="middle" class="body">비트 수</text>
+  <g class="small" text-anchor="middle"><text x="1048" y="530">0</text><text x="1080" y="530">1</text><text x="1112" y="530">0</text><text x="1144" y="530">1</text><text x="1176" y="530">…</text></g>
+  <g fill="none" stroke="#222" stroke-width="2"><rect x="1033" y="500" width="30" height="46"/><rect x="1065" y="500" width="30" height="46"/><rect x="1097" y="500" width="30" height="46"/><rect x="1129" y="500" width="30" height="46"/><rect x="1161" y="500" width="30" height="46"/></g>
+  <rect x="700" y="372" width="170" height="45" rx="12" class="box"/>
+  <text x="785" y="400" text-anchor="middle" class="small">시간 · 0이 아님</text>
+
+  <path d="M870 298 H930" class="line" marker-end="url(#arrow)"/><path d="M1085 350 V405 H945" class="line" marker-end="url(#arrow)"/><path d="M945 505 H1005" class="line" marker-end="url(#arrow)"/>
+  <rect x="700" y="640" width="540" height="78" rx="14" class="shade"/>
+  <text x="970" y="673" text-anchor="middle" class="body">연산기·시간·통로·저장공간·비트 수는 유한하다</text>
+  <text x="970" y="701" text-anchor="middle" class="small">그래서 같은 결과에도 여러 실행 계획과 서로 다른 비용이 생긴다</text>
+  <text x="70" y="842" class="small">특정 GPU의 물리 배치가 아니라 책 전체에서 사용할 추상 지도다.</text>
+  <g fill="#222"><polygon points="650,340 640,335 640,345"/><polygon points="650,550 640,545 640,555"/><polygon points="930,298 920,293 920,303"/><polygon points="945,405 955,400 955,410"/><polygon points="1005,505 995,500 995,510"/></g>
+</svg>

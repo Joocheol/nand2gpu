@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#222"/></marker><style>.title{font:700 34px sans-serif;fill:#111}.sub{font:500 19px sans-serif;fill:#444}.label{font:700 21px sans-serif;fill:#111}.body{font:500 18px sans-serif;fill:#222}.small{font:500 14px sans-serif;fill:#555}.box{fill:#fff;stroke:#222;stroke-width:2}.shade{fill:#e5e5e5;stroke:#222;stroke-width:3}.wire{stroke:#222;stroke-width:4;fill:none}.thin{stroke:#777;stroke-width:2;fill:none}</style></defs>
+  <rect width="1400" height="900" fill="#fff"/>
+  <text x="70" y="72" class="title">가장 낮은 자리의 올림이 네 자리를 통과한다</text>
+  <text x="70" y="106" class="sub">4장 도해 1 · 1111₂ + 0001₂ = 1 0000₂</text>
+  <rect x="70" y="145" width="1260" height="90" rx="16" class="shade"/>
+  <text x="700" y="183" text-anchor="middle" class="label">한 덧셈기 내부의 신호 경로</text>
+  <text x="700" y="212" text-anchor="middle" class="small">여러 덧셈 사이의 알고리즘 의존 단계가 아니다</text>
+
+  <g text-anchor="middle">
+    <rect x="120" y="340" width="240" height="230" rx="22" class="box"/><text x="240" y="390" class="label">자리 3</text><text x="240" y="430" class="body">A₃=1 · B₃=0</text><text x="240" y="468" class="body">p₃=1 · g₃=0</text><text x="240" y="515" class="label">S₃=0</text>
+    <rect x="425" y="340" width="240" height="230" rx="22" class="box"/><text x="545" y="390" class="label">자리 2</text><text x="545" y="430" class="body">A₂=1 · B₂=0</text><text x="545" y="468" class="body">p₂=1 · g₂=0</text><text x="545" y="515" class="label">S₂=0</text>
+    <rect x="730" y="340" width="240" height="230" rx="22" class="box"/><text x="850" y="390" class="label">자리 1</text><text x="850" y="430" class="body">A₁=1 · B₁=0</text><text x="850" y="468" class="body">p₁=1 · g₁=0</text><text x="850" y="515" class="label">S₁=0</text>
+    <rect x="1035" y="340" width="240" height="230" rx="22" class="shade"/><text x="1155" y="390" class="label">자리 0</text><text x="1155" y="430" class="body">A₀=1 · B₀=1</text><text x="1155" y="468" class="body">p₀=0 · g₀=1</text><text x="1155" y="515" class="label">S₀=0</text>
+  </g>
+  <path d="M1035 455 H970" class="wire" marker-end="url(#arrow)"/><path d="M730 455 H665" class="wire" marker-end="url(#arrow)"/><path d="M425 455 H360" class="wire" marker-end="url(#arrow)"/><path d="M120 455 H75" class="wire" marker-end="url(#arrow)"/>
+  <g class="label" text-anchor="middle"><text x="1002" y="430">c₁=1</text><text x="697" y="430">c₂=1</text><text x="392" y="430">c₃=1</text><text x="97" y="430">c₄=1</text></g>
+  <path d="M1155 610 V675 H69" class="wire" marker-end="url(#arrow)"/>
+  <g text-anchor="middle"><circle cx="1002" cy="675" r="28" class="shade"/><text x="1002" y="682" class="body">①</text><circle cx="697" cy="675" r="28" class="shade"/><text x="697" y="682" class="body">②</text><circle cx="392" cy="675" r="28" class="shade"/><text x="392" y="682" class="body">③</text><circle cx="97" cy="675" r="28" class="shade"/><text x="97" y="682" class="body">④</text></g>
+  <text x="700" y="742" text-anchor="middle" class="small">①~④ = 올림을 기다리는 1~4번째 자리</text>
+  <text x="700" y="770" text-anchor="middle" class="body">g₀가 c₁을 만들고, p₁·p₂·p₃가 그 올림을 c₄까지 전달한다.</text>
+  <text x="700" y="805" text-anchor="middle" class="small">c₄는 이 무부호 4비트 예의 범위 초과를 보여주지만, 일반적인 signed overflow 신호는 아니다.</text>
+  <g fill="#222"><polygon points="970,455 980,450 980,460"/><polygon points="665,455 675,450 675,460"/><polygon points="360,455 370,450 370,460"/><polygon points="75,455 85,450 85,460"/><polygon points="69,675 79,670 79,680"/></g>
+</svg>

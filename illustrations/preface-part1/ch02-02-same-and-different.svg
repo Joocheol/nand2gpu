@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <defs><style>.title{font:700 34px sans-serif;fill:#111}.sub{font:500 19px sans-serif;fill:#444}.label{font:700 23px sans-serif;fill:#111}.body{font:500 19px sans-serif;fill:#222}.small{font:500 15px sans-serif;fill:#555}.box{fill:#fff;stroke:#222;stroke-width:2}.shade{fill:#e7e7e7;stroke:#222;stroke-width:2}.dash{fill:#fff;stroke:#666;stroke-width:2;stroke-dasharray:9 7}</style></defs>
+  <rect width="1400" height="900" fill="#fff"/>
+  <text x="70" y="72" class="title">같은 함수와 달라진 비용을 따로 기록한다</text>
+  <text x="70" y="106" class="sub">2장 도해 2 · “더 빠르다”가 아니라 교육 모형에서 직접 센 값</text>
+  <rect x="70" y="160" width="1260" height="150" rx="22" class="shade"/>
+  <text x="110" y="207" class="label">같은 것</text>
+  <text x="110" y="253" class="body">네 입력의 XOR 출력</text>
+  <g class="label" text-anchor="middle"><rect x="520" y="205" width="120" height="58" rx="12" class="box"/><text x="580" y="243">0</text><rect x="665" y="205" width="120" height="58" rx="12" class="box"/><text x="725" y="243">1</text><rect x="810" y="205" width="120" height="58" rx="12" class="box"/><text x="870" y="243">1</text><rect x="955" y="205" width="120" height="58" rx="12" class="box"/><text x="1015" y="243">0</text></g>
+
+  <text x="70" y="375" class="label">달라진 것</text>
+  <rect x="70" y="415" width="590" height="285" rx="22" class="box"/>
+  <text x="365" y="465" text-anchor="middle" class="label">방법 A</text>
+  <g class="body"><text x="125" y="535">NAND 게이트 수</text><text x="125" y="600">가장 긴 NAND 경로</text><text x="125" y="665">배선 형태</text></g>
+  <g class="label" text-anchor="end"><text x="600" y="535">6개</text><text x="600" y="600">4층</text><text x="600" y="665">문장을 따라간 분기</text></g>
+  <rect x="740" y="415" width="590" height="285" rx="22" class="box"/>
+  <text x="1035" y="465" text-anchor="middle" class="label">방법 B</text>
+  <g class="body"><text x="795" y="535">NAND 게이트 수</text><text x="795" y="600">가장 긴 NAND 경로</text><text x="795" y="665">배선 형태</text></g>
+  <g class="label" text-anchor="end"><text x="1270" y="535">4개</text><text x="1270" y="600">3층</text><text x="1270" y="665">중간값 N1을 공유</text></g>
+
+  <rect x="70" y="755" width="1260" height="86" rx="16" class="dash"/>
+  <text x="700" y="791" text-anchor="middle" class="body">판정: 같은 2입력 NAND를 한 단위로 센 회로에서는 B가 더 적고 경로도 짧다.</text>
+  <text x="700" y="820" text-anchor="middle" class="small">실제 면적·지연·전력은 배선, 부하, 공정, 전용 XOR 셀에 따라 달라지므로 이 숫자로 단정하지 않는다.</text>
+</svg>

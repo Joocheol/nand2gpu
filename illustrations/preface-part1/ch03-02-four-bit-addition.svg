@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#222"/></marker><style>.title{font:700 34px sans-serif;fill:#111}.sub{font:500 19px sans-serif;fill:#444}.label{font:700 21px sans-serif;fill:#111}.body{font:500 18px sans-serif;fill:#222}.small{font:500 14px sans-serif;fill:#555}.equation{font-family:serif;font-size:38px;font-weight:700;fill:#111}.box{fill:#fff;stroke:#222;stroke-width:2}.shade{fill:#e7e7e7;stroke:#222;stroke-width:2}.wire{stroke:#222;stroke-width:3;fill:none}</style></defs>
+  <rect width="1400" height="900" fill="#fff"/>
+  <text x="70" y="72" class="title">한 자리 덧셈 상자 네 개가 4비트 합을 만든다</text>
+  <text x="70" y="106" class="sub">3장 도해 2 · 0101₂ + 0011₂ = 1000₂, 아직 시간은 세지 않는다</text>
+  <text x="95" y="190" class="body">높은 자리</text><text x="1200" y="190" class="body">낮은 자리</text>
+  <g text-anchor="middle">
+    <rect x="150" y="300" width="220" height="240" rx="22" class="box"/><text x="260" y="352" class="label">전가산기 3</text><text x="260" y="405" class="body">A₃=0 · B₃=0</text><text x="260" y="448" class="body">Cin=1</text><text x="260" y="495" class="label">S₃=1</text>
+    <rect x="440" y="300" width="220" height="240" rx="22" class="box"/><text x="550" y="352" class="label">전가산기 2</text><text x="550" y="405" class="body">A₂=1 · B₂=0</text><text x="550" y="448" class="body">Cin=1</text><text x="550" y="495" class="label">S₂=0</text>
+    <rect x="730" y="300" width="220" height="240" rx="22" class="box"/><text x="840" y="352" class="label">전가산기 1</text><text x="840" y="405" class="body">A₁=0 · B₁=1</text><text x="840" y="448" class="body">Cin=1</text><text x="840" y="495" class="label">S₁=0</text>
+    <rect x="1020" y="300" width="220" height="240" rx="22" class="shade"/><text x="1130" y="352" class="label">전가산기 0</text><text x="1130" y="405" class="body">A₀=1 · B₀=1</text><text x="1130" y="448" class="body">Cin=0</text><text x="1130" y="495" class="label">S₀=0</text>
+  </g>
+  <path d="M1020 420 H950" class="wire" marker-end="url(#arrow)"/><path d="M730 420 H660" class="wire" marker-end="url(#arrow)"/><path d="M440 420 H370" class="wire" marker-end="url(#arrow)"/><path d="M150 420 H95" class="wire" marker-end="url(#arrow)"/>
+  <g class="label" text-anchor="middle"><text x="985" y="398">c₁=1</text><text x="695" y="398">c₂=1</text><text x="405" y="398">c₃=1</text><text x="122" y="398">c₄=0</text></g>
+  <g stroke="#222" stroke-width="2"><line x1="260" y1="540" x2="260" y2="625"/><line x1="550" y1="540" x2="550" y2="625"/><line x1="840" y1="540" x2="840" y2="625"/><line x1="1130" y1="540" x2="1130" y2="625"/></g>
+  <rect x="215" y="625" width="960" height="105" rx="18" class="shade"/>
+  <text x="695" y="671" text-anchor="middle" class="equation">S₃ S₂ S₁ S₀ = 1 0 0 0₂</text>
+  <text x="695" y="705" text-anchor="middle" class="body">무부호 해석: 5 + 3 = 8</text>
+  <rect x="205" y="785" width="980" height="55" rx="12" class="box"/>
+  <text x="695" y="819" text-anchor="middle" class="small">이 그림은 값의 연결만 보여준다. 기다림과 경로 깊이는 4장에서 센다.</text>
+  <g fill="#222"><polygon points="950,420 960,415 960,425"/><polygon points="660,420 670,415 670,425"/><polygon points="370,420 380,415 380,425"/><polygon points="95,420 105,415 105,425"/></g>
+</svg>

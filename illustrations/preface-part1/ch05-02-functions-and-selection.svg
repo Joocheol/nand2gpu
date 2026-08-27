@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#222"/></marker><style>.title{font:700 34px sans-serif;fill:#111}.sub{font:500 19px sans-serif;fill:#444}.label{font:700 21px sans-serif;fill:#111}.body{font:500 17px sans-serif;fill:#222}.small{font:500 14px sans-serif;fill:#555}.box{fill:#fff;stroke:#222;stroke-width:2}.shade{fill:#dedede;stroke:#111;stroke-width:3}.muted{fill:#f6f6f6;stroke:#999;stroke-width:2}.wire{stroke:#222;stroke-width:3;fill:none}.mutewire{stroke:#999;stroke-width:2;fill:none}</style></defs>
+  <rect width="1400" height="900" fill="#fff"/>
+  <text x="70" y="72" class="title">고르는 일도 하나의 함수다</text>
+  <text x="70" y="106" class="sub">5장 도해 2 · 네 후보 결과와 4대1 멀티플렉서</text>
+  <rect x="70" y="150" width="250" height="125" rx="18" class="box"/>
+  <text x="195" y="192" text-anchor="middle" class="label">공통 입력</text>
+  <text x="195" y="230" text-anchor="middle" class="body">A = 0101₂ (5)</text><text x="195" y="258" text-anchor="middle" class="body">B = 0011₂ (3)</text>
+  <path d="M320 212 H400" class="wire" marker-end="url(#arrow)"/>
+  <line x1="400" y1="212" x2="400" y2="685" stroke="#222" stroke-width="3"/>
+
+  <g text-anchor="middle">
+    <rect x="470" y="150" width="260" height="105" rx="18" class="muted"/><text x="600" y="190" class="label" fill="#666">AND</text><text x="600" y="225" class="body" fill="#777">0001₂</text>
+    <rect x="470" y="285" width="260" height="105" rx="18" class="muted"/><text x="600" y="325" class="label" fill="#666">OR</text><text x="600" y="360" class="body" fill="#777">0111₂</text>
+    <rect x="470" y="420" width="260" height="105" rx="18" class="shade"/><text x="600" y="460" class="label">ADD</text><text x="600" y="495" class="body">1000₂</text>
+    <rect x="470" y="555" width="260" height="105" rx="18" class="muted"/><text x="600" y="595" class="label" fill="#666">SUB</text><text x="600" y="630" class="body" fill="#777">0010₂</text>
+  </g>
+  <g><path d="M400 202 H470" class="mutewire" marker-end="url(#arrow)"/><path d="M400 337 H470" class="mutewire" marker-end="url(#arrow)"/><path d="M400 472 H470" class="wire" marker-end="url(#arrow)"/><path d="M400 607 H470" class="mutewire" marker-end="url(#arrow)"/></g>
+  <g><path d="M730 202 H880 V350" class="mutewire" marker-end="url(#arrow)"/><path d="M730 337 H880 V395" class="mutewire" marker-end="url(#arrow)"/><path d="M730 472 H880 V440" class="wire" marker-end="url(#arrow)"/><path d="M730 607 H880 V485" class="mutewire" marker-end="url(#arrow)"/></g>
+  <path d="M880 315 L1080 370 L1080 465 L880 520 Z" class="shade"/>
+  <text x="975" y="395" text-anchor="middle" class="label">4대1</text><text x="975" y="425" text-anchor="middle" class="label">멀티플렉서</text><text x="975" y="458" text-anchor="middle" class="small">op가 하나를 선택</text>
+  <rect x="850" y="650" width="240" height="80" rx="16" class="box"/>
+  <text x="970" y="682" text-anchor="middle" class="body">op = 10</text><text x="970" y="710" text-anchor="middle" class="small">ADD를 선택</text>
+  <path d="M970 650 V520" class="wire" marker-end="url(#arrow)"/>
+  <path d="M1080 417 H1160" class="wire" marker-end="url(#arrow)"/>
+  <rect x="1160" y="355" width="170" height="125" rx="18" class="shade"/>
+  <text x="1245" y="397" text-anchor="middle" class="label">결과</text><text x="1245" y="438" text-anchor="middle" class="label">1000₂</text>
+  <rect x="70" y="790" width="1260" height="65" rx="14" class="box"/>
+  <text x="700" y="817" text-anchor="middle" class="body">선택되지 않은 세 후보도 교육용 그림에서는 존재한다.</text>
+  <text x="700" y="842" text-anchor="middle" class="small">여러 기능을 지원하면 선택 경로와 미사용 회로의 면적·에너지 비용이 생길 수 있다.</text>
+  <g fill="#222"><polygon points="400,212 390,207 390,217"/><polygon points="470,472 460,467 460,477"/><polygon points="880,440 875,450 885,450"/><polygon points="970,520 965,530 975,530"/><polygon points="1160,417 1150,412 1150,422"/></g>
+  <g fill="#999"><polygon points="470,202 460,197 460,207"/><polygon points="470,337 460,332 460,342"/><polygon points="470,607 460,602 460,612"/><polygon points="880,350 875,340 885,340"/><polygon points="880,395 875,385 885,385"/><polygon points="880,485 875,495 885,495"/></g>
+</svg>

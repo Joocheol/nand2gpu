@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1100" viewBox="0 0 1400 1100">
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#111"/></marker><style>.title{font:700 32px sans-serif;fill:#111}.sub{font:500 18px sans-serif;fill:#444}.label{font:700 19px sans-serif;fill:#111}.body{font:500 15px sans-serif;fill:#222}.tiny{font:500 11px sans-serif;fill:#444}.gate{fill:#fff;stroke:#222;stroke-width:2}.pathgate{fill:#d8d8d8;stroke:#111;stroke-width:3}.depthgroup{fill:none;stroke:#888;stroke-width:1.5;stroke-dasharray:5 4}.guide{stroke:#bbb;stroke-width:1.5;stroke-dasharray:5 5}.wire{stroke:#333;stroke-width:2;fill:none}.path{stroke:#111;stroke-width:4;fill:none}.panel{fill:#fafafa;stroke:#222;stroke-width:2}</style></defs>
+  <rect width="1400" height="1100" fill="#fff"/>
+  <text x="55" y="60" class="title">같은 c₄를 만드는 사슬과 펼친 식</text>
+  <text x="55" y="92" class="sub">4장 도해 2 · 모든 사각형은 2입력 게이트 한 개, 배선은 최장 경로와 검산 필수 연결만 표시</text>
+
+  <!-- Ripple panel -->
+  <rect x="50" y="125" width="1300" height="380" rx="20" class="panel"/>
+  <text x="80" y="165" class="label">A. 리플 캐리 · 16게이트 · 최장 9층</text>
+  <g class="tiny" text-anchor="middle"><text x="170" y="205">1층</text><text x="330" y="205">2층</text><text x="455" y="205">3층</text><text x="580" y="205">4층</text><text x="705" y="205">5층</text><text x="830" y="205">6층</text><text x="955" y="205">7층</text><text x="1080" y="205">8층</text><text x="1205" y="205">9층</text></g>
+  <g class="guide"><line x1="170" y1="215" x2="170" y2="470"/><line x1="330" y1="215" x2="330" y2="470"/><line x1="455" y1="215" x2="455" y2="470"/><line x1="580" y1="215" x2="580" y2="470"/><line x1="705" y1="215" x2="705" y2="470"/><line x1="830" y1="215" x2="830" y2="470"/><line x1="955" y1="215" x2="955" y2="470"/><line x1="1080" y1="215" x2="1080" y2="470"/><line x1="1205" y1="215" x2="1205" y2="470"/></g>
+  <!-- 8 p/g gates: four bit positions are generated together in depth 1 -->
+  <rect x="60" y="220" width="230" height="170" rx="10" class="depthgroup"/>
+  <text x="275" y="405" text-anchor="end" class="tiny">1층 묶음: 네 자리 p·g 동시 생성</text>
+  <g text-anchor="middle" class="tiny"><rect x="70" y="235" width="100" height="34" rx="7" class="gate"/><text x="120" y="257">p₀ XOR</text><rect x="70" y="275" width="100" height="34" rx="7" class="gate"/><text x="120" y="297">g₀ AND</text><rect x="70" y="315" width="100" height="34" rx="7" class="gate"/><text x="120" y="337">p₁ XOR</text><rect x="70" y="355" width="100" height="34" rx="7" class="gate"/><text x="120" y="377">g₁ AND</text><rect x="180" y="235" width="100" height="34" rx="7" class="gate"/><text x="230" y="257">p₂ XOR</text><rect x="180" y="275" width="100" height="34" rx="7" class="gate"/><text x="230" y="297">g₂ AND</text><rect x="180" y="315" width="100" height="34" rx="7" class="gate"/><text x="230" y="337">p₃ XOR</text><rect x="180" y="355" width="100" height="34" rx="7" class="gate"/><text x="230" y="377">g₃ AND</text></g>
+  <!-- 8 carry gates along longest path -->
+  <g text-anchor="middle" class="body"><rect x="285" y="415" width="90" height="42" rx="8" class="pathgate"/><text x="330" y="442">p₀·c₀</text><rect x="410" y="415" width="90" height="42" rx="8" class="pathgate"/><text x="455" y="442">g₀ OR a₀</text><rect x="535" y="415" width="90" height="42" rx="8" class="pathgate"/><text x="580" y="442">p₁·c₁</text><rect x="660" y="415" width="90" height="42" rx="8" class="pathgate"/><text x="705" y="442">g₁ OR a₁</text><rect x="785" y="415" width="90" height="42" rx="8" class="pathgate"/><text x="830" y="442">p₂·c₂</text><rect x="910" y="415" width="90" height="42" rx="8" class="pathgate"/><text x="955" y="442">g₂ OR a₂</text><rect x="1035" y="415" width="90" height="42" rx="8" class="pathgate"/><text x="1080" y="442">p₃·c₃</text><rect x="1160" y="415" width="90" height="42" rx="8" class="pathgate"/><text x="1205" y="442">g₃ OR a₃</text></g>
+  <path d="M170 252 H175 V225 H295 V415" class="path" marker-end="url(#arrow)"/>
+  <path d="M255 444 H285" class="wire" marker-end="url(#arrow)"/><text x="235" y="449" class="tiny">c₀</text>
+  <path d="M170 292 H395 V426 H410" class="wire" marker-end="url(#arrow)"/>
+  <path d="M375 436 H395 V446 H410" class="path" marker-end="url(#arrow)"/>
+  <path d="M500 436 H535" class="path" marker-end="url(#arrow)"/><path d="M625 436 H660" class="path" marker-end="url(#arrow)"/><path d="M750 436 H785" class="path" marker-end="url(#arrow)"/><path d="M875 436 H910" class="path" marker-end="url(#arrow)"/><path d="M1000 436 H1035" class="path" marker-end="url(#arrow)"/><path d="M1125 436 H1160" class="path" marker-end="url(#arrow)"/>
+
+  <!-- Expanded panel -->
+  <rect x="50" y="535" width="1300" height="500" rx="20" class="panel"/>
+  <text x="80" y="575" class="label">B. 펼친 c₄ 식 · 22게이트 · 최장 6층</text>
+  <text x="80" y="604" class="tiny">8 p·g + 10 추가 AND + 4 OR = 22. 회색 상자는 선택한 6층 최장 경로.</text>
+  <g class="tiny" text-anchor="middle"><text x="165" y="642">1층</text><text x="365" y="642">2층</text><text x="565" y="642">3층</text><text x="765" y="642">4층</text><text x="965" y="642">5층</text><text x="1165" y="642">6층</text></g>
+  <g class="guide"><line x1="165" y1="650" x2="165" y2="1000"/><line x1="365" y1="650" x2="365" y2="1000"/><line x1="565" y1="650" x2="565" y2="1000"/><line x1="765" y1="650" x2="765" y2="1000"/><line x1="965" y1="650" x2="965" y2="1000"/><line x1="1165" y1="650" x2="1165" y2="1000"/></g>
+  <!-- p/g 8 -->
+  <g text-anchor="middle" class="tiny"><rect x="95" y="665" width="140" height="34" rx="7" class="gate"/><text x="165" y="687">p₀ XOR</text><rect x="95" y="705" width="140" height="34" rx="7" class="gate"/><text x="165" y="727">g₀ AND</text><rect x="95" y="745" width="140" height="34" rx="7" class="gate"/><text x="165" y="767">p₁ XOR</text><rect x="95" y="785" width="140" height="34" rx="7" class="pathgate"/><text x="165" y="807">g₁ AND</text><rect x="95" y="825" width="140" height="34" rx="7" class="gate"/><text x="165" y="847">p₂ XOR</text><rect x="95" y="865" width="140" height="34" rx="7" class="gate"/><text x="165" y="887">g₂ AND</text><rect x="95" y="905" width="140" height="34" rx="7" class="gate"/><text x="165" y="927">p₃ XOR</text><rect x="95" y="945" width="140" height="34" rx="7" class="gate"/><text x="165" y="967">g₃ AND = T₀</text></g>
+  <!-- additional AND 10: T1=1, T2=2, T3=3, T4=4 -->
+  <g text-anchor="middle" class="tiny"><rect x="300" y="675" width="130" height="34" rx="7" class="gate"/><text x="365" y="697">p₃·g₂ = T₁</text><rect x="300" y="730" width="130" height="34" rx="7" class="pathgate"/><text x="365" y="752">p₃·p₂</text><rect x="500" y="730" width="130" height="34" rx="7" class="pathgate"/><text x="565" y="752">(p₃p₂)·g₁ = T₂</text><rect x="300" y="790" width="130" height="34" rx="7" class="gate"/><text x="365" y="812">p₃·p₂</text><rect x="300" y="830" width="130" height="34" rx="7" class="gate"/><text x="365" y="852">p₁·g₀</text><rect x="500" y="810" width="130" height="34" rx="7" class="gate"/><text x="565" y="832">T₃=(p₃p₂)·(p₁g₀)</text><rect x="300" y="890" width="130" height="34" rx="7" class="gate"/><text x="365" y="912">p₃·p₂</text><rect x="300" y="930" width="130" height="34" rx="7" class="gate"/><text x="365" y="952">p₁·p₀</text><rect x="500" y="900" width="130" height="34" rx="7" class="gate"/><text x="565" y="922">(p₃p₂)·(p₁p₀)</text><rect x="700" y="900" width="130" height="34" rx="7" class="gate"/><text x="765" y="922">T₄=…·c₀</text></g>
+  <!-- OR 4 -->
+  <g text-anchor="middle" class="tiny"><rect x="500" y="675" width="130" height="34" rx="7" class="gate"/><text x="565" y="697">T₀ OR T₁ = U₀</text><rect x="700" y="790" width="130" height="34" rx="7" class="pathgate"/><text x="765" y="812">T₂ OR T₃ = U₁</text><rect x="900" y="730" width="130" height="34" rx="7" class="pathgate"/><text x="965" y="752">U₀ OR U₁ = U₂</text><rect x="1100" y="810" width="130" height="34" rx="7" class="pathgate"/><text x="1165" y="832">U₂ OR T₄ = c₄</text></g>
+  <!-- representative wiring and selected longest path -->
+  <path d="M430 692 H470 V686 H500" class="wire" marker-end="url(#arrow)"/><path d="M235 962 H470 V702 H500" class="wire" marker-end="url(#arrow)"/>
+  <path d="M630 692 C790 692 820 740 900 740" class="wire" marker-end="url(#arrow)"/>
+  <path d="M235 802 C270 802 275 747 300 747" class="path" marker-end="url(#arrow)"/><path d="M430 747 H500" class="path" marker-end="url(#arrow)"/>
+  <path d="M630 747 C660 747 675 800 700 800" class="path" marker-end="url(#arrow)"/><path d="M630 827 H680 V816 H700" class="wire" marker-end="url(#arrow)"/>
+  <path d="M830 807 C870 807 875 756 900 756" class="path" marker-end="url(#arrow)"/>
+  <path d="M1030 747 C1080 747 1070 820 1100 820" class="path" marker-end="url(#arrow)"/>
+  <path d="M235 907 H300" class="wire" marker-end="url(#arrow)"/><path d="M430 907 H500" class="wire" marker-end="url(#arrow)"/><path d="M630 917 H700" class="wire" marker-end="url(#arrow)"/><path d="M830 917 C1010 917 1010 836 1100 836" class="wire" marker-end="url(#arrow)"/>
+  <text x="700" y="1075" text-anchor="middle" class="body">비교 범위: 완성 덧셈기 전체가 아니라 최종 올림 c₄를 만드는 교육 회로</text>
+  <g fill="#222">
+    <polygon points="295,415 290,405 300,405"/><polygon points="285,444 275,439 275,449"/><polygon points="410,426 400,421 400,431"/><polygon points="410,446 400,441 400,451"/>
+    <polygon points="535,436 525,431 525,441"/><polygon points="660,436 650,431 650,441"/><polygon points="785,436 775,431 775,441"/><polygon points="910,436 900,431 900,441"/><polygon points="1035,436 1025,431 1025,441"/><polygon points="1160,436 1150,431 1150,441"/>
+    <polygon points="500,686 490,681 490,691"/><polygon points="500,702 490,697 490,707"/><polygon points="900,740 890,735 890,745"/>
+    <polygon points="300,747 290,742 290,752"/><polygon points="500,747 490,742 490,752"/><polygon points="700,800 690,795 690,805"/><polygon points="700,816 690,811 690,821"/>
+    <polygon points="900,756 890,751 890,761"/><polygon points="1100,820 1090,815 1090,825"/><polygon points="300,907 290,902 290,912"/><polygon points="500,907 490,902 490,912"/><polygon points="700,917 690,912 690,922"/><polygon points="1100,836 1090,831 1090,841"/>
+  </g>
+</svg>

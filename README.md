@@ -14,7 +14,7 @@
 
 > 조합 → 복제 → 공유 → 데이터 재사용 → 전용화
 
-본제는 『진리표에서 GPU까지』로 확정했습니다. 4부 20장 목차와 행렬을 16장에서 처음 완결하는 구조도 독립 검토를 거쳐 고정했습니다. 부제는 실제 원고와 독자 시험을 더 진행한 뒤 확정합니다.
+본제는 『진리표에서 GPU까지』로 확정했습니다. 4부 20장 목차와 행렬을 16장에서 처음 완결하는 구조도 독립 검토를 거쳐 고정했습니다. 부제는 실제 원고와 통합 편집을 더 진행한 뒤 확정합니다.
 
 ## 문서 안내
 
@@ -22,6 +22,7 @@
 - [진행 로드맵](planning/roadmap.md)
 - [4부 20장 목차 지도](planning/chapter-map.md)
 - [서장·제1부 상세 설계표](planning/preface-part1-detailed-briefs.md)
+- [서장·제1부 흑백 도해 시안](illustrations/preface-part1/README.md)
 - [편집·기술 검토 기준](editorial/review-checklist.md)
 - [출처 관리대장](research/source-register.md)
 - [결정 기록](decisions/decision-log.md)

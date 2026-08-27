@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#222"/></marker><style>.title{font:700 34px sans-serif;fill:#111}.sub{font:500 19px sans-serif;fill:#444}.label{font:700 20px sans-serif;fill:#111}.body{font:500 17px sans-serif;fill:#222}.small{font:500 15px sans-serif;fill:#555}.gate{fill:#fff;stroke:#222;stroke-width:2}.shade{fill:#e7e7e7;stroke:#222;stroke-width:2}.guide{stroke:#aaa;stroke-width:2;stroke-dasharray:7 7}.wire{stroke:#222;stroke-width:2;fill:none}.branch{fill:#222}</style></defs>
+  <rect width="1400" height="900" fill="#fff"/>
+  <text x="70" y="72" class="title">하나의 XOR 진리표, 두 개의 NAND 회로</text>
+  <text x="70" y="106" class="sub">2장 도해 1 · 같은 출력과 서로 다른 게이트 수·경로</text>
+
+  <rect x="535" y="140" width="330" height="220" rx="18" class="shade"/>
+  <text x="700" y="180" text-anchor="middle" class="label">XOR 명세</text>
+  <g class="body" text-anchor="middle"><text x="610" y="220">A</text><text x="700" y="220">B</text><text x="790" y="220">Y</text><text x="610" y="255">0</text><text x="700" y="255">0</text><text x="790" y="255">0</text><text x="610" y="285">0</text><text x="700" y="285">1</text><text x="790" y="285">1</text><text x="610" y="315">1</text><text x="700" y="315">0</text><text x="790" y="315">1</text><text x="610" y="345">1</text><text x="700" y="345">1</text><text x="790" y="345">0</text></g>
+
+  <text x="75" y="410" class="label">방법 A · 문장을 그대로 옮김</text><text x="925" y="410" class="label">방법 B · 직접 줄인 분해</text>
+  <g class="small" text-anchor="middle"><text x="170" y="450">깊이 1</text><text x="300" y="450">깊이 2</text><text x="430" y="450">깊이 3</text><text x="560" y="450">깊이 4</text><text x="1010" y="450">깊이 1</text><text x="1130" y="450">깊이 2</text><text x="1250" y="450">깊이 3</text></g>
+  <g class="guide"><line x1="170" y1="465" x2="170" y2="770"/><line x1="300" y1="465" x2="300" y2="770"/><line x1="430" y1="465" x2="430" y2="770"/><line x1="560" y1="465" x2="560" y2="770"/><line x1="1010" y1="465" x2="1010" y2="770"/><line x1="1130" y1="465" x2="1130" y2="770"/><line x1="1250" y1="465" x2="1250" y2="770"/></g>
+
+  <!-- 방법 A: NAND 6개 -->
+  <g text-anchor="middle">
+    <rect x="110" y="490" width="120" height="56" rx="12" class="gate"/><text x="170" y="525" class="body">NA</text>
+    <rect x="110" y="580" width="120" height="56" rx="12" class="gate"/><text x="170" y="615" class="body">NB</text>
+    <rect x="110" y="670" width="120" height="56" rx="12" class="gate"/><text x="170" y="705" class="body">N</text>
+    <rect x="240" y="530" width="120" height="56" rx="12" class="gate"/><text x="300" y="565" class="body">O</text>
+    <rect x="370" y="575" width="120" height="56" rx="12" class="gate"/><text x="430" y="610" class="body">T</text>
+    <rect x="500" y="575" width="120" height="56" rx="12" class="shade"/><text x="560" y="610" class="body">Y</text>
+  </g>
+  <g class="wire">
+    <path d="M90 507 H110" marker-end="url(#arrow)"/><path d="M90 529 H110" marker-end="url(#arrow)"/>
+    <path d="M100 597 H110" marker-end="url(#arrow)"/><path d="M100 619 H110" marker-end="url(#arrow)"/>
+    <path d="M90 520 V687 H110" marker-end="url(#arrow)"/><path d="M100 620 V709 H110" marker-end="url(#arrow)"/>
+    <path d="M230 518 H235 V548 H240" marker-end="url(#arrow)"/><path d="M230 608 H235 V568 H240" marker-end="url(#arrow)"/>
+    <path d="M360 558 H365 V592 H370" marker-end="url(#arrow)"/><path d="M230 698 H350 V616 H370" marker-end="url(#arrow)"/>
+    <path d="M490 603 H495 V592 H500" marker-end="url(#arrow)"/><path d="M490 603 H495 V616 H500" marker-end="url(#arrow)"/>
+  </g>
+  <g class="body"><text x="70" y="505">A</text><text x="70" y="615">B</text></g>
+  <g class="branch"><circle cx="90" cy="520" r="4"/><circle cx="100" cy="620" r="4"/><circle cx="490" cy="603" r="4"/></g>
+  <text x="350" y="805" text-anchor="middle" class="body">NAND 6개 · 가장 긴 경로 4층</text>
+
+  <!-- 방법 B: NAND 4개 -->
+  <g text-anchor="middle">
+    <rect x="950" y="570" width="120" height="56" rx="12" class="gate"/><text x="1010" y="605" class="body">N1</text>
+    <rect x="1070" y="500" width="120" height="56" rx="12" class="gate"/><text x="1130" y="535" class="body">N2</text>
+    <rect x="1070" y="650" width="120" height="56" rx="12" class="gate"/><text x="1130" y="685" class="body">N3</text>
+    <rect x="1190" y="575" width="120" height="56" rx="12" class="shade"/><text x="1250" y="610" class="body">Y</text>
+  </g>
+  <g class="wire">
+    <path d="M920 518 H1050 V528 H1070" marker-end="url(#arrow)"/><path d="M920 518 V588 H950" marker-end="url(#arrow)"/>
+    <path d="M930 678 H1070" marker-end="url(#arrow)"/><path d="M930 678 V610 H950" marker-end="url(#arrow)"/>
+    <path d="M1070 598 H1090 V570 H1130 V556" marker-end="url(#arrow)"/><path d="M1070 598 H1090 V636 H1130 V650" marker-end="url(#arrow)"/>
+    <path d="M1190 528 H1250 V575" marker-end="url(#arrow)"/><path d="M1190 678 H1250 V631" marker-end="url(#arrow)"/>
+  </g>
+  <g class="body"><text x="895" y="523">A</text><text x="895" y="683">B</text></g>
+  <g class="branch"><circle cx="920" cy="518" r="4"/><circle cx="930" cy="678" r="4"/><circle cx="1070" cy="598" r="4"/></g>
+  <text x="1130" y="805" text-anchor="middle" class="body">NAND 4개 · 가장 긴 경로 3층</text>
+  <text x="70" y="858" class="small">각 사각형은 2입력 NAND 한 개다. 안내선은 교육 모형의 논리 깊이를 세기 위한 것이다.</text>
+  <g fill="#222">
+    <polygon points="110,507 100,502 100,512"/><polygon points="110,529 100,524 100,534"/><polygon points="110,597 100,592 100,602"/><polygon points="110,619 100,614 100,624"/>
+    <polygon points="110,687 100,682 100,692"/><polygon points="110,709 100,704 100,714"/><polygon points="240,548 230,543 230,553"/><polygon points="240,568 230,563 230,573"/>
+    <polygon points="370,592 360,587 360,597"/><polygon points="370,616 360,611 360,621"/><polygon points="500,592 490,587 490,597"/><polygon points="500,616 490,611 490,621"/>
+    <polygon points="1070,528 1060,523 1060,533"/><polygon points="950,588 940,583 940,593"/><polygon points="1070,678 1060,673 1060,683"/><polygon points="950,610 940,605 940,615"/>
+    <polygon points="1130,556 1125,566 1135,566"/><polygon points="1130,650 1125,640 1135,640"/><polygon points="1250,575 1245,565 1255,565"/><polygon points="1250,631 1245,641 1255,641"/>
+  </g>
+</svg>

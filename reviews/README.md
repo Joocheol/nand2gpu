@@ -11,5 +11,6 @@
 | 수정 방향 재검토 | [Claude 수정 방향 독립 재검토](claude-revised-direction-review-2026-08-26.md) | [검토 요청](claude-revised-direction-review-prompt-2026-08-26.md) | DEC-014에서 반영 |
 | 8·11·16·17장 연결 샘플 | [Claude 연결 샘플 독립 리뷰](claude-connection-samples-review-2026-08-26.md) | [검토 요청](claude-connection-samples-review-prompt-2026-08-26.md) | [반영 기록](claude-connection-samples-review-resolution-2026-08-26.md) |
 | 서장·1~5장 상세 설계 | [Claude 집중 리뷰](claude-preface-part1-brief-review-2026-08-26.md) | [검토 요청](claude-preface-part1-brief-review-prompt-2026-08-26.md) | [A~P 반영 기록](claude-preface-part1-brief-review-resolution-2026-08-26.md) |
+| 서장·1~5장 흑백 도해 | [Claude 도해 독립 리뷰](claude-preface-part1-illustrations-review-2026-08-26.md) | [검토 요청](claude-preface-part1-illustrations-review-prompt-2026-08-26.md) | [반영 기록](claude-preface-part1-illustrations-review-resolution-2026-08-27.md) |
 
 현재 집필 기준은 리뷰 원문이 아니라 [서장·제1부 상세 설계표](../planning/preface-part1-detailed-briefs.md), [4부 20장 목차 지도](../planning/chapter-map.md), [결정 로그](../decisions/decision-log.md)다.
