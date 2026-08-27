@@ -80,6 +80,8 @@ if not font_match:
     fail("DiagramMinFontSize is not defined")
 if float(font_match.group(1)) < 6.5:
     fail("diagram minimum font size is below 6.5pt")
+if r"\fontsize{7pt}{8pt}" not in figure:
+    fail("dense chapter 4 comparison figure no longer enforces 7pt gate labels")
 
 for figure_path in (*PREFACE_FIGURES, *CH02_FIGURES, *CH03_FIGURES, *CH04_FIGURES):
     source = figure_path.read_text(encoding="utf-8")

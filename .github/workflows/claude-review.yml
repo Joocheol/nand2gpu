@@ -114,7 +114,7 @@ jobs:
           pdftotext -enc UTF-8 -layout \
             .ai-review-input/main.pdf \
             .ai-review-input/main.txt
-          grep -Fq "같은 덧셈도 기다리는 순서가 다르다" \
+          grep -Fq "같은 덧셈도 마지막 올림을 만드는 길은 다르다" \
             .ai-review-input/main.txt
           grep -Fq "1111" \
             .ai-review-input/main.txt

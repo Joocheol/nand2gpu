@@ -1,5 +1,9 @@
 \begin{bookfigure}{같은 \(c_4\)를 만드는 사슬과 펼친 식}{fig:ch04-chain-vs-expanded}
 \begin{tikzpicture}[diagram]
+  \tikzset{
+    chfour gate/.style={gate,font=\sffamily\fontsize{7pt}{8pt}\selectfont},
+    chfour path gate/.style={chfour gate,fill=black!15,draw=black,line width=0.9pt}
+  }
   \path[use as bounding box] (0,0) rectangle (13.0,11.75);
 
   % ------------------------------------------------------------------
@@ -28,34 +32,34 @@
   % gate:ripple-pg
   % gate:ripple-pg
   % gate:ripple-pg
-  \node[gate,minimum width=14mm,minimum height=13mm] (r-pg) at (1.05,9.47)
+  \node[chfour gate,minimum width=14mm,minimum height=13mm] (r-pg) at (1.05,9.47)
     {게이트 8개 묶음\\
      \(p_i\): XOR \(\times4\)\\
      \(g_i\): AND \(\times4\)};
 
   % gate:ripple-carry
-  \node[path gate,minimum width=10.5mm,minimum height=8mm] (r-a0) at (2.55,9.47)
+  \node[chfour path gate,minimum width=10.5mm,minimum height=8mm] (r-a0) at (2.55,9.47)
     {\(a_0\)\\AND};
   % gate:ripple-carry
-  \node[path gate,minimum width=10.5mm,minimum height=8mm] (r-c1) at (3.90,9.47)
+  \node[chfour path gate,minimum width=10.5mm,minimum height=8mm] (r-c1) at (3.90,9.47)
     {\(c_1\)\\OR};
   % gate:ripple-carry
-  \node[path gate,minimum width=10.5mm,minimum height=8mm] (r-a1) at (5.25,9.47)
+  \node[chfour path gate,minimum width=10.5mm,minimum height=8mm] (r-a1) at (5.25,9.47)
     {\(a_1\)\\AND};
   % gate:ripple-carry
-  \node[path gate,minimum width=10.5mm,minimum height=8mm] (r-c2) at (6.60,9.47)
+  \node[chfour path gate,minimum width=10.5mm,minimum height=8mm] (r-c2) at (6.60,9.47)
     {\(c_2\)\\OR};
   % gate:ripple-carry
-  \node[path gate,minimum width=10.5mm,minimum height=8mm] (r-a2) at (7.95,9.47)
+  \node[chfour path gate,minimum width=10.5mm,minimum height=8mm] (r-a2) at (7.95,9.47)
     {\(a_2\)\\AND};
   % gate:ripple-carry
-  \node[path gate,minimum width=10.5mm,minimum height=8mm] (r-c3) at (9.30,9.47)
+  \node[chfour path gate,minimum width=10.5mm,minimum height=8mm] (r-c3) at (9.30,9.47)
     {\(c_3\)\\OR};
   % gate:ripple-carry
-  \node[path gate,minimum width=10.5mm,minimum height=8mm] (r-a3) at (10.65,9.47)
+  \node[chfour path gate,minimum width=10.5mm,minimum height=8mm] (r-a3) at (10.65,9.47)
     {\(a_3\)\\AND};
   % gate:ripple-carry
-  \node[path gate,minimum width=10.5mm,minimum height=8mm] (r-c4) at (12.00,9.47)
+  \node[chfour path gate,minimum width=10.5mm,minimum height=8mm] (r-c4) at (12.00,9.47)
     {\(c_4\)\\OR};
 
   \draw[path wire] (r-pg.east) -- (r-a0.west);
@@ -95,7 +99,7 @@
   % gate:expanded-pg
   % gate:expanded-pg
   % gate:expanded-pg
-  \node[gate,minimum width=18mm,minimum height=43mm] (e-pg) at (1.15,4.10)
+  \node[chfour gate,minimum width=19mm,minimum height=43mm] (e-pg) at (1.15,4.10)
     {게이트 8개 묶음\\[1.2mm]
      \(p_0,\ldots,p_3\)\\XOR \(\times4\)\\[1.2mm]
      \(g_0,\ldots,g_3\)\\AND \(\times4\)\\[1.2mm]
@@ -103,46 +107,46 @@
 
   % Six layer-2 AND gates.
   % gate:expanded-and
-  \node[gate,minimum width=16mm] (e-t1) at (3.15,6.08) {\(T_1=p_3g_2\)};
+  \node[chfour gate,minimum width=18mm] (e-t1) at (3.15,6.08) {\(T_1\)\\\(p_3g_2\)};
   % gate:expanded-and
-  \node[path gate,minimum width=16mm] (e-t2a) at (3.15,4.85) {\(p_3p_2\)};
+  \node[chfour path gate,minimum width=18mm] (e-t2a) at (3.15,4.85) {\(p_3p_2\)};
   % gate:expanded-and
-  \node[gate,minimum width=16mm] (e-t3a) at (3.15,4.28) {\(p_3p_2\)};
+  \node[chfour gate,minimum width=18mm] (e-t3a) at (3.15,4.28) {\(p_3p_2\)};
   % gate:expanded-and
-  \node[gate,minimum width=16mm] (e-t3b) at (3.15,3.56) {\(p_1g_0\)};
+  \node[chfour gate,minimum width=18mm] (e-t3b) at (3.15,3.56) {\(p_1g_0\)};
   % gate:expanded-and
-  \node[gate,minimum width=16mm] (e-t4a) at (3.15,2.58) {\(p_3p_2\)};
+  \node[chfour gate,minimum width=18mm] (e-t4a) at (3.15,2.58) {\(p_3p_2\)};
   % gate:expanded-and
-  \node[gate,minimum width=16mm] (e-t4b) at (3.15,1.86) {\(p_1p_0\)};
+  \node[chfour gate,minimum width=18mm] (e-t4b) at (3.15,1.86) {\(p_1p_0\)};
 
   % Layer 3: one OR and three AND gates.
   % gate:expanded-or
-  \node[gate,minimum width=20mm,minimum height=9mm] (e-u0) at (5.25,6.08)
+  \node[chfour gate,minimum width=20mm,minimum height=9mm] (e-u0) at (5.25,6.08)
     {\(U_0\)\\\((T_0{=}g_3)\lor T_1\)};
   % gate:expanded-and
-  \node[path gate,minimum width=18mm,minimum height=7mm] (e-t2) at (5.25,4.85)
+  \node[chfour path gate,minimum width=19mm,minimum height=7mm] (e-t2) at (5.25,4.85)
     {\(T_2\)\\\((p_3p_2)g_1\)};
   % gate:expanded-and
-  \node[gate,minimum width=19mm,minimum height=7mm] (e-t3) at (5.25,3.92)
+  \node[chfour gate,minimum width=20mm,minimum height=7mm] (e-t3) at (5.25,3.92)
     {\(T_3\)\\\((p_3p_2)(p_1g_0)\)};
   % gate:expanded-and
-  \node[gate,minimum width=19mm,minimum height=7mm] (e-t4c) at (5.25,2.22)
+  \node[chfour gate,minimum width=20mm,minimum height=7mm] (e-t4c) at (5.25,2.22)
     {\((p_3p_2)\)\\\(\cdot(p_1p_0)\)};
 
   % Layer 4: U1 and T4 become ready independently.
   % gate:expanded-or
-  \node[path gate,minimum width=17mm,minimum height=9mm] (e-u1) at (7.35,4.85)
+  \node[chfour path gate,minimum width=18mm,minimum height=9mm] (e-u1) at (7.35,4.85)
     {\(U_1\)\\\(T_2\lor T_3\)};
   % gate:expanded-and
-  \node[gate,minimum width=17mm,minimum height=7mm] (e-t4) at (7.35,2.22)
+  \node[chfour gate,minimum width=18mm,minimum height=7mm] (e-t4) at (7.35,2.22)
     {\(T_4\)\\\(\cdots\land c_0\)};
 
   % Layer 5 and 6: finish the arrival-time-aware OR tree.
   % gate:expanded-or
-  \node[path gate,minimum width=17mm,minimum height=9mm] (e-u2) at (9.45,4.85)
+  \node[chfour path gate,minimum width=18mm,minimum height=9mm] (e-u2) at (9.45,4.85)
     {\(U_2\)\\\(U_0\lor U_1\)};
   % gate:expanded-or
-  \node[path gate,minimum width=17mm,minimum height=9mm] (e-c4) at (11.55,4.85)
+  \node[chfour path gate,minimum width=18mm,minimum height=9mm] (e-c4) at (11.55,4.85)
     {\(c_4\)\\\(U_2\lor T_4\)};
 
   % Inputs from layer 1 to the six layer-2 gates. These are short,

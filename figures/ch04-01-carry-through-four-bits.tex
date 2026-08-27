@@ -10,17 +10,17 @@
     {한 덧셈기 내부의 값 전달};
 
   % adder:carry-example
-  \node[concept box,minimum width=26mm,minimum height=27mm] (fa3) at (1.70,3.95)
-    {\textbf{자리 3}\\[0.8mm]\(A_3=1,\ B_3=0\)\\\(p_3=1,\ g_3=0\)\\[0.8mm]\(S_3=0\)};
+  \node[concept box,minimum width=26mm,minimum height=22mm] (fa3) at (1.70,3.95)
+    {\textbf{자리 3}\\[1mm]\(p_3=1\)\\들어온 올림을 전달};
   % adder:carry-example
-  \node[concept box,minimum width=26mm,minimum height=27mm] (fa2) at (4.90,3.95)
-    {\textbf{자리 2}\\[0.8mm]\(A_2=1,\ B_2=0\)\\\(p_2=1,\ g_2=0\)\\[0.8mm]\(S_2=0\)};
+  \node[concept box,minimum width=26mm,minimum height=22mm] (fa2) at (4.90,3.95)
+    {\textbf{자리 2}\\[1mm]\(p_2=1\)\\들어온 올림을 전달};
   % adder:carry-example
-  \node[concept box,minimum width=26mm,minimum height=27mm] (fa1) at (8.10,3.95)
-    {\textbf{자리 1}\\[0.8mm]\(A_1=1,\ B_1=0\)\\\(p_1=1,\ g_1=0\)\\[0.8mm]\(S_1=0\)};
+  \node[concept box,minimum width=26mm,minimum height=22mm] (fa1) at (8.10,3.95)
+    {\textbf{자리 1}\\[1mm]\(p_1=1\)\\들어온 올림을 전달};
   % adder:carry-example
-  \node[concept emphasis,minimum width=26mm,minimum height=27mm] (fa0) at (11.30,3.95)
-    {\textbf{자리 0}\\[0.8mm]\(A_0=1,\ B_0=1\)\\\(p_0=0,\ g_0=1\)\\[0.8mm]\(S_0=0\)};
+  \node[concept emphasis,minimum width=26mm,minimum height=22mm] (fa0) at (11.30,3.95)
+    {\textbf{자리 0}\\[1mm]\(g_0=1\)\\새 올림을 생성};
 
   \draw[path wire] ([yshift=4mm]fa0.west)
     -- node[above,diagram note] {\(c_1=1\)} ([yshift=4mm]fa1.east);
