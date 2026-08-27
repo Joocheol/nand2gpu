@@ -1,0 +1,35 @@
+\begin{bookfigure}{한 자리 덧셈 상자 네 개가 4비트 합을 만든다}{fig:ch03-four-bit-addition}
+\begin{tikzpicture}[diagram]
+  \path[use as bounding box] (0,0) rectangle (13.0,6.45);
+
+  \node[diagram note,anchor=west,text=black!62] at (0.20,6.08) {높은 자리};
+  \node[diagram note,anchor=east,text=black!62] at (12.80,6.08) {낮은 자리};
+
+  % adder:full
+  \node[concept box,minimum width=25mm,minimum height=27mm] (fa3) at (1.75,4.15)
+    {\textbf{전가산기 3}\\[1mm]\(A_3=0,\ B_3=0\)\\\(c_3=1\)\\[1mm]\(S_3=1\)};
+  % adder:full
+  \node[concept box,minimum width=25mm,minimum height=27mm] (fa2) at (4.90,4.15)
+    {\textbf{전가산기 2}\\[1mm]\(A_2=1,\ B_2=0\)\\\(c_2=1\)\\[1mm]\(S_2=0\)};
+  % adder:full
+  \node[concept box,minimum width=25mm,minimum height=27mm] (fa1) at (8.05,4.15)
+    {\textbf{전가산기 1}\\[1mm]\(A_1=0,\ B_1=1\)\\\(c_1=1\)\\[1mm]\(S_1=0\)};
+  % adder:full
+  \node[concept emphasis,minimum width=25mm,minimum height=27mm] (fa0) at (11.20,4.15)
+    {\textbf{전가산기 0}\\[1mm]\(A_0=1,\ B_0=1\)\\\(c_0=0\)\\[1mm]\(S_0=0\)};
+
+  \draw[path wire] (fa0.west) -- node[above,diagram note] {\(c_1=1\)} (fa1.east);
+  \draw[path wire] (fa1.west) -- node[above,diagram note] {\(c_2=1\)} (fa2.east);
+  \draw[path wire] (fa2.west) -- node[above,diagram note] {\(c_3=1\)} (fa3.east);
+  \draw[path wire] (fa3.west) -- ++(-0.58,0) node[above,diagram note] {\(c_4=0\)};
+
+  \foreach \nodeName in {fa3,fa2,fa1,fa0}{
+    \draw[wire] (\nodeName.south) -- ++(0,-0.56);
+  }
+
+  \node[concept emphasis,minimum width=92mm,minimum height=11mm] at (6.50,1.78)
+    {\(S_3S_2S_1S_0=1000_2\) \quad 무부호 해석: \(5+3=8\)};
+  \node[diagram note,align=center,text=black!62] at (6.50,0.74)
+    {이 그림은 값의 연결만 보여 준다 · 기다림과 내부 경로는 4장에서 센다};
+\end{tikzpicture}
+\end{bookfigure}

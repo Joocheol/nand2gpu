@@ -1,0 +1,40 @@
+\begin{bookfigure}{같은 비트열을 서로 다른 수로 읽을 수 있다}{fig:ch03-two-faces-of-bits}
+\begin{tikzpicture}[diagram]
+  \path[use as bounding box] (0,0) rectangle (13.0,7.20);
+
+  \node[diagram panel title] at (0.10,6.88) {회로가 다루는 비트열};
+  \node[diagram note,anchor=east,text=black!62] at (4.20,6.88) {논리값};
+  \foreach \x/\v in {4.70/1,5.70/0,6.70/0,7.70/0}{
+    \node[concept box,minimum width=8mm,minimum height=9mm] at (\x,6.42) {\v};
+  }
+  \node[diagram note,anchor=west,text=black!62] at (8.25,6.42) {네 칸의 \(0\)과 \(1\)};
+
+  \draw[concept dashed arrow] (6.20,5.88) -- (3.25,5.06);
+  \draw[concept dashed arrow] (6.20,5.88) -- (9.75,5.06);
+  \node[diagram note,align=center,text=black!62] at (6.45,5.27) {표현 규약이\\자릿값을 정한다};
+
+  \draw[diagram panel] (0.05,1.20) rectangle (6.20,4.95);
+  \node[diagram panel title,anchor=north] at (3.13,4.62) {4비트 무부호 정수};
+  \node[diagram note,anchor=east,text=black!62] at (1.16,3.82) {자릿값};
+  \foreach \x/\v in {1.72/8,2.72/4,3.72/2,4.72/1}{
+    \node[concept emphasis,minimum width=8mm,minimum height=8mm] at (\x,3.82) {\v};
+  }
+  \node[diagram note,align=center] at (3.12,2.74)
+    {\(1000_2=1\times8+0\times4+0\times2+0\times1=8\)};
+  \node[concept box,minimum width=34mm,minimum height=8mm] at (3.12,1.78) {표현 범위 \(0\sim15\)};
+
+  \draw[diagram panel,fill=black!4] (6.80,1.20) rectangle (12.95,4.95);
+  \node[diagram panel title,anchor=north] at (9.87,4.62) {4비트 2의 보수};
+  \node[diagram note,anchor=east,text=black!62] at (7.90,3.82) {자릿값};
+  \foreach \x/\v in {8.46/{-8},9.46/4,10.46/2,11.46/1}{
+    \node[concept emphasis,minimum width=8mm,minimum height=8mm] at (\x,3.82) {\v};
+  }
+  \node[diagram note,align=center] at (9.87,2.74)
+    {\(1000_2=1\times(-8)+0\times4+0\times2+0\times1=-8\)};
+  \node[concept box,minimum width=34mm,minimum height=8mm] at (9.87,1.78) {표현 범위 \(-8\sim7\)};
+
+  \draw[gate group] (0.10,0.22) rectangle (12.92,0.86);
+  \node[diagram footer] at (6.50,0.54)
+    {비트열은 같고, 수의 해석은 다르다 · 회로 결과와 표현 규약을 구분한다};
+\end{tikzpicture}
+\end{bookfigure}

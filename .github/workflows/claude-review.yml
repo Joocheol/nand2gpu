@@ -1,7 +1,22 @@
-name: Claude chapter 2 independent review
+name: Claude chapter 3 independent review
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+    paths:
+      - .github/workflows/claude-review.yml
+      - chapters/prologue.tex
+      - chapters/chapter03.tex
+      - figures/ch03-01-two-faces-of-bits.tex
+      - figures/ch03-02-four-bit-addition.tex
+      - main.tex
+      - references.bib
 
 permissions: {}
 
@@ -10,13 +25,15 @@ defaults:
     shell: bash
 
 concurrency:
-  group: claude-chapter-2-independent-review
+  group: claude-chapter-3-independent-review
   cancel-in-progress: false
 
 jobs:
   build-review-input:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    container:
+      image: ghcr.io/joocheol/latex-book-ci@sha256:e09de48df329e11b1a8f453a04fc60ee162861ff7a7accefb3d7a6d61d7688a9
     permissions:
       contents: read
     steps:
@@ -25,22 +42,54 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Restore the reviewed PDF
+      - name: Trust checked-out workspace
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Install verified KoPubWorld review fonts
         run: |
           set -o pipefail
-          mkdir -p .ai-review-input
-          base64 --decode \
-            .github/review-snapshots/chapter02-draft-main.pdf.b64 \
-            > .ai-review-input/main.pdf
+          apt-get update
+          apt-get install --no-install-recommends -y \
+            curl \
+            poppler-utils \
+            unzip
+          archive="$(mktemp)"
+          extract_dir="$(mktemp -d)"
+          curl --fail --location --retry 3 \
+            'https://www.kopus.org/wp-content/uploads/2021/03/KOPUBWORLD_OTF_FONTS.zip' \
+            --output "$archive"
           echo \
-            "f299ea8d6d394ee03f11a41e522aa348e418e91f8d7ff772e9bcc13707c8f3ff  .ai-review-input/main.pdf" \
+            "3a996824770d59381f6ada17f2b1d4c1923637c237ee701b112b863c846ad4de  $archive" \
             | sha256sum --check
+          unzip -q "$archive" -d "$extract_dir"
+          mkdir -p fonts
+          find "$extract_dir" -type f -iname '*.otf' -exec cp '{}' fonts/ \;
+          sha256sum --check <<'SHA256'
+          e7b2e5ab08d0d39b5a09417a1970fd8e0d7fd5464821339accd40aa61583b4dd  fonts/KoPubWorld Batang_Pro Bold.otf
+          895fdc6de0ff0fe24b1a63ae16601c174c810b24daa23ade78115b7e134c4c0a  fonts/KoPubWorld Batang_Pro Light.otf
+          2d385ffbb351f41cbe82d981a0bc10315e01f4e113424a0ed1b7291a801479bb  fonts/KoPubWorld Batang_Pro Medium.otf
+          650f21fd744674be266f7a40095fc8838a2c2fef05a3f4634362c022d2f81216  fonts/KoPubWorld Dotum_Pro Bold.otf
+          529b2f02b96276d9209124a72181fcd7bfc656a567718670d0c3934f6c11adea  fonts/KoPubWorld Dotum_Pro Light.otf
+          073a3426827351e393ba290a59a072aecd830a5daf2e9692828ca20f3d5ff4a0  fonts/KoPubWorld Dotum_Pro Medium.otf
+          SHA256
+
+      - name: Validate and build review PDF
+        run: |
+          set -o pipefail
+          bash scripts/validate.sh
+          bash scripts/build.sh
+          bash scripts/build-figure-test.sh
+          test -s main.pdf
+          test -s .build/ch03-figures-standalone.pdf
+          mkdir -p .ai-review-input
+          cp main.pdf .ai-review-input/main.pdf
+          file .ai-review-input/main.pdf .build/ch03-figures-standalone.pdf
 
       - name: Render every review page
         run: |
           set -o pipefail
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y \
+          apt-get update
+          apt-get install --no-install-recommends -y \
             poppler-data \
             poppler-utils \
             python3-pil
@@ -55,7 +104,7 @@ jobs:
 
           pdf_pages="$(pdfinfo .ai-review-input/main.pdf | awk '/^Pages:/ { print $2 }')"
           rendered_pages="$(wc -l < .ai-review-input/page-index.txt | tr -d ' ')"
-          test "$pdf_pages" -eq 23
+          test "$pdf_pages" -eq 32
           test "$rendered_pages" -eq "$pdf_pages"
           printf 'pdf_pages=%s\nrendered_pages=%s\n' \
             "$pdf_pages" "$rendered_pages" \
@@ -64,7 +113,9 @@ jobs:
           pdftotext -enc UTF-8 -layout \
             .ai-review-input/main.pdf \
             .ai-review-input/main.txt
-          grep -Fq "같은 함수를 여러 식으로 분해할 수 있다" \
+          grep -Fq "0과 1을 자릿값으로 읽으면 수가 된다" \
+            .ai-review-input/main.txt
+          grep -Fq "carry-out과 signed overflow는 다르다" \
             .ai-review-input/main.txt
           grep -Fq "이번 장의 선택과 비용" \
             .ai-review-input/main.txt
@@ -78,7 +129,7 @@ jobs:
               for line in Path('.ai-review-input/page-index.txt').read_text().splitlines()
               if line
           ]
-          assert len(pages) == 23
+          assert len(pages) == 32
           for page in pages:
               image = Image.open(page).convert('L')
               nonwhite = sum(pixel < 245 for pixel in image.getdata())
@@ -89,7 +140,7 @@ jobs:
       - name: Upload bounded review evidence
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: claude-chapter-2-review-input
+          name: claude-chapter-3-review-input
           path: .ai-review-input/
           if-no-files-found: error
           include-hidden-files: true
@@ -110,10 +161,10 @@ jobs:
       - name: Download rendered review evidence
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
-          name: claude-chapter-2-review-input
+          name: claude-chapter-3-review-input
           path: .ai-review-input
 
-      - name: Review chapter 2 with Claude
+      - name: Review chapter 3 with Claude
         id: claude
         uses: anthropics/claude-code-action@c038e4dcdedfbbca18dfb17df35a17e40ded4ddc # v1
         with:
@@ -134,8 +185,9 @@ jobs:
             Read editorial/review-checklist.md,
             planning/preface-part1-detailed-briefs.md, chapters/prologue.tex,
             chapters/chapter01.tex, chapters/chapter02.tex,
-            figures/ch02-01-one-function-two-decompositions.tex,
-            figures/ch02-02-same-output-different-cost.tex, main.tex,
+            chapters/chapter03.tex,
+            figures/ch03-01-two-faces-of-bits.tex,
+            figures/ch03-02-four-bit-addition.tex, main.tex,
             references.bib, and research/source-register.md.
 
             Read .ai-review-input/page-count.txt and
@@ -146,34 +198,40 @@ jobs:
             complete coverage.
 
             Independently verify the chapter's logic and arithmetic:
-            - XOR's four input combinations and target output 0,1,1,0;
-            - method A's six NAND gates, all intermediate values, and longest
-              NAND path of four layers;
-            - method B's four NAND gates, all intermediate values, and longest
-              NAND path of three layers;
-            - the functional equivalence of both decompositions;
-            - the claims that NAND is universal and that NOR can independently
-              play the same universal-gate role;
-            - the boundary between gate-count/depth teaching models and real
-              chip concerns such as fan-out, wire delay, load, process, power,
-              and use of a dedicated XOR cell;
-            - the Nand2Tetris citation's unknown-year notation, with no
-              invented publication year.
+            - 0101_2 = 0*8 + 1*4 + 0*2 + 1*1 = 5;
+            - four-bit unsigned range 0 through 15 and four-bit two's-complement
+              range -8 through 7;
+            - all four half-adder rows and all eight full-adder rows;
+            - each carry and sum in 0101_2 + 0011_2 = 1000_2;
+            - two's-complement negation 0011 -> 1100 -> 1101, the interpretation
+              1101_2 = -3, and 0101 + 1101 = 1 0010;
+            - why the extra carry is discarded only under the stated fixed
+              four-bit arithmetic convention;
+            - carry-out 0 with signed overflow for 0101+0011, versus carry-out 1
+              without signed overflow for 0101+1101;
+            - the distinction among a bit string, its signed or unsigned
+              interpretation, and the circuit-produced result;
+            - MIT 6.004's dated citation and Nand2Tetris Project 2's unknown-year
+              notation, without inventing a publication year.
 
             Assess whether the prose works for a general reader with no
-            programming or digital-logic background; introduces XOR,
-            equivalent decomposition, circuit depth, and fan-out clearly;
-            provides every intermediate value; preserves the distinction
-            between functional requirements and implementation resources; and
-            leads naturally to the next chapter.
+            programming or digital-logic background; introduces bit, place
+            value, half adder, full adder, and two's complement clearly without
+            overcrowding the main line; provides every intermediate value;
+            keeps signed overflow in a bounded supplemental box; preserves the
+            distinction between representable range and physical resources;
+            and leads naturally to chapter 4's carry-path question.
 
-            Check both chapter 2 figures for correct logic, readable
+            Check both chapter 3 figures for correct arithmetic, readable
             black-and-white B5 layout, minimum text size, clipping, overlaps,
             line routing, arrowheads, and meaningful visual hierarchy. In
-            Figure 2.1 confirm that both circuits visibly implement the same
-            XOR output. In Figure 2.2 confirm that the gate-count and longest
-            path labels are unambiguous and match the circuits. Check the final
-            "이번 장의 선택과 비용" table for completeness and unit discipline.
+            Figure 3.1 confirm that 1000 is visibly separated from its unsigned
+            8 and two's-complement -8 interpretations. In Figure 3.2 confirm
+            that four full-adder boxes, the right-to-left carry direction, all
+            c1 through c4 values, and S3S2S1S0=1000 are unambiguous. Confirm
+            that the figure does not prematurely assign timing or path depth.
+            Check the final "이번 장의 선택과 비용" table for completeness and
+            unit discipline.
 
             Write the review in Korean. Do not invent findings when the current
             result is sound. Consolidate duplicate symptoms under one root
@@ -198,7 +256,7 @@ jobs:
           test -n "$CLAUDE_REVIEW"
           printf '%s\n' "$CLAUDE_REVIEW" > claude-review.json
           {
-            echo '## Claude chapter 2 independent review'
+            echo '## Claude chapter 3 independent review'
             echo '~~~json'
             cat claude-review.json
             echo '~~~'
@@ -207,7 +265,7 @@ jobs:
       - name: Upload Claude review result
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: claude-chapter-2-review-result
+          name: claude-chapter-3-review-result
           path: claude-review.json
           if-no-files-found: error
           retention-days: 7
