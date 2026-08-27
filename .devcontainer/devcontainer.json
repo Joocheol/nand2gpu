@@ -1,0 +1,51 @@
+{
+  "name": "nand2gpu LaTeX Book",
+  "build": {
+    "dockerfile": "../book-template/devcontainer/Dockerfile",
+    "context": ".."
+  },
+  "forwardPorts": [8765],
+  "portsAttributes": {
+    "8765": {
+      "label": "LaTeX PDF Viewer",
+      "onAutoForward": "silent"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "james-yu.latex-workshop"
+      ],
+      "settings": {
+        "latex-workshop.latex.autoBuild.run": "onSave",
+        "latex-workshop.view.pdf.viewer": "browser",
+        "latex-workshop.view.pdf.internal.port": 8765,
+        "latex-workshop.latex.outDir": "%DIR%",
+        "latex-workshop.latex.recipe.default": "Build PDF and clean",
+        "latex-workshop.latex.tools": [
+          {
+            "name": "nand2gpu-build",
+            "command": "bash",
+            "args": [
+              "scripts/build.sh"
+            ]
+          }
+        ],
+        "latex-workshop.latex.recipes": [
+          {
+            "name": "Build PDF and clean",
+            "tools": [
+              "nand2gpu-build"
+            ]
+          }
+        ],
+        "latex-workshop.latex.clean.enabled": false,
+        "workbench.list.openMode": "doubleClick",
+        "remote.restoreForwardedPorts": true
+      }
+    }
+  },
+  "remoteUser": "vscode",
+  "postCreateCommand": "bash scripts/build.sh",
+  "waitFor": "postCreateCommand"
+}

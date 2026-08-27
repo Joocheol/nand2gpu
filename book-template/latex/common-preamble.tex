@@ -1,0 +1,259 @@
+% Shared LaTeX book preamble — XeLaTeX
+
+% 기본 패키지
+\usepackage{kotex,fontspec,mathtools,unicode-math,amsthm}
+\usepackage{setspace,indentfirst,enumitem}
+\usepackage{graphicx,booktabs,array,longtable,diagbox,listings,makeidx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc,arrows.meta,patterns}
+\usepackage{xcolor,titlesec,titletoc,fancyhdr}
+\usepackage[most]{tcolorbox}
+
+% 글꼴
+% 운영체제의 글꼴 등록 상태나 절대경로에 의존하지 않고,
+% TeX Live와 저장소가 제공하는 실제 글꼴 파일을 직접 사용한다.
+\setmainfont{STIXTwoText-Regular.otf}[
+  BoldFont=STIXTwoText-Bold.otf,
+  ItalicFont=STIXTwoText-Italic.otf,
+  BoldItalicFont=STIXTwoText-BoldItalic.otf
+]
+\setmonofont{lmmonolt10-regular.otf}[
+  BoldFont=lmmonolt10-bold.otf,
+  ItalicFont=lmmonolt10-oblique.otf,
+  BoldItalicFont=lmmonolt10-boldoblique.otf
+]
+\setmathfont{STIXTwoMath-Regular.otf}
+
+% KoPubWorld Pro OTF 6개는 fonts/에 둔다.
+\IfFileExists{fonts/KoPubWorld Batang_Pro Light.otf}{
+  \setsansfont{KoPubWorld Dotum_Pro}[
+    Path=fonts/,
+    Extension=.otf,
+    UprightFont={* Light},
+    BoldFont={* Bold},
+    ItalicFont={* Light},
+    BoldItalicFont={* Bold}
+  ]
+  \setmainhangulfont{KoPubWorld Batang_Pro}[
+    Path=fonts/,
+    Extension=.otf,
+    UprightFont={* Light},
+    BoldFont={* Bold},
+    ItalicFont={* Light},
+    BoldItalicFont={* Bold},
+    SmallCapsFont={* Light}
+  ]
+  \setsanshangulfont{KoPubWorld Dotum_Pro}[
+    Path=fonts/,
+    Extension=.otf,
+    UprightFont={* Light},
+    BoldFont={* Bold},
+    ItalicFont={* Light},
+    BoldItalicFont={* Bold}
+  ]
+  \setmonohangulfont{KoPubWorld Dotum_Pro}[
+    Path=fonts/,
+    Extension=.otf,
+    UprightFont={* Light},
+    BoldFont={* Bold},
+    ItalicFont={* Light},
+    BoldItalicFont={* Bold}
+  ]
+}{
+  \PackageError{latexbook}{KoPubWorld font files not found}
+    {Upload the six KoPubWorld Pro OTF files to the fonts directory.}
+}
+
+% 판형과 본문
+\usepackage[
+  paperwidth=182mm,paperheight=257mm,
+  top=22mm,bottom=25mm,inner=22mm,outer=18mm,
+  headsep=8mm,footskip=12mm
+]{geometry}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0pt}
+\emergencystretch=2em
+\setlist{nosep,leftmargin=2em}
+
+% 그림·표·색인
+\graphicspath{{figures/}}
+\makeindex
+\renewcommand{\indexname}{찾아보기}
+\renewcommand{\figurename}{그림}
+\renewcommand{\tablename}{표}
+
+% 흑백 인쇄용 회색조 팔레트. 의미 구분은 선종류·마커·라벨로도 반복한다.
+\definecolor{BookPurple}{gray}{0.00}
+\definecolor{BookBlue}{gray}{0.00}
+\definecolor{BookGreen}{gray}{0.35}
+\definecolor{BookOrange}{gray}{0.25}
+\definecolor{BookRed}{gray}{0.15}
+\definecolor{BookGray}{gray}{0.38}
+
+% 장·절 제목
+\titleformat{\part}[display]
+  {\centering\sffamily\bfseries}{\Large 제 \thepart\ 부}{1.2em}{\Huge}
+\titlespacing*{\part}{0pt}{42mm}{0pt}
+\titleformat{\chapter}[display]
+  {\sffamily\bfseries}{\Large 제 \thechapter\ 장}{1.1em}{\Huge}
+\titlespacing*{\chapter}{0pt}{25mm}{11mm}
+\titleformat{\section}
+  {\sffamily\large\bfseries}{\thesection}{0.75em}{}
+\titlespacing*{\section}{0pt}{3.0ex plus 0.8ex minus 0.4ex}{1.2ex}
+\titleformat{\subsection}
+  {\sffamily\normalsize\bfseries}{\thesubsection}{0.75em}{}
+\titlespacing*{\subsection}{0pt}{2.4ex plus 0.6ex minus 0.3ex}{0.9ex}
+\renewcommand{\contentsname}{목차}
+
+% 머리말과 꼬리말
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\fancyhead[LE]{\small\color{BookGray}--- \BookTitle}
+\fancyhead[RO]{\small\color{BookGray}\BookSubtitle{} ---}
+\fancyfoot[LE]{\thepage\hspace{4mm}\small\leftmark}
+\fancyfoot[RO]{\small\rightmark\hspace{4mm}\thepage}
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+  \fancyfoot[LE,RO]{\thepage}
+}
+
+% 정리 환경
+\newtheoremstyle{bookdefinition}
+  {8pt}{8pt}{\normalfont}{}{\bfseries}{}{0.7em}
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}
+\newtheoremstyle{bookplain}
+  {8pt}{8pt}{\itshape}{}{\bfseries}{}{0.7em}
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}
+\theoremstyle{bookdefinition}
+\newtheorem{definition}{정의}[chapter]
+\newtheorem{example}{예제}[chapter]
+\theoremstyle{bookplain}
+\newtheorem{theorem}{정리}[chapter]
+\newtheorem{proposition}[theorem]{명제}
+\newtheorem{lemma}[theorem]{보조정리}
+\renewcommand{\proofname}{증명}
+
+% 상자
+\newtcolorbox{objectivebox}[1][학습 목표]{
+  enhanced,breakable,
+  colback=BookBlue!4,colframe=BookBlue,boxrule=0.6pt,arc=1mm,
+  title={#1},fonttitle=\sffamily\bfseries,coltitle=white,colbacktitle=BookBlue,
+  attach boxed title to top left={xshift=5mm,yshift*=-\tcboxedtitleheight/2},
+  boxed title style={boxrule=0pt,arc=1mm},
+  top=5mm,left=4mm,right=4mm,bottom=3mm
+}
+
+\tcbset{booksidebar/.style={
+  enhanced,breakable,blanker,
+  left=9mm,right=9mm,top=2mm,bottom=2mm
+}}
+\newtcolorbox{infobox}[1][정보]{
+  booksidebar,
+  borderline west={2.2pt}{0pt}{BookBlue},
+  borderline east={2.2pt}{0pt}{BookBlue},
+  before upper={\textcolor{BookBlue}{\bfseries 정보}\quad\textbf{#1}\par\smallskip}
+}
+\newtcolorbox{tipbox}[1][학습 팁]{
+  booksidebar,
+  borderline west={2.2pt}{0pt}{BookGreen},
+  borderline east={2.2pt}{0pt}{BookGreen},
+  before upper={\textcolor{BookGreen}{\bfseries 학습 팁}\quad\textbf{#1}\par\smallskip}
+}
+\newtcolorbox{cautionbox}[1][주의]{
+  booksidebar,
+  borderline west={2.2pt}{0pt}{BookOrange},
+  borderline east={2.2pt}{0pt}{BookOrange},
+  before upper={\textcolor{BookOrange}{\bfseries 주의}\quad\textbf{#1}\par\smallskip}
+}
+\newtcolorbox{warningbox}[1][경고]{
+  booksidebar,
+  borderline west={2.2pt}{0pt}{BookRed},
+  borderline east={2.2pt}{0pt}{BookRed},
+  before upper={\textcolor{BookRed}{\bfseries 경고}\quad\textbf{#1}\par\smallskip}
+}
+
+\newtcolorbox{shadequote}[1][]{
+  enhanced,breakable,
+  colback=black!4,colframe=black!18,boxrule=0pt,leftrule=2pt,arc=0pt,
+  left=6mm,right=5mm,top=3mm,bottom=3mm,fontupper=\itshape,
+  after upper={
+    \if\relax\detokenize{#1}\relax\else
+      \par\smallskip\hfill--- #1
+    \fi
+  }
+}
+
+\tcbset{bookexercise/.style={
+  enhanced,breakable,boxrule=0pt,leftrule=3pt,arc=0pt,
+  coltitle=white,fonttitle=\sffamily\bfseries,
+  attach boxed title to top left={xshift=0pt,yshift*=-\tcboxedtitleheight},
+  top=5mm,left=5mm,right=4mm,bottom=3mm
+}}
+\newtcolorbox{exercisebox}[1][연습문제]{
+  bookexercise,colback=BookBlue!4,colframe=BookBlue,title={#1},
+  boxed title style={colback=BookBlue,boxrule=0pt,arc=0pt}
+}
+\newtcolorbox{answerbox}[1][풀이]{
+  bookexercise,colback=BookGreen!4,colframe=BookGreen,title={#1},
+  boxed title style={colback=BookGreen,boxrule=0pt,arc=0pt}
+}
+
+% 코드
+\lstdefinestyle{bookcode}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{black!3},
+  frame=single,
+  rulecolor=\color{black!15},
+  numbers=left,
+  numberstyle=\scriptsize\color{BookGray},
+  numbersep=6pt,
+  xleftmargin=2.2em,
+  framexleftmargin=1.7em,
+  showstringspaces=false,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  aboveskip=8pt,
+  belowskip=8pt
+}
+\lstnewenvironment{codeblock}[1][]{\lstset{style=bookcode,#1}}{}
+
+% 참고문헌
+\usepackage[backend=biber,style=authoryear,maxbibnames=99]{biblatex}
+\addbibresource{references.bib}
+
+% 링크
+\usepackage{hyperref}
+\hypersetup{
+  unicode=true,colorlinks=true,
+  linkcolor=black,citecolor=black,urlcolor=black,
+  pdftitle={\BookTitle},pdfauthor={\BookAuthor}
+}
+
+% 제목 속 수식은 인쇄본에서는 그대로 두고 PDF 책갈피에서만 일반 문자열로 바꾼다.
+\pdfstringdefDisableCommands{%
+  \def\({}%
+  \def\){}%
+  \def\alpha{alpha}%
+  \def\sigma{sigma}%
+  \def\tau{tau}%
+  \def\pi{pi}%
+}
+
+% 자주 쓰는 명령
+\newcommand{\keyterm}[1]{\textbf{#1}\index{#1}}
+\newcommand{\figref}[1]{그림~\ref{#1}}
+\newcommand{\tabref}[1]{표~\ref{#1}}
+\newcommand{\eqnref}[1]{식~\eqref{#1}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Pprob}{\mathbb{P}}
+\newcommand{\Qprob}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\dd}{\mathop{}\!\mathrm{d}}

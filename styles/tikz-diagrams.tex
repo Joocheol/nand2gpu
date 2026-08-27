@@ -1,0 +1,24 @@
+% 공통 흑백 TikZ 도해 스타일.
+% 최종 인쇄 도판의 가장 작은 글자는 6.5pt 이상으로 고정한다.
+\newcommand{\DiagramMinFontSize}{6.5}
+\newcommand{\DiagramBodyFont}{\sffamily\fontsize{6.5pt}{7.4pt}\selectfont}
+\newcommand{\DiagramTitleFont}{\sffamily\bfseries\fontsize{8pt}{9.2pt}\selectfont}
+
+\tikzset{
+  diagram/.style={x=1cm,y=1cm,>=Stealth},
+  diagram panel/.style={draw=black!65,fill=black!1,line width=0.55pt,rounded corners=1.6mm},
+  diagram panel title/.style={font=\DiagramTitleFont,anchor=west,text=black},
+  depth label/.style={font=\DiagramBodyFont,anchor=south,text=black!72},
+  depth guide/.style={draw=black!24,line width=0.35pt,densely dashed},
+  gate/.style={
+    draw=black!72,fill=white,line width=0.55pt,rounded corners=0.9mm,
+    minimum height=5.2mm,inner xsep=0.8mm,inner ysep=0.5mm,
+    align=center,font=\DiagramBodyFont
+  },
+  path gate/.style={gate,fill=black!15,draw=black,line width=0.9pt},
+  gate group/.style={draw=black!45,line width=0.45pt,densely dashed,rounded corners=1.1mm},
+  wire/.style={draw=black!62,line width=0.55pt,-{Stealth[length=1.7mm,width=1.2mm]}},
+  path wire/.style={draw=black,line width=1.05pt,-{Stealth[length=1.9mm,width=1.35mm]}},
+  diagram note/.style={font=\DiagramBodyFont,text=black!78,align=left},
+  diagram footer/.style={font=\DiagramBodyFont,text=black,align=center}
+}

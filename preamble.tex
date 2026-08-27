@@ -1,0 +1,54 @@
+% nand2gpu-specific metadata
+\newcommand{\BookTitle}{진리표에서 GPU까지}
+% 부제는 원고와 통합 편집을 검토한 뒤 확정한다.
+\newcommand{\BookSubtitle}{}
+\newcommand{\BookAuthor}{연세대학교 김주철}
+
+% Shared LaTeX infrastructure used by 『금융공학의 이해』.
+\input{book-template/latex/common-preamble.tex}
+
+% PDF 검색·복사·스크린리더에서 한글 실제 문자열을 보존한다.
+\ifdefined\XeTeXgenerateactualtext
+  \XeTeXgenerateactualtext=1
+  \AtBeginDocument{\XeTeXgenerateactualtext=1}
+\fi
+
+\hypersetup{pdfsubject={일반 독자를 위한 수학 중심의 계산·GPU 교양서}}
+\raggedbottom
+
+% 부제가 확정되기 전에는 빈 부제를 머리말에 인쇄하지 않는다.
+\fancyhead[RO]{\small\color{BookGray}\BookTitle{} ---}
+
+% 공통 TikZ 도해 문법과 이 책의 그림 환경.
+\input{styles/tikz-diagrams.tex}
+
+\newenvironment{bookfigure}[2]{%
+  \par\addvspace{1.2\baselineskip}%
+  \refstepcounter{figure}\label{#2}%
+  \addcontentsline{lof}{figure}{\protect\numberline{\thefigure}#1}%
+  \begin{tcolorbox}[
+    enhanced,
+    width=\textwidth,
+    colback=white,
+    colframe=black,
+    boxrule=0pt,
+    leftrule=2.4pt,
+    arc=0pt,
+    title={\textcolor{white}{그림~\thefigure\quad #1}},
+    coltitle=white,
+    fonttitle=\sffamily\bfseries,
+    attach boxed title to top left={xshift=0pt,yshift*=-\tcboxedtitleheight},
+    boxed title style={colback=black,boxrule=0pt,arc=0pt},
+    top=7mm,
+    left=4mm,
+    right=3mm,
+    bottom=3mm,
+    before skip=0pt,
+    after skip=0pt
+  ]%
+  \centering
+}{%
+  \end{tcolorbox}%
+  \color{black}%
+  \par\addvspace{1.2\baselineskip}%
+}

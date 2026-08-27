@@ -1,0 +1,60 @@
+\documentclass[10pt,openany]{book}
+
+\input{preamble}
+\input{styles/toc-layout}
+
+\setstretch{1.50}
+
+\title{\BookTitle}
+\author{\BookAuthor}
+\date{}
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+
+\begin{titlepage}
+  \thispagestyle{empty}
+  \vspace*{42mm}
+
+  {\sffamily\Huge\bfseries \BookTitle\par}
+  \vspace{22mm}
+  {\large \BookAuthor\par}
+
+  \vfill
+\end{titlepage}
+
+\clearpage
+\thispagestyle{empty}
+\vspace*{\fill}
+{\small\sffamily
+\textbf{저작권}\par
+© 2026 김주철. All rights reserved.\par
+\smallskip
+이 저장소의 원고와 도해는 집필 중인 저작물이다.
+\par}
+\clearpage
+
+\frontmatter
+\hypersetup{pageanchor=true}
+\tableofcontents
+
+\chapter*{머리말}
+\addcontentsline{toc}{chapter}{머리말}
+\markboth{머리말}{머리말}
+\input{chapters/preface}
+
+\mainmatter
+
+% 첫 원고 집필 전에 가장 밀도가 높은 도판을 실제 B5 폭에서 검증한다.
+% 이 절은 서장·제1부 원고가 들어오면 제거한다.
+\chapter*{제작 검증용 도판}
+\addcontentsline{toc}{chapter}{제작 검증용 도판}
+\markboth{제작 검증용 도판}{제작 검증용 도판}
+
+\input{figures/ch04-02-chain-vs-expanded}
+
+\backmatter
+\printbibliography[heading=bibintoc,title={참고문헌}]
+
+\end{document}

@@ -1,0 +1,38 @@
+\documentclass[10pt]{article}
+
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc,arrows.meta,patterns}
+
+\setsansfont{KoPubWorld Dotum_Pro}[
+  Path=fonts/,
+  Extension=.otf,
+  UprightFont={* Light},
+  BoldFont={* Bold}
+]
+\setmainfont{KoPubWorld Batang_Pro}[
+  Path=fonts/,
+  Extension=.otf,
+  UprightFont={* Light},
+  BoldFont={* Bold}
+]
+\setmathfont{Latin Modern Math}
+
+\usepackage[
+  paperwidth=182mm,paperheight=257mm,
+  top=22mm,bottom=25mm,inner=22mm,outer=18mm
+]{geometry}
+
+\input{styles/tikz-diagrams.tex}
+
+\newenvironment{bookfigure}[2]
+  {\begin{center}\sffamily\bfseries #1\par\medskip\normalfont}
+  {\end{center}}
+
+\pagestyle{empty}
+
+\begin{document}
+\input{figures/ch04-02-chain-vs-expanded.tex}
+\end{document}

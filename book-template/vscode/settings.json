@@ -1,0 +1,27 @@
+{
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.latex.outDir": "%DIR%",
+  "latex-workshop.latex.recipe.default": "Build PDF",
+  "latex-workshop.latex.tools": [
+    {
+      "name": "book-build",
+      "command": "bash",
+      "args": [
+        "scripts/build.sh"
+      ]
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "Build PDF",
+      "tools": [
+        "book-build"
+      ]
+    }
+  ],
+  "latex-workshop.latex.clean.enabled": false,
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.view.pdf.zoom": "page-width",
+  "latex-workshop.synctex.afterBuild.enabled": true,
+  "workbench.list.openMode": "doubleClick"
+}
