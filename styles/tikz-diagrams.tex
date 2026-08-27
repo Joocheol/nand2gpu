@@ -20,5 +20,14 @@
   wire/.style={draw=black!62,line width=0.55pt,-{Stealth[length=1.7mm,width=1.2mm]}},
   path wire/.style={draw=black,line width=1.05pt,-{Stealth[length=1.9mm,width=1.35mm]}},
   diagram note/.style={font=\DiagramBodyFont,text=black!78,align=left},
-  diagram footer/.style={font=\DiagramBodyFont,text=black,align=center}
+  diagram footer/.style={font=\DiagramBodyFont,text=black,align=center},
+  concept box/.style={
+    draw=black!68,fill=white,line width=0.55pt,rounded corners=1.2mm,
+    minimum height=8mm,inner xsep=2mm,inner ysep=1.2mm,
+    align=center,font=\DiagramBodyFont
+  },
+  concept emphasis/.style={concept box,fill=black!12,draw=black,line width=0.8pt},
+  concept arrow/.style={draw=black!68,line width=0.65pt,-{Stealth[length=1.8mm,width=1.25mm]}},
+  concept dashed arrow/.style={draw=black!58,line width=0.55pt,densely dashed,
+    -{Stealth[length=1.7mm,width=1.15mm]}}
 }

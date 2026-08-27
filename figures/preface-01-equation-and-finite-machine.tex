@@ -1,0 +1,44 @@
+\begin{bookfigure}{한 줄과 유한한 기계}{fig:preface-equation-and-machine}
+\begin{tikzpicture}[diagram]
+  \path[use as bounding box] (0,0) rectangle (13.0,8.45);
+
+  \draw[diagram panel] (0.05,0.45) rectangle (4.10,8.30);
+  \node[diagram panel title] at (0.30,7.96) {수학이 정한 것};
+  \node[font=\sffamily\bfseries\fontsize{19pt}{21pt}\selectfont] at (2.08,5.35)
+    {\(C=A\times B\)};
+  \node[diagram note,align=center] at (2.08,4.25)
+    {두 숫자 표를 정해진 규칙으로 결합해\\결과 (C)를 만든다};
+  \node[concept emphasis,minimum width=32mm,minimum height=11mm] at (2.08,2.15)
+    {원하는 결과의 규칙};
+  \node[diagram note,align=center,text=black!65] at (2.08,1.15)
+    {배치·순서·저장 위치는\\아직 정하지 않았다};
+
+  \draw[concept dashed arrow] (4.27,5.95) -- (5.12,5.95);
+  \draw[concept dashed arrow] (4.27,2.75) -- (5.12,2.75);
+  \node[diagram note,align=center] at (4.70,4.36)
+    {한 가지\\계획으로\\결정되지 않음};
+
+  \draw[diagram panel,densely dashed] (5.30,0.45) rectangle (12.95,8.30);
+  \node[diagram panel title] at (5.55,7.96) {기계에서 따로 정할 것};
+
+  \node[concept emphasis,minimum width=28mm,minimum height=13mm] (ops) at (7.12,6.35)
+    {연산기 수\\동시에 몇 개?};
+  \node[concept box,minimum width=28mm,minimum height=13mm] (time) at (10.92,6.35)
+    {신호·연산 시간\\0이 아님};
+  \node[concept box,minimum width=28mm,minimum height=13mm] (path) at (7.12,4.33)
+    {이동 거리·통로 폭\\한 번에 얼마나?};
+  \node[concept box,minimum width=28mm,minimum height=13mm] (store) at (10.92,4.33)
+    {가까운 저장공간\\얼마나 둘까?};
+  \node[concept box,minimum width=28mm,minimum height=13mm] (bits) at (7.12,2.30)
+    {값의 비트 수\\범위와 정밀도};
+  \node[concept emphasis,minimum width=28mm,minimum height=13mm] (plan) at (10.92,2.30)
+    {실행 계획\\배치·순서·재사용};
+
+  \draw[concept arrow] (ops.east) -- (time.west);
+  \draw[concept arrow] (path.east) -- (store.west);
+  \draw[concept arrow] (bits.east) -- (plan.west);
+
+  \node[diagram footer] at (9.12,0.83)
+    {유한한 자원을 어떻게 엮느냐에 따라 같은 결과의 비용이 달라진다};
+\end{tikzpicture}
+\end{bookfigure}

@@ -11,6 +11,11 @@ FIGURE = ROOT / "figures" / "ch04-02-chain-vs-expanded.tex"
 STYLES = ROOT / "styles" / "tikz-diagrams.tex"
 COMMON_PREAMBLE = ROOT / "book-template" / "latex" / "common-preamble.tex"
 STANDALONE = ROOT / "tests" / "ch04-02-standalone.tex"
+PREFACE_STANDALONE = ROOT / "tests" / "preface-figures-standalone.tex"
+PREFACE_FIGURES = (
+    ROOT / "figures" / "preface-01-equation-and-finite-machine.tex",
+    ROOT / "figures" / "preface-02-down-and-up-map.tex",
+)
 
 EXPECTED = {
     "ripple-pg": 8,
@@ -30,6 +35,7 @@ figure = FIGURE.read_text(encoding="utf-8")
 styles = STYLES.read_text(encoding="utf-8")
 common_preamble = COMMON_PREAMBLE.read_text(encoding="utf-8")
 standalone = STANDALONE.read_text(encoding="utf-8")
+preface_standalone = PREFACE_STANDALONE.read_text(encoding="utf-8")
 
 for required in (
     "paperwidth=182mm,paperheight=257mm",
@@ -42,8 +48,9 @@ for required in (
     if required not in common_preamble:
         fail(f"inherited FEB layout setting changed or missing: {required}")
 
-if "paperwidth=182mm,paperheight=257mm" not in standalone:
-    fail("standalone figure test no longer uses the inherited B5 page size")
+for standalone_source in (standalone, preface_standalone):
+    if "paperwidth=182mm,paperheight=257mm" not in standalone_source:
+        fail("standalone figure test no longer uses the inherited B5 page size")
 
 for group, expected in EXPECTED.items():
     actual = len(re.findall(rf"% gate:{re.escape(group)}\b", figure))
@@ -60,7 +67,23 @@ if not font_match:
 if float(font_match.group(1)) < 6.5:
     fail("diagram minimum font size is below 6.5pt")
 
-if "\\resizebox" in figure or "\\scalebox" in figure:
-    fail("the TikZ source must not be globally scaled; that would shrink 6.5pt labels")
+for figure_path in (FIGURE, *PREFACE_FIGURES):
+    source = figure_path.read_text(encoding="utf-8")
+    if "\\resizebox" in source or "\\scalebox" in source:
+        fail(f"{figure_path.name}: global scaling would shrink 6.5pt labels")
+
+prologue = (ROOT / "chapters" / "prologue.tex").read_text(encoding="utf-8")
+for forbidden in ("행×열", "내적", "\\sum", "타일 계산"):
+    if forbidden in prologue:
+        fail(f"prologue introduces a forbidden matrix detail too early: {forbidden}")
+
+for required in (
+    "수학은 원하는 결과의 규칙을 정하지만",
+    "계산이 요구하는 양",
+    "기계가 제공하는 자원",
+    "진리표 한 장에서 시작",
+):
+    if required not in prologue:
+        fail(f"prologue is missing a fixed narrative element: {required}")
 
 print("[nand2gpu] Book and figure invariants passed.")

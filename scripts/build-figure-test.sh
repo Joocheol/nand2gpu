@@ -12,5 +12,14 @@ xelatex \
   -output-directory=.build \
   tests/ch04-02-standalone.tex
 
+xelatex \
+  -interaction=nonstopmode \
+  -file-line-error \
+  -halt-on-error \
+  -output-directory=.build \
+  tests/preface-figures-standalone.tex
+
 test -s .build/ch04-02-standalone.pdf
+test -s .build/preface-figures-standalone.pdf
 echo "[nand2gpu] Created .build/ch04-02-standalone.pdf"
+echo "[nand2gpu] Created .build/preface-figures-standalone.pdf"
