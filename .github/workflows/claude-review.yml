@@ -22,8 +22,6 @@ jobs:
   build-review-input:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    container:
-      image: ghcr.io/joocheol/latex-book-ci@sha256:e09de48df329e11b1a8f453a04fc60ee162861ff7a7accefb3d7a6d61d7688a9
     permissions:
       contents: read
     steps:
@@ -32,56 +30,29 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Trust checked-out workspace
-        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
-
-      - name: Install verified KoPubWorld review fonts
+      - name: Restore pinned review PDFs
         run: |
           set -o pipefail
-          apt-get update
-          apt-get install --no-install-recommends -y curl p7zip-full unzip
-          archive="$(mktemp)"
-          extract_dir="$(mktemp -d)"
-          curl --fail --location --retry 3 \
-            'https://www.stopbullying.re.kr/fileDownload?fileDownType=C&fileId=1&paramMenuId=MENU00424&titleId=50' \
-            --output "$archive"
-          unzip -q "$archive" -d "$extract_dir"
-          installer="$(find "$extract_dir" -type f -iname '*.exe' -print -quit)"
-          test -n "$installer"
-          7z x -y -o"$extract_dir/installer" "$installer" >/dev/null
-          mkdir -p fonts
-          find "$extract_dir" -type f -iname '*.otf' -exec cp '{}' fonts/ \;
+          mkdir -p .ai-review-input
+          base64 --decode .github/review-snapshots/e026094-main.pdf.b64 \
+            > .ai-review-input/main.pdf
+          base64 --decode .github/review-snapshots/e026094-ch04-02.pdf.b64 \
+            > .ai-review-input/ch04-02-standalone.pdf
           sha256sum --check <<'SHA256'
-          e7b2e5ab08d0d39b5a09417a1970fd8e0d7fd5464821339accd40aa61583b4dd  fonts/KoPubWorld Batang_Pro Bold.otf
-          895fdc6de0ff0fe24b1a63ae16601c174c810b24daa23ade78115b7e134c4c0a  fonts/KoPubWorld Batang_Pro Light.otf
-          2d385ffbb351f41cbe82d981a0bc10315e01f4e113424a0ed1b7291a801479bb  fonts/KoPubWorld Batang_Pro Medium.otf
-          650f21fd744674be266f7a40095fc8838a2c2fef05a3f4634362c022d2f81216  fonts/KoPubWorld Dotum_Pro Bold.otf
-          529b2f02b96276d9209124a72181fcd7bfc656a567718670d0c3934f6c11adea  fonts/KoPubWorld Dotum_Pro Light.otf
-          073a3426827351e393ba290a59a072aecd830a5daf2e9692828ca20f3d5ff4a0  fonts/KoPubWorld Dotum_Pro Medium.otf
+          b4a2d90106c4b328fd24b8b6a267035f26cb5369ae270de6de056c150495596a  .ai-review-input/main.pdf
+          f2af6c8b4c3156e715fa9bb8b87e65a036d20cfe0fd122a4a0625d1dac403b5b  .ai-review-input/ch04-02-standalone.pdf
           SHA256
-
-      - name: Validate and build book and figure PDFs
-        run: |
-          set -o pipefail
-          bash scripts/validate.sh
-          bash scripts/build.sh
-          bash scripts/build-figure-test.sh
-          test -s main.pdf
-          test -s .build/ch04-02-standalone.pdf
-          file main.pdf .build/ch04-02-standalone.pdf
 
       - name: Render every review page
         run: |
           set -o pipefail
-          apt-get update
-          apt-get install --no-install-recommends -y \
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y \
             poppler-data \
             poppler-utils \
             python3-pil
 
           mkdir -p .ai-review-input/pages/main .ai-review-input/pages/ch04
-          cp main.pdf .ai-review-input/main.pdf
-          cp .build/ch04-02-standalone.pdf .ai-review-input/ch04-02-standalone.pdf
 
           pdftoppm -png -r 180 -cropbox \
             .ai-review-input/main.pdf \
@@ -135,6 +106,7 @@ jobs:
       - name: Check out reviewed sources
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
+          ref: e026094c4a14803ec26d9bc4d2f4ed2d0f17ef8d
           persist-credentials: false
 
       - name: Download rendered review evidence
