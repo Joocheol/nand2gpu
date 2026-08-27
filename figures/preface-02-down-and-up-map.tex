@@ -1,0 +1,50 @@
+\begin{bookfigure}{내려갔다 올라오는 두 길}{fig:preface-down-and-up}
+\begin{tikzpicture}[diagram]
+  \path[use as bounding box] (0,0) rectangle (13.0,11.75);
+
+  \draw[diagram panel] (0.05,0.35) rectangle (4.25,11.60);
+  \node[diagram panel title] at (0.30,11.26) {내려가는 길};
+  \node[diagram note,anchor=west,text=black!65] at (0.30,10.80) {작은 규칙을 찾는다};
+
+  \node[concept emphasis,minimum width=31mm] (down1) at (2.15,9.63)
+    {행렬 결과의 한 부분};
+  \node[concept box,minimum width=31mm] (down2) at (2.15,7.62)
+    {더 작은 산술};
+  \node[concept box,minimum width=31mm] (down3) at (2.15,5.61)
+    {이진 덧셈};
+  \node[concept emphasis,minimum width=31mm,minimum height=11mm] (down4) at (2.15,3.45)
+    {진리표\\제1장의 출발점};
+  \draw[concept arrow] (down1.south) -- (down2.north);
+  \draw[concept arrow] (down2.south) -- (down3.north);
+  \draw[concept arrow] (down3.south) -- (down4.north);
+  \node[diagram note,align=center,text=black!65] at (2.15,1.55)
+    {복잡한 계산을\\가장 작은 명세까지 분해};
+
+  \draw[diagram panel] (4.55,0.35) rectangle (12.95,11.60);
+  \node[diagram panel title] at (4.80,11.26) {올라오는 길};
+  \node[diagram note,anchor=west,text=black!65] at (4.80,10.80) {유한한 자원에 배치한다};
+
+  \node[concept box,minimum width=64mm,minimum height=10mm] (up6) at (8.75,9.72)
+    {6 · 전용화 \quad 행렬 경로·AI 가속기 \quad 18--20장};
+  \node[concept box,minimum width=64mm,minimum height=10mm] (up5) at (8.75,8.12)
+    {5 · 데이터 재사용 \quad 메모리·타일링 \quad 13--17장};
+  \node[concept emphasis,minimum width=64mm,minimum height=10mm] (up4) at (8.75,6.52)
+    {4 · 복제·공유 \quad 병렬 실행·GPU \quad 8--12장};
+  \node[concept box,minimum width=64mm,minimum height=10mm] (up3) at (8.75,4.92)
+    {3 · 시간적 재사용 \quad 상태·명령 \quad 6--7장};
+  \node[concept box,minimum width=64mm,minimum height=10mm] (up2) at (8.75,3.32)
+    {2 · 조합 \quad 덧셈·곱셈·ALU \quad 2--5장};
+  \node[concept emphasis,minimum width=64mm,minimum height=10mm] (up1) at (8.75,1.72)
+    {1 · 명세 \quad 진리표 \quad 1장};
+
+  \draw[concept arrow] (up1.north) -- (up2.south);
+  \draw[concept arrow] (up2.north) -- (up3.south);
+  \draw[concept arrow] (up3.north) -- (up4.south);
+  \draw[concept arrow] (up4.north) -- (up5.south);
+  \draw[concept arrow] (up5.north) -- (up6.south);
+
+  \draw[concept dashed arrow] (down4.east) -- ++(0.34,0) |- (up1.west);
+  \node[diagram note,anchor=west,text=black!65] at (4.78,0.72)
+    {역사 연표가 아니라, 비용을 비교하기 위한 설명 순서};
+\end{tikzpicture}
+\end{bookfigure}
