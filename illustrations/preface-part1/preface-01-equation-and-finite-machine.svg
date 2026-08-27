@@ -7,7 +7,7 @@
   </defs>
   <rect width="1400" height="900" fill="#fff"/>
   <text x="70" y="72" class="title">한 줄의 수학식은 기계의 배치를 정하지 않는다</text>
-  <text x="70" y="106" class="sub">서장 도해 1 · 수학적 명세와 유한한 기계의 분리</text>
+  <text x="70" y="106" class="sub">서장 도해 1 · 결과의 규칙과 유한한 기계의 분리</text>
 
   <rect x="70" y="165" width="410" height="560" rx="24" class="box"/>
   <text x="105" y="215" class="label">수학이 정한 것</text>

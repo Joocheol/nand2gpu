@@ -2,4 +2,5 @@
 set -euo pipefail
 
 export BOOK_PROJECT_NAME="nand2gpu"
-exec bash book-template/scripts/build.sh
+bash book-template/scripts/build.sh
+bash scripts/check-pdf-text.sh main.pdf
