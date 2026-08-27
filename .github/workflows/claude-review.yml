@@ -71,6 +71,9 @@ jobs:
           pdffonts .ai-review-input/main.pdf > .ai-review-input/font-report.txt
           grep -q 'KoPubWorldBatang' .ai-review-input/font-report.txt
           grep -q 'KoPubWorldDotum' .ai-review-input/font-report.txt
+          pdftotext -enc UTF-8 -layout +            .ai-review-input/main.pdf +            .ai-review-input/text-extraction.txt
+          grep -q '진리표에서 GPU까지' .ai-review-input/text-extraction.txt
+          grep -q '사람에게는 당연해 보이는 계산 하나' +            .ai-review-input/text-extraction.txt
 
           python3 - <<'PY'
           from pathlib import Path
@@ -136,10 +139,11 @@ jobs:
             main.tex, figures/README.md,
             illustrations/preface-part1/preface-01-equation-and-finite-machine.svg,
             planning/chapter-map.md, and planning/preface-part1-detailed-briefs.md.
-            Read .ai-review-input/page-count.txt, .ai-review-input/font-report.txt, and
-            .ai-review-input/page-index.txt. Then use Read on every PNG in the index in
-            numeric order. The rendered PNGs, not source inspection alone, are the visual
-            evidence. State the exact number of pages read and identify any unreadable page.
+            Read .ai-review-input/page-count.txt, .ai-review-input/font-report.txt,
+            .ai-review-input/text-extraction.txt, and .ai-review-input/page-index.txt. Then
+            use Read on every PNG in the index in numeric order. The rendered PNGs, not
+            source inspection alone, are the visual evidence. State the exact number of
+            pages read and identify any unreadable page.
 
             Concentrate on the current revision:
 
@@ -164,8 +168,9 @@ jobs:
             5. Inspect all nine rendered pages for KoPubWorld Korean glyph failures, tofu,
                missing characters, clipping, overlap, broken equations, awkward page breaks,
                headings, tables, diagrams, headers, footers, and B5 black-and-white
-               legibility. Use font-report.txt only as supporting evidence; visible pages are
-               decisive.
+               legibility. KoPubWorld uses XeTeX ActualText, so a `uni=no` entry in
+               font-report.txt is not by itself a failure. Judge search and copy behavior
+               from text-extraction.txt and visible correctness from the rendered pages.
 
             Verify claims independently and do not invent findings when the current result is
             sound. Consolidate duplicate symptoms under one root cause. Return at most 12
