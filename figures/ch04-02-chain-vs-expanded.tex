@@ -8,7 +8,7 @@
   % ------------------------------------------------------------------
   \draw[diagram panel] (0.05,8.05) rectangle (12.95,11.65);
   \node[diagram panel title] at (0.28,11.35)
-    {A. 리플 캐리 · 16게이트 · 최장 9층};
+    {A. 리플 캐리로 만든 \(c_4\) · 16게이트 · 최장 9층};
   \node[diagram note,anchor=east] at (12.70,11.35)
     {1층은 8개 묶음 · 이후 상자 하나 = 게이트 하나};
 
@@ -116,7 +116,7 @@
   % Layer 3: one OR and three AND gates.
   % gate:expanded-or
   \node[gate,minimum width=17mm,minimum height=7mm] (e-u0) at (5.25,6.08)
-    {\(U_0\)\\\(T_0\lor T_1\)};
+    {\(U_0\)\\\((T_0{=}g_3)\lor T_1\)};
   % gate:expanded-and
   \node[path gate,minimum width=18mm,minimum height=7mm] (e-t2) at (5.25,4.85)
     {\(T_2\)\\\((p_3p_2)g_1\)};
@@ -161,15 +161,17 @@
   \draw[wire] (e-t4a.east) -- ([yshift=1.4mm]e-t4c.west);
   \draw[wire] (e-t4b.east) -- ([yshift=-1.4mm]e-t4c.west);
 
-  \draw[path wire] (e-t2.east) -- (e-u1.west);
-  \draw[wire] (e-t3.east) -- ++(0.12,0) |- ([yshift=-1.4mm]e-u1.west);
+  \draw[path wire] (e-t2.east) -- ([yshift=1.7mm]e-u1.west);
+  \draw[wire] (e-t3.east) -- ++(0.12,0) |- ([yshift=-1.7mm]e-u1.west);
   \draw[wire] (e-t4c.east) -- (e-t4.west);
-  \draw[wire] (e-u0.east) -- ++(2.25,0) |- ([yshift=1.4mm]e-u2.west);
-  \draw[path wire] (e-u1.east) -- (e-u2.west);
-  \draw[path wire] (e-u2.east) -- (e-c4.west);
-  \draw[wire] (e-t4.east) -- ++(2.30,0) |- ([yshift=-1.4mm]e-c4.west);
+  \draw[wire] (e-u0.east) -- ++(2.25,0) |- ([yshift=1.7mm]e-u2.west);
+  \draw[path wire] (e-u1.east) -- ([yshift=-1.7mm]e-u2.west);
+  \draw[path wire] (e-u2.east) -- ([yshift=1.7mm]e-c4.west);
+  \draw[wire] (e-t4.east) -- ++(2.30,0) |- ([yshift=-1.7mm]e-c4.west);
 
-  \node[diagram footer] at (6.50,0.50)
-    {굵은 선·회색 상자 = 최장 6층 경로 · 1층에서 직접 오는 입력은 도착 게이트 안에 적었다};
+  \node[diagram footer] at (6.50,0.63)
+    {굵은 선·회색 상자 = 최장 6층 경로 · 1층 값과 최초 입력은 도착 게이트 안에 적었다};
+  \node[diagram footer] at (6.50,0.34)
+    {\(p_3p_2\)는 항마다 다시 계산했다: AND 2개 증가 · 배선 단순화};
 \end{tikzpicture}
 \end{bookfigure}
