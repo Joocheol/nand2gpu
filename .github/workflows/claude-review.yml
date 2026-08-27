@@ -172,7 +172,8 @@ jobs:
             findings. Each finding must identify location, problem, severity, category,
             evidence, concrete recommendation, and risk if unchanged. Write the review in
             Korean and end with exactly one verdict: "현재 상태로 사용 가능",
-            "소폭 수정 후 사용 가능", or "재설계 필요".
+            "소폭 수정 후 사용 가능", or "재설계 필요". Put the complete Korean
+            review in the single structured-output string field named "review".
           claude_args: >-
             --tools "Read,Grep,Glob"
             --allowedTools "Read,Grep,Glob"
@@ -180,7 +181,7 @@ jobs:
             --model claude-sonnet-5
             --max-turns 60
             --json-schema
-            '{"type":"object","properties":{"pages_read":{"type":"integer","minimum":0},"summary":{"type":"string"},"opening_verdict":{"type":"string"},"matrix_example_verdict":{"type":"string"},"terminology_verdict":{"type":"string"},"font_rendering_verdict":{"type":"string"},"findings":{"type":"array","maxItems":12,"items":{"type":"object","properties":{"id":{"type":"string"},"location":{"type":"string"},"problem":{"type":"string"},"severity":{"type":"string","enum":["high","medium","low"]},"category":{"type":"string"},"evidence":{"type":"string"},"recommendation":{"type":"string"},"risk_if_unchanged":{"type":"string"}},"required":["id","location","problem","severity","category","evidence","recommendation","risk_if_unchanged"],"additionalProperties":false}},"final_verdict":{"type":"string","enum":["현재 상태로 사용 가능","소폭 수정 후 사용 가능","재설계 필요"]}},"required":["pages_read","summary","opening_verdict","matrix_example_verdict","terminology_verdict","font_rendering_verdict","findings","final_verdict"],"additionalProperties":false}'
+            '{"type":"object","properties":{"review":{"type":"string"}},"required":["review"],"additionalProperties":false}'
 
       - name: Save structured Claude review
         env:
