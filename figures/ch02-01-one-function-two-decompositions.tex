@@ -40,7 +40,10 @@
   \draw[path wire] (na.east) -- (o.north west);
   \draw[path wire] (nb.east) -- (o.south west);
   \draw[path wire] (o.east) -- (t.north west);
-  \draw[path wire] (n.east) -- (t.south west);
+  \draw[path wire] (n.east) --
+    node[pos=0.48,below=0.8mm,fill=white,inner sep=0.5pt,
+      font=\DiagramBodyFont,text=black!62] {2층 없음}
+    (t.south west);
   \draw[path wire] (t.east) -- (ya.west);
   \node[diagram note,align=center] at (2.20,2.56) {$N_A,N_B,N\rightarrow O\rightarrow T\rightarrow Y$};
   \node[concept emphasis,minimum width=31mm,minimum height=8mm] at (2.20,1.62) {NAND 6개 · 4층};

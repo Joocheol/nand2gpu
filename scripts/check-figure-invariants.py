@@ -77,6 +77,9 @@ for figure_path in (FIGURE, *PREFACE_FIGURES, *CH02_FIGURES):
         fail(f"{figure_path.name}: global scaling would shrink 6.5pt labels")
 
 chapter02 = (ROOT / "chapters" / "chapter02.tex").read_text(encoding="utf-8")
+if r"\keyterm{OR}" in chapter02:
+    fail("chapter 2 promotes OR beyond the five-term chapter brief")
+
 for required in (
     "0,1,1,0",
     "방법 A는 NAND 6개·가장 긴 경로 4층",
@@ -86,6 +89,10 @@ for required in (
 ):
     if required not in chapter02:
         fail(f"chapter 2 is missing a fixed logic or boundary statement: {required}")
+
+ch02_figure_1 = CH02_FIGURES[0].read_text(encoding="utf-8")
+if "2층 없음" not in ch02_figure_1:
+    fail("chapter 2 figure 1 no longer marks the N-to-T layer bypass")
 
 prologue = (ROOT / "chapters" / "prologue.tex").read_text(encoding="utf-8")
 for forbidden in ("행×열", "내적", "\\sum", "타일 계산"):

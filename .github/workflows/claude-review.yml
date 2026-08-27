@@ -33,7 +33,7 @@ jobs:
             .github/review-snapshots/chapter02-draft-main.pdf.b64 \
             > .ai-review-input/main.pdf
           echo \
-            "a6d1fb7b55a97a1ca95d68c17bb11ee9565c44303910ba1597f99032fd167df8  .ai-review-input/main.pdf" \
+            "f299ea8d6d394ee03f11a41e522aa348e418e91f8d7ff772e9bcc13707c8f3ff  .ai-review-input/main.pdf" \
             | sha256sum --check
 
       - name: Render every review page
