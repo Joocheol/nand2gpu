@@ -1,4 +1,4 @@
-name: Claude chapter 4 independent review
+name: Claude manuscript critical review through chapter 4
 
 on:
   workflow_dispatch:
@@ -26,7 +26,7 @@ defaults:
     shell: bash
 
 concurrency:
-  group: claude-chapter-4-independent-review
+  group: claude-manuscript-critical-review-through-chapter-4
   cancel-in-progress: false
 
 jobs:
@@ -165,7 +165,7 @@ jobs:
           name: claude-chapter-4-review-input
           path: .ai-review-input
 
-      - name: Review chapter 4 with Claude
+      - name: Critically review manuscript through chapter 4 with Claude
         id: claude
         uses: anthropics/claude-code-action@c038e4dcdedfbbca18dfb17df35a17e40ded4ddc # v1
         with:
@@ -178,14 +178,20 @@ jobs:
               }
             }
           prompt: |
-            You are an independent technical editor for the Korean
-            general-audience mathematics, digital-computation, and GPU book
-            "진리표에서 GPU까지". Review only. Do not edit, commit, push, label,
-            or comment.
+            You are an adversarial developmental editor and independent
+            technical reviewer for the Korean general-audience mathematics,
+            digital-computation, and GPU book "진리표에서 GPU까지". Review only.
+            Do not edit, commit, push, label, or comment. Do not behave as a
+            checklist certifier. Treat the manuscript as not yet publishable
+            until its technical, pedagogical, structural, and visual choices
+            survive serious challenge.
 
             Read editorial/review-checklist.md,
             planning/preface-part1-detailed-briefs.md,
+            chapters/preface.tex, chapters/prologue.tex,
+            chapters/chapter01.tex, chapters/chapter02.tex,
             chapters/chapter03.tex, chapters/chapter04.tex,
+            every figure source included by those chapters,
             figures/ch04-01-carry-through-four-bits.tex,
             figures/ch04-02-chain-vs-expanded.tex, main.tex,
             references.bib, and research/source-register.md.
@@ -196,6 +202,53 @@ jobs:
             inspection alone, are the visual evidence. State the exact number
             of pages read and identify any unreadable page rather than claiming
             complete coverage.
+
+            Before checking the supplied brief or arithmetic, independently
+            reconstruct the manuscript's promise, conceptual dependency map,
+            and chapter-by-chapter argument from the rendered book itself.
+            Then test whether the current opening sequence actually earns the
+            promised path from a human-readable equation through finite logic
+            toward a GPU. Compliance with the planning brief is not evidence
+            that the resulting book works.
+
+            Conduct a critical whole-manuscript review through chapter 4:
+            - Does the preface/prologue state a concrete reader promise, and do
+              chapters 1--4 visibly advance it rather than repeatedly restating
+              "same answer, different cost"?
+            - Is the sequence truth table -> NAND -> number representation ->
+              carry path necessary, cumulative, and paced for a reader with no
+              programming or digital-logic background?
+            - Identify prerequisite leakage, unexplained notation, sudden
+              abstraction jumps, delayed payoffs, duplicated explanations,
+              and sections or pages that could be removed without loss.
+            - Test every chapter title and section title against what the text
+              actually proves. Flag scope inflation, especially if a claim
+              about "the same addition" is supported only by a c_4 comparison
+              that excludes sum-output hardware.
+            - Judge whether examples, equations, tables, and figures perform
+              different teaching jobs. Flag figures that merely repeat prose,
+              prose that decodes a figure too late, and dense formal passages
+              that stop being general-audience exposition.
+            - Examine whether the six-row "이번 장의 선택과 비용" device adds a
+              new synthesis in each chapter or has become repetitive form.
+            - Inspect cross-chapter consistency of units and boundaries:
+              truth-table rows, NAND gates and NAND depth, bit width and value
+              range, unit gates and carry-path depth, carry-out versus signed
+              overflow, and one-adder gate paths versus later work/span.
+            - Review full-page composition, not isolated figures: page turns,
+              excessive blank areas, stranded tables, dense or undersized
+              diagrams, header hierarchy, equation rhythm, and whether B5
+              black-and-white pages invite continuous reading.
+            - Check whether cited sources support the claims made, but do not
+              spend the findings budget on minor citation ordering while more
+              consequential structural or pedagogical defects remain.
+
+            Apply explicit stress tests. Try to identify a defensible 15--20%
+            cut with no loss of argument; locate the earliest page where a
+            general reader is likely to stop; identify the weakest transition
+            between chapters; and state which current section most needs
+            restructuring rather than copyediting. If a stress test finds no
+            defect, explain what evidence defeated the challenge.
 
             Independently verify the chapter's logic and arithmetic:
             - every p_i, g_i, c_i, and S_i value in
@@ -215,12 +268,13 @@ jobs:
             - a gate path inside one adder is kept distinct from chapter 8's
               work and span across many operations.
 
-            Assess whether the prose works for a general reader with no
-            programming or digital-logic background; introduces generate,
-            propagate, unit gate delay, ripple carry, and carry lookahead
-            clearly without overcrowding the main line; provides every
-            intermediate value; states the educational model's limits; and
-            leads naturally from addition to multiplication.
+            For chapter 4 specifically, test whether generate, propagate, unit
+            gate delay, ripple carry, and carry lookahead are introduced with
+            enough intuition before the symbolic expansion; whether every
+            intermediate value is useful rather than merely present; whether
+            the 16-versus-22 comparison is fair and clearly bounded to c_4;
+            whether the 38-gate caveat arrives early enough; and whether the
+            chapter genuinely leads from addition to multiplication.
 
             Check both chapter 4 figures for correct arithmetic, readable
             black-and-white B5 layout, minimum text size, clipping, overlaps,
@@ -233,13 +287,18 @@ jobs:
             and unambiguous signal routing. Check the final "이번 장의 선택과
             비용" table for completeness and unit discipline.
 
-            Write the review in Korean. Do not invent findings when the current
-            result is sound. Consolidate duplicate symptoms under one root
-            cause. Return at most 15 findings. Each finding must identify
-            location, problem, severity, category, evidence, a concrete
-            recommendation, and risk if unchanged. End with exactly one
-            verdict: "현재 상태로 사용 가능", "소폭 수정 후 사용 가능", or
-            "재설계 필요".
+            Write the review in Korean. Be skeptical, specific, and economical.
+            Do not invent defects or inflate severity, but do not equate factual
+            correctness with editorial readiness. Prefer root causes and
+            consequential defects over harmless inconsistencies. Return at most
+            15 findings, ordered by severity and expected reader harm. Each
+            finding must identify location, problem, severity, category,
+            evidence, a concrete recommendation, and risk if unchanged.
+            Separate changes Codex can implement directly from structural or
+            pedagogical decisions that require the author. Return at most five
+            author questions, and ask one only when different answers would
+            materially change the book. End with exactly one verdict: "현재
+            상태로 사용 가능", "소폭 수정 후 사용 가능", or "재설계 필요".
           claude_args: >-
             --tools "Read,Grep,Glob"
             --allowedTools "Read,Grep,Glob"
@@ -247,7 +306,7 @@ jobs:
             --model claude-sonnet-5
             --max-turns 60
             --json-schema
-            '{"type":"object","properties":{"pages_read":{"type":"integer","minimum":0},"summary":{"type":"string"},"logic_verdict":{"type":"string"},"figure_1_verdict":{"type":"string"},"figure_2_verdict":{"type":"string"},"findings":{"type":"array","maxItems":15,"items":{"type":"object","properties":{"id":{"type":"string"},"location":{"type":"string"},"problem":{"type":"string"},"severity":{"type":"string","enum":["high","medium","low"]},"category":{"type":"string"},"evidence":{"type":"string"},"recommendation":{"type":"string"},"risk_if_unchanged":{"type":"string"}},"required":["id","location","problem","severity","category","evidence","recommendation","risk_if_unchanged"],"additionalProperties":false}},"final_verdict":{"type":"string","enum":["현재 상태로 사용 가능","소폭 수정 후 사용 가능","재설계 필요"]}},"required":["pages_read","summary","logic_verdict","figure_1_verdict","figure_2_verdict","findings","final_verdict"],"additionalProperties":false}'
+            '{"type":"object","properties":{"pages_read":{"type":"integer","minimum":0},"summary":{"type":"string"},"architecture_verdict":{"type":"string"},"general_reader_verdict":{"type":"string"},"logic_verdict":{"type":"string"},"visual_verdict":{"type":"string"},"stress_test":{"type":"string"},"findings":{"type":"array","maxItems":15,"items":{"type":"object","properties":{"id":{"type":"string"},"location":{"type":"string"},"problem":{"type":"string"},"severity":{"type":"string","enum":["high","medium","low"]},"category":{"type":"string","enum":["technical","pedagogy","structure","visual","citation","prose"]},"action_owner":{"type":"string","enum":["codex","author"]},"evidence":{"type":"string"},"recommendation":{"type":"string"},"risk_if_unchanged":{"type":"string"}},"required":["id","location","problem","severity","category","action_owner","evidence","recommendation","risk_if_unchanged"],"additionalProperties":false}},"author_questions":{"type":"array","maxItems":5,"items":{"type":"object","properties":{"question":{"type":"string"},"why_it_matters":{"type":"string"},"options":{"type":"array","minItems":2,"maxItems":3,"items":{"type":"string"}}},"required":["question","why_it_matters","options"],"additionalProperties":false}},"final_verdict":{"type":"string","enum":["현재 상태로 사용 가능","소폭 수정 후 사용 가능","재설계 필요"]}},"required":["pages_read","summary","architecture_verdict","general_reader_verdict","logic_verdict","visual_verdict","stress_test","findings","author_questions","final_verdict"],"additionalProperties":false}'
 
       - name: Save structured Claude review
         env:
@@ -256,7 +315,7 @@ jobs:
           test -n "$CLAUDE_REVIEW"
           printf '%s\n' "$CLAUDE_REVIEW" > claude-review.json
           {
-            echo '## Claude chapter 4 independent review'
+            echo '## Claude manuscript critical review through chapter 4'
             echo '~~~json'
             cat claude-review.json
             echo '~~~'
@@ -265,7 +324,7 @@ jobs:
       - name: Upload Claude review result
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: claude-chapter-4-review-result
+          name: claude-manuscript-critical-review-result
           path: claude-review.json
           if-no-files-found: error
           retention-days: 7
