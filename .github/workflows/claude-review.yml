@@ -11,7 +11,19 @@ on:
       - synchronize
     paths:
       - .github/workflows/claude-review.yml
+      - chapters/prologue.tex
+      - chapters/chapter01.tex
+      - chapters/chapter02.tex
+      - chapters/chapter03.tex
       - chapters/chapter04.tex
+      - figures/preface-01-equation-and-finite-machine.tex
+      - figures/preface-02-down-and-up-map.tex
+      - figures/ch01-01-rule-to-truth-table.tex
+      - figures/ch01-02-specification-vs-implementation.tex
+      - figures/ch02-01-one-function-two-decompositions.tex
+      - figures/ch02-02-same-output-different-cost.tex
+      - figures/ch03-01-two-faces-of-bits.tex
+      - figures/ch03-02-four-bit-addition.tex
       - figures/ch04-01-carry-through-four-bits.tex
       - figures/ch04-02-chain-vs-expanded.tex
       - main.tex
