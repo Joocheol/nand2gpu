@@ -2,11 +2,9 @@ name: Claude independent book review
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - review/claude-preface-2026-08-27
-    paths:
-      - .github/workflows/claude-review.yml
+  pull_request:
+    types:
+      - labeled
 
 permissions: {}
 
@@ -20,6 +18,9 @@ concurrency:
 
 jobs:
   build-review-input:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' && github.event.label.name == 'ai-review')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -28,7 +29,7 @@ jobs:
       - name: Check out review target
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
 
       - name: Restore pinned review PDF
@@ -104,7 +105,7 @@ jobs:
       - name: Check out reviewed sources
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
 
       - name: Download rendered review evidence
