@@ -44,7 +44,10 @@ jobs:
         run: |
           set -o pipefail
           apt-get update
-          apt-get install --no-install-recommends -y curl unzip
+          apt-get install --no-install-recommends -y \
+            curl \
+            poppler-utils \
+            unzip
           archive="$(mktemp)"
           extract_dir="$(mktemp -d)"
           curl --fail --location --retry 3 \
