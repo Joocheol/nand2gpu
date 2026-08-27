@@ -44,26 +44,18 @@ jobs:
         run: |
           set -o pipefail
           apt-get update
-          apt-get install --no-install-recommends -y \
-            curl \
-            msitools \
-            p7zip-full \
-            unzip
+          apt-get install --no-install-recommends -y curl unzip
           archive="$(mktemp)"
           extract_dir="$(mktemp -d)"
           curl --fail --location --retry 3 \
-            'https://www.stopbullying.re.kr/fileDownload?fileDownType=C&fileId=1&paramMenuId=MENU00424&titleId=50' \
+            'https://www.kopus.org/wp-content/uploads/2021/03/KOPUBWORLD_OTF_FONTS.zip' \
             --output "$archive"
+          echo \
+            "3a996824770d59381f6ada17f2b1d4c1923637c237ee701b112b863c846ad4de  $archive" \
+            | sha256sum --check
           unzip -q "$archive" -d "$extract_dir"
-          installer="$(find "$extract_dir" -type f -iname '*.exe' -print -quit)"
-          test -n "$installer"
-          7z x -y -o"$extract_dir/installer" "$installer" >/dev/null
-          msi="$(find "$extract_dir/installer" -type f -iname '*.msi' -print -quit)"
-          test -n "$msi"
-          mkdir -p "$extract_dir/msi"
-          msiextract -C "$extract_dir/msi" "$msi"
           mkdir -p fonts
-          find "$extract_dir/msi" -type f -iname '*.otf' -exec cp '{}' fonts/ \;
+          find "$extract_dir" -type f -iname '*.otf' -exec cp '{}' fonts/ \;
           sha256sum --check <<'SHA256'
           e7b2e5ab08d0d39b5a09417a1970fd8e0d7fd5464821339accd40aa61583b4dd  fonts/KoPubWorld Batang_Pro Bold.otf
           895fdc6de0ff0fe24b1a63ae16601c174c810b24daa23ade78115b7e134c4c0a  fonts/KoPubWorld Batang_Pro Light.otf
