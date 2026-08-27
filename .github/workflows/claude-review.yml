@@ -2,6 +2,11 @@ name: Claude independent book review
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - review/claude-preface-2026-08-27
+    paths:
+      - .github/workflows/claude-review.yml
 
 permissions: {}
 
@@ -23,19 +28,17 @@ jobs:
       - name: Check out review target
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
+          ref: ${{ github.sha }}
           persist-credentials: false
 
-      - name: Restore pinned review PDFs
+      - name: Restore pinned review PDF
         run: |
           set -o pipefail
           mkdir -p .ai-review-input
-          base64 --decode .github/review-snapshots/e026094-main.pdf.b64 \
+          base64 --decode .github/review-snapshots/78cf921-main.pdf.b64 \
             > .ai-review-input/main.pdf
-          base64 --decode .github/review-snapshots/e026094-ch04-02.pdf.b64 \
-            > .ai-review-input/ch04-02-standalone.pdf
           sha256sum --check <<'SHA256'
-          b4a2d90106c4b328fd24b8b6a267035f26cb5369ae270de6de056c150495596a  .ai-review-input/main.pdf
-          f2af6c8b4c3156e715fa9bb8b87e65a036d20cfe0fd122a4a0625d1dac403b5b  .ai-review-input/ch04-02-standalone.pdf
+          0b850626984adc63f925d280bac4ec95bf30ad131a419731e461478181e3b945  .ai-review-input/main.pdf
           SHA256
 
       - name: Render every review page
@@ -47,27 +50,26 @@ jobs:
             poppler-utils \
             python3-pil
 
-          mkdir -p .ai-review-input/pages/main .ai-review-input/pages/ch04
+          mkdir -p .ai-review-input/pages/main
 
           pdftoppm -png -r 180 -cropbox \
             .ai-review-input/main.pdf \
             .ai-review-input/pages/main/page
-          pdftoppm -png -r 180 -cropbox \
-            .ai-review-input/ch04-02-standalone.pdf \
-            .ai-review-input/pages/ch04/page
 
           find .ai-review-input/pages -type f -name 'page-*.png' \
             -printf '%p\n' | sort -V > .ai-review-input/page-index.txt
 
           main_pages="$(pdfinfo .ai-review-input/main.pdf | awk '/^Pages:/ { print $2 }')"
-          ch04_pages="$(pdfinfo .ai-review-input/ch04-02-standalone.pdf | awk '/^Pages:/ { print $2 }')"
           rendered_pages="$(wc -l < .ai-review-input/page-index.txt | tr -d ' ')"
           test "$main_pages" -gt 0
-          test "$ch04_pages" -gt 0
-          test "$rendered_pages" -eq "$((main_pages + ch04_pages))"
-          printf 'main_pages=%s\nch04_pages=%s\nrendered_pages=%s\n' \
-            "$main_pages" "$ch04_pages" "$rendered_pages" \
+          test "$rendered_pages" -eq "$main_pages"
+          printf 'main_pages=%s\nrendered_pages=%s\n' \
+            "$main_pages" "$rendered_pages" \
             > .ai-review-input/page-count.txt
+
+          pdffonts .ai-review-input/main.pdf > .ai-review-input/font-report.txt
+          grep -q 'KoPubWorldBatang' .ai-review-input/font-report.txt
+          grep -q 'KoPubWorldDotum' .ai-review-input/font-report.txt
 
           python3 - <<'PY'
           from pathlib import Path
@@ -102,7 +104,7 @@ jobs:
       - name: Check out reviewed sources
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
-          ref: e026094c4a14803ec26d9bc4d2f4ed2d0f17ef8d
+          ref: ${{ github.sha }}
           persist-credentials: false
 
       - name: Download rendered review evidence
@@ -111,7 +113,7 @@ jobs:
           name: claude-review-input
           path: .ai-review-input
 
-      - name: Review current book and Figure B with Claude
+      - name: Review revised preface and prologue with Claude
         id: claude
         uses: anthropics/claude-code-action@c038e4dcdedfbbca18dfb17df35a17e40ded4ddc # v1
         with:
@@ -124,48 +126,52 @@ jobs:
               }
             }
           prompt: |
-            You are an independent technical reviewer and print-figure editor for the
-            Korean general-audience mathematics, digital-computation, and GPU book
+            You are an independent technical editor and print reviewer for the Korean
+            general-audience mathematics, digital-computation, and GPU book
             "진리표에서 GPU까지". Review only; do not edit, commit, push, label, or comment.
 
-            Read editorial/review-checklist.md, chapters/prologue.tex,
-            figures/ch04-02-chain-vs-expanded.tex, and styles/tikz-diagrams.tex.
-            Read .ai-review-input/page-count.txt and .ai-review-input/page-index.txt,
-            then use Read on every PNG in the index in numeric order. The rendered PNGs,
-            not source inspection alone, are the visual evidence. State the exact number
-            of pages read and identify any unreadable page rather than claiming complete
-            coverage.
+            The review target is exactly the checked-out commit. Read
+            editorial/review-checklist.md, chapters/preface.tex, chapters/prologue.tex,
+            main.tex, figures/README.md,
+            illustrations/preface-part1/preface-01-equation-and-finite-machine.svg,
+            planning/chapter-map.md, and planning/preface-part1-detailed-briefs.md.
+            Read .ai-review-input/page-count.txt, .ai-review-input/font-report.txt, and
+            .ai-review-input/page-index.txt. Then use Read on every PNG in the index in
+            numeric order. The rendered PNGs, not source inspection alone, are the visual
+            evidence. State the exact number of pages read and identify any unreadable page.
 
-            The primary target is panel B in the one-page ch04 standalone render. Verify
-            both logic and visible routing for T2->U1, T3->U1, U0->U2, U1->U2,
-            U2->c4, T4->c4, and the T0/T1 inputs to U0. Decide whether writing the direct
-            T0 input inside U0 instead of drawing its long bypass wire is sufficiently
-            clear. Check that the lower T4->c4 route does not cross U2, another wire,
-            labels, or arrowheads and cannot be mistaken for a route to c3. Check whether
-            thick lines and gray boxes clearly and proportionately denote the longest
-            six-layer path rather than arbitrary emphasis.
+            Concentrate on the current revision:
 
-            Independently verify U0=T0 OR T1, U1=T2 OR T3, U2=U0 OR U1,
-            c4=U2 OR T4, the count 8 p/g + 10 AND + 4 OR = 22, and depth 6.
-            Also verify panel A's 16 gates and depth 9, and whether readers can tell that
-            16-versus-22 compares only the c4-generating circuitry rather than a complete
-            adder. Check B5 black-and-white legibility, clipping, overlaps, Korean text,
-            arrowheads, line weights, and minimum text size.
+            1. Assess whether the opening question is natural and precise for a general
+               reader: a calculation that seems obvious to a person still requires choices
+               when a computer executes it, and those choices have costs. Check the immediate
+               following sentences for repetition, logical flow, and consistency with the
+               rest of the prologue.
+            2. Verify the 2x2 matrix example in the prologue, including A times B, all four
+               results, and the worked calculation 1*5 + 2*7 = 19. Judge whether a reader
+               without prior matrix instruction can follow the example from what is actually
+               shown, without the text making a claim about whether the reader knows matrices.
+            3. Check that the prose no longer depends on the opaque term "수학적 명세" and
+               that its replacements preserve the intended distinction between a result rule
+               and an execution plan.
+            4. Assess the recurring heading "이번 장의 선택과 비용" in its present context.
+               Check that it covers preserved result, computational requirements, machine
+               resources, finite-precision changes, design tradeoffs, and remaining
+               constraints, and that terminology is consistent across the source, figure
+               metadata, and planning documents. Do not reopen the naming decision unless
+               there is a concrete semantic or editorial defect.
+            5. Inspect all nine rendered pages for KoPubWorld Korean glyph failures, tofu,
+               missing characters, clipping, overlap, broken equations, awkward page breaks,
+               headings, tables, diagrams, headers, footers, and B5 black-and-white
+               legibility. Use font-report.txt only as supporting evidence; visible pages are
+               decisive.
 
-            In the prologue, separately assess the recurring section name "계산 장부".
-            It covers preserved result, computational requirements, machine resources,
-            finite-precision changes, design tradeoffs, and remaining constraints.
-            Compare these candidates for a heading repeated more than twenty times:
-            "계산 장부", "이번 장의 비용과 선택", "이번 장의 설계 요약",
-            "계산과 기계의 비교표", "이번 장의 계산 설계표", and
-            "같은 답, 다른 비용". You may propose a better term. Recommend exactly one.
-
-            Write the review in Korean. Do not invent findings when the current result is
-            sound. Consolidate duplicate symptoms under one root cause. Return at most
-            15 findings. Each finding must identify location, problem, severity, category,
-            evidence, concrete recommendation, and risk if unchanged. End with exactly one
-            verdict: "현재 상태로 사용 가능", "소폭 수정 후 사용 가능", or
-            "재설계 필요".
+            Verify claims independently and do not invent findings when the current result is
+            sound. Consolidate duplicate symptoms under one root cause. Return at most 12
+            findings. Each finding must identify location, problem, severity, category,
+            evidence, concrete recommendation, and risk if unchanged. Write the review in
+            Korean and end with exactly one verdict: "현재 상태로 사용 가능",
+            "소폭 수정 후 사용 가능", or "재설계 필요".
           claude_args: >-
             --tools "Read,Grep,Glob"
             --allowedTools "Read,Grep,Glob"
@@ -173,7 +179,7 @@ jobs:
             --model claude-sonnet-5
             --max-turns 60
             --json-schema
-            '{"type":"object","properties":{"pages_read":{"type":"integer","minimum":0},"summary":{"type":"string"},"figure_a_verdict":{"type":"string"},"figure_b_verdict":{"type":"string"},"findings":{"type":"array","maxItems":15,"items":{"type":"object","properties":{"id":{"type":"string"},"location":{"type":"string"},"problem":{"type":"string"},"severity":{"type":"string","enum":["high","medium","low"]},"category":{"type":"string"},"evidence":{"type":"string"},"recommendation":{"type":"string"},"risk_if_unchanged":{"type":"string"}},"required":["id","location","problem","severity","category","evidence","recommendation","risk_if_unchanged"],"additionalProperties":false}},"term_comparison":{"type":"string"},"recommended_term":{"type":"string"},"final_verdict":{"type":"string","enum":["현재 상태로 사용 가능","소폭 수정 후 사용 가능","재설계 필요"]}},"required":["pages_read","summary","figure_a_verdict","figure_b_verdict","findings","term_comparison","recommended_term","final_verdict"],"additionalProperties":false}'
+            '{"type":"object","properties":{"pages_read":{"type":"integer","minimum":0},"summary":{"type":"string"},"opening_verdict":{"type":"string"},"matrix_example_verdict":{"type":"string"},"terminology_verdict":{"type":"string"},"font_rendering_verdict":{"type":"string"},"findings":{"type":"array","maxItems":12,"items":{"type":"object","properties":{"id":{"type":"string"},"location":{"type":"string"},"problem":{"type":"string"},"severity":{"type":"string","enum":["high","medium","low"]},"category":{"type":"string"},"evidence":{"type":"string"},"recommendation":{"type":"string"},"risk_if_unchanged":{"type":"string"}},"required":["id","location","problem","severity","category","evidence","recommendation","risk_if_unchanged"],"additionalProperties":false}},"final_verdict":{"type":"string","enum":["현재 상태로 사용 가능","소폭 수정 후 사용 가능","재설계 필요"]}},"required":["pages_read","summary","opening_verdict","matrix_example_verdict","terminology_verdict","font_rendering_verdict","findings","final_verdict"],"additionalProperties":false}'
 
       - name: Save structured Claude review
         env:
