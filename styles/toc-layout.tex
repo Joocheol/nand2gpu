@@ -1,0 +1,31 @@
+% 목차 계층 배치 — FEB의 검증된 B5 조판 규칙을 재사용한다.
+\contentsmargin{3.2em}
+
+\titlecontents{part}
+  [0pt]
+  {\addvspace{12pt}\sffamily\bfseries\color{BookPurple}}
+  {\makebox[4.0em][l]{제~\thecontentslabel~부}}
+  {}
+  {\hfill\contentspage}
+  [\addvspace{2pt}]
+
+\titlecontents{chapter}
+  [4.2em]
+  {\addvspace{5pt}\color{BookPurple}\bfseries}
+  {\contentslabel{2.8em}}
+  {}
+  {\titlerule*[0.6pc]{.}\contentspage}
+
+\titlecontents{section}
+  [7.6em]
+  {\small}
+  {\contentslabel{3.0em}}
+  {}
+  {\titlerule*[0.6pc]{.}\contentspage}
+
+\titlecontents{subsection}
+  [11.0em]
+  {\small}
+  {\contentslabel{3.4em}}
+  {}
+  {\titlerule*[0.6pc]{.}\contentspage}

@@ -1,0 +1,83 @@
+name: Shared book CI
+
+on:
+  workflow_call:
+    inputs:
+      artifact_name:
+        description: Name of the generated PDF artifact
+        required: false
+        type: string
+        default: book-pdf
+      container_image:
+        description: Immutable LaTeX CI image reference
+        required: false
+        type: string
+        default: ghcr.io/joocheol/latex-book-ci@sha256:e09de48df329e11b1a8f453a04fc60ee162861ff7a7accefb3d7a6d61d7688a9
+      retention_days:
+        description: Artifact retention period in days
+        required: false
+        type: number
+        default: 7
+  workflow_dispatch:
+    inputs:
+      artifact_name:
+        description: Name of the generated PDF artifact
+        required: false
+        type: string
+        default: book-pdf
+      container_image:
+        description: Immutable LaTeX CI image reference
+        required: false
+        type: string
+        default: ghcr.io/joocheol/latex-book-ci@sha256:e09de48df329e11b1a8f453a04fc60ee162861ff7a7accefb3d7a6d61d7688a9
+      retention_days:
+        description: Artifact retention period in days
+        required: false
+        type: number
+        default: 7
+
+permissions:
+  contents: read
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container:
+      image: ${{ inputs.container_image }}
+
+    steps:
+      - name: Check out book repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+
+      - name: Trust checked-out workspace
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Check whitespace in pull request changes
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: git diff --check "$BASE_SHA...$HEAD_SHA"
+
+      - name: Validate repository
+        run: bash scripts/validate.sh
+
+      - name: Build PDF
+        run: bash scripts/build.sh
+
+      - name: Confirm PDF output
+        run: |
+          test -s main.pdf
+          file main.pdf
+          ls -lh main.pdf
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: main.pdf
+          if-no-files-found: error
+          retention-days: ${{ inputs.retention_days }}

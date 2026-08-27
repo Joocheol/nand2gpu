@@ -16,6 +16,18 @@
 
 본제는 『진리표에서 GPU까지』로 확정했습니다. 4부 20장 목차와 행렬을 16장에서 처음 완결하는 구조도 독립 검토를 거쳐 고정했습니다. 부제는 실제 원고와 통합 편집을 더 진행한 뒤 확정합니다.
 
+## 조판과 빌드
+
+이 책은 『금융공학의 이해』에서 사용한 [공용 LaTeX 책 템플릿](book-template/README.md)과 해당 책의 흑백 제작 설정을 그대로 계승합니다. XeLaTeX, B5 `182×257mm` 판형, KoPubWorld 본문 글꼴, STIX 수학 글꼴, 흑백 TikZ 도해를 사용합니다.
+
+```bash
+bash scripts/doctor.sh
+bash scripts/validate.sh
+bash scripts/build.sh
+```
+
+KoPubWorld OTF 6종은 재배포하지 않습니다. 빌드 전에 [글꼴 준비 안내](fonts/README.md)에 따라 로컬 `fonts/` 폴더에 둡니다. 밀도가 가장 높은 4장 도판만 빠르게 검증하려면 `bash scripts/build-figure-test.sh`를 실행합니다.
+
 ## 문서 안내
 
 - [프로젝트 허브](PROJECT.md)
@@ -23,6 +35,7 @@
 - [4부 20장 목차 지도](planning/chapter-map.md)
 - [서장·제1부 상세 설계표](planning/preface-part1-detailed-briefs.md)
 - [서장·제1부 흑백 도해 시안](illustrations/preface-part1/README.md)
+- [최종 TikZ 도해 제작 원칙](figures/README.md)
 - [편집·기술 검토 기준](editorial/review-checklist.md)
 - [출처 관리대장](research/source-register.md)
 - [결정 기록](decisions/decision-log.md)
