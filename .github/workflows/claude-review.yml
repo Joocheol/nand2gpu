@@ -11,6 +11,7 @@ on:
       - synchronize
     paths:
       - .github/workflows/claude-review.yml
+      - chapters/prologue.tex
       - chapters/chapter03.tex
       - figures/ch03-01-two-faces-of-bits.tex
       - figures/ch03-02-four-bit-addition.tex
