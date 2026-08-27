@@ -1,0 +1,200 @@
+name: Claude independent book review
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/claude-review.yml
+
+permissions: {}
+
+concurrency:
+  group: claude-independent-book-review
+  cancel-in-progress: false
+
+jobs:
+  build-review-input:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container:
+      image: ghcr.io/joocheol/latex-book-ci@sha256:e09de48df329e11b1a8f453a04fc60ee162861ff7a7accefb3d7a6d61d7688a9
+    permissions:
+      contents: read
+    steps:
+      - name: Check out review target
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Trust checked-out workspace
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Validate and build book and figure PDFs
+        run: |
+          set -o pipefail
+          bash scripts/validate.sh
+          bash scripts/build.sh
+          bash scripts/build-figure-test.sh
+          test -s main.pdf
+          test -s .build/ch04-02-standalone.pdf
+          file main.pdf .build/ch04-02-standalone.pdf
+
+      - name: Render every review page
+        run: |
+          set -o pipefail
+          apt-get update
+          apt-get install --no-install-recommends -y \
+            poppler-data \
+            poppler-utils \
+            python3-pil
+
+          mkdir -p .ai-review-input/pages/main .ai-review-input/pages/ch04
+          cp main.pdf .ai-review-input/main.pdf
+          cp .build/ch04-02-standalone.pdf .ai-review-input/ch04-02-standalone.pdf
+
+          pdftoppm -png -r 180 -cropbox \
+            .ai-review-input/main.pdf \
+            .ai-review-input/pages/main/page
+          pdftoppm -png -r 180 -cropbox \
+            .ai-review-input/ch04-02-standalone.pdf \
+            .ai-review-input/pages/ch04/page
+
+          find .ai-review-input/pages -type f -name 'page-*.png' \
+            -printf '%p\n' | sort -V > .ai-review-input/page-index.txt
+
+          main_pages="$(pdfinfo .ai-review-input/main.pdf | awk '/^Pages:/ { print $2 }')"
+          ch04_pages="$(pdfinfo .ai-review-input/ch04-02-standalone.pdf | awk '/^Pages:/ { print $2 }')"
+          rendered_pages="$(wc -l < .ai-review-input/page-index.txt | tr -d ' ')"
+          test "$main_pages" -gt 0
+          test "$ch04_pages" -gt 0
+          test "$rendered_pages" -eq "$((main_pages + ch04_pages))"
+          printf 'main_pages=%s\nch04_pages=%s\nrendered_pages=%s\n' \
+            "$main_pages" "$ch04_pages" "$rendered_pages" \
+            > .ai-review-input/page-count.txt
+
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          index = Path('.ai-review-input/page-index.txt')
+          pages = [Path(line) for line in index.read_text().splitlines() if line]
+          assert pages, 'no rendered pages'
+          for page in pages:
+              image = Image.open(page).convert('L')
+              nonwhite = sum(pixel < 245 for pixel in image.getdata())
+              print(f'{page}: nonwhite={nonwhite}')
+              assert nonwhite > 1000, f'blank or unreadable render: {page}'
+          PY
+
+      - name: Upload bounded review evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: claude-review-input
+          path: .ai-review-input/
+          if-no-files-found: error
+          retention-days: 1
+
+  review:
+    needs: build-review-input
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - name: Check out reviewed sources
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Download rendered review evidence
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: claude-review-input
+          path: .ai-review-input
+
+      - name: Review current book and Figure B with Claude
+        id: claude
+        uses: anthropics/claude-code-action@c038e4dcdedfbbca18dfb17df35a17e40ded4ddc # v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}
+          settings: |
+            {
+              "env": {
+                "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "48000"
+              }
+            }
+          prompt: |
+            You are an independent technical reviewer and print-figure editor for the
+            Korean general-audience mathematics, digital-computation, and GPU book
+            "진리표에서 GPU까지". Review only; do not edit, commit, push, label, or comment.
+
+            Read editorial/review-checklist.md, chapters/prologue.tex,
+            figures/ch04-02-chain-vs-expanded.tex, and styles/tikz-diagrams.tex.
+            Read .ai-review-input/page-count.txt and .ai-review-input/page-index.txt,
+            then use Read on every PNG in the index in numeric order. The rendered PNGs,
+            not source inspection alone, are the visual evidence. State the exact number
+            of pages read and identify any unreadable page rather than claiming complete
+            coverage.
+
+            The primary target is panel B in the one-page ch04 standalone render. Verify
+            both logic and visible routing for T2->U1, T3->U1, U0->U2, U1->U2,
+            U2->c4, T4->c4, and the T0/T1 inputs to U0. Decide whether writing the direct
+            T0 input inside U0 instead of drawing its long bypass wire is sufficiently
+            clear. Check that the lower T4->c4 route does not cross U2, another wire,
+            labels, or arrowheads and cannot be mistaken for a route to c3. Check whether
+            thick lines and gray boxes clearly and proportionately denote the longest
+            six-layer path rather than arbitrary emphasis.
+
+            Independently verify U0=T0 OR T1, U1=T2 OR T3, U2=U0 OR U1,
+            c4=U2 OR T4, the count 8 p/g + 10 AND + 4 OR = 22, and depth 6.
+            Also verify panel A's 16 gates and depth 9, and whether readers can tell that
+            16-versus-22 compares only the c4-generating circuitry rather than a complete
+            adder. Check B5 black-and-white legibility, clipping, overlaps, Korean text,
+            arrowheads, line weights, and minimum text size.
+
+            In the prologue, separately assess the recurring section name "계산 장부".
+            It covers preserved result, computational requirements, machine resources,
+            finite-precision changes, design tradeoffs, and remaining constraints.
+            Compare these candidates for a heading repeated more than twenty times:
+            "계산 장부", "이번 장의 비용과 선택", "이번 장의 설계 요약",
+            "계산과 기계의 비교표", "이번 장의 계산 설계표", and
+            "같은 답, 다른 비용". You may propose a better term. Recommend exactly one.
+
+            Write the review in Korean. Do not invent findings when the current result is
+            sound. Consolidate duplicate symptoms under one root cause. Return at most
+            15 findings. Each finding must identify location, problem, severity, category,
+            evidence, concrete recommendation, and risk if unchanged. End with exactly one
+            verdict: "현재 상태로 사용 가능", "소폭 수정 후 사용 가능", or
+            "재설계 필요".
+          claude_args: >-
+            --tools "Read,Grep,Glob"
+            --allowedTools "Read,Grep,Glob"
+            --disallowedTools "mcp__*"
+            --model claude-sonnet-5
+            --max-turns 60
+            --json-schema
+            '{"type":"object","properties":{"pages_read":{"type":"integer","minimum":0},"summary":{"type":"string"},"figure_a_verdict":{"type":"string"},"figure_b_verdict":{"type":"string"},"findings":{"type":"array","maxItems":15,"items":{"type":"object","properties":{"id":{"type":"string"},"location":{"type":"string"},"problem":{"type":"string"},"severity":{"type":"string","enum":["high","medium","low"]},"category":{"type":"string"},"evidence":{"type":"string"},"recommendation":{"type":"string"},"risk_if_unchanged":{"type":"string"}},"required":["id","location","problem","severity","category","evidence","recommendation","risk_if_unchanged"],"additionalProperties":false}},"term_comparison":{"type":"string"},"recommended_term":{"type":"string"},"final_verdict":{"type":"string","enum":["현재 상태로 사용 가능","소폭 수정 후 사용 가능","재설계 필요"]}},"required":["pages_read","summary","figure_a_verdict","figure_b_verdict","findings","term_comparison","recommended_term","final_verdict"],"additionalProperties":false}'
+
+      - name: Save structured Claude review
+        env:
+          CLAUDE_REVIEW: ${{ steps.claude.outputs.structured_output }}
+        run: |
+          test -n "$CLAUDE_REVIEW"
+          printf '%s\n' "$CLAUDE_REVIEW" > claude-review.json
+          {
+            echo '## Claude independent review'
+            echo '```json'
+            cat claude-review.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Claude review result
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: claude-review-result
+          path: claude-review.json
+          if-no-files-found: error
+          retention-days: 7
